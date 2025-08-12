@@ -5,7 +5,7 @@ signal output
 var target :Spatial
 export var zoom :float = 40
 
-var move_speed := 0.008
+var move_speed := 0.0045
 var zoom_speed := 0.02
 onready var current_zoom = zoom
 

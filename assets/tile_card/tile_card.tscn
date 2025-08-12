@@ -44,8 +44,8 @@ current = true
 [node name="object" parent="Viewport/Spatial" instance=ExtResource( 1 )]
 
 [node name="DirectionalLight" type="DirectionalLight" parent="Viewport/Spatial"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0 )
-light_energy = 0.4
+transform = Transform( 1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 0, 0 )
+shadow_enabled = true
 directional_shadow_mode = 0
 
 [connection signal="gui_input" from="." to="." method="_on_tile_preview_gui_input"]

@@ -12,8 +12,11 @@ texture_size = 0
 [resource]
 background_mode = 1
 background_sky = SubResource( 2 )
-background_color = Color( 0.619608, 0.619608, 0.619608, 1 )
-ambient_light_color = Color( 0.666667, 0.666667, 0.666667, 1 )
+background_color = Color( 0.788235, 0.788235, 0.788235, 1 )
+background_energy = 0.3
+ambient_light_color = Color( 0.854902, 0.854902, 0.854902, 1 )
+ambient_light_energy = 0.3
+ambient_light_sky_contribution = 0.3
 fog_color = Color( 0, 0.356863, 0.819608, 1 )
 fog_depth_begin = 40.0
 fog_depth_curve = 0.784583
