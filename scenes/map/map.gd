@@ -4,6 +4,8 @@ signal on_tile_click(tile)
 
 const tile_scene :PackedScene = preload("res://scenes/hex_tile/hext_tile.tscn")
 const tile_sea_scene :PackedScene = preload("res://scenes/hex_tile/hext_tile_sea.tscn")
+const tile_hill_scene :PackedScene = preload("res://scenes/hex_tile/hext_tile_hill.tscn")
+
 const object_scene :PackedScene = preload("res://scenes/object_tile/object_tile.tscn")
 
 var _click_position :Vector3
@@ -131,6 +133,8 @@ func _spawn_tile(data :HexMapData.TileMapData):
 			tile_node = tile_scene.instance()
 		HexMapData.TileMapDataTypeWater:
 			tile_node = tile_sea_scene.instance()
+		HexMapData.TileMapDataTypeHill:
+			tile_node = tile_hill_scene.instance()
 			
 	if tile_node == null:
 		 tile_node = tile_scene.instance()
@@ -150,6 +154,7 @@ func _spawn_tile(data :HexMapData.TileMapData):
 		object_node.texture = data.object.model
 		tile_node.add_child(object_node)
 		object_node.set_as_toplevel(true)
+		object_node.translation = tile_node.get_object_position()
 		object_node.rotation = Vector3.ZERO
 	
 

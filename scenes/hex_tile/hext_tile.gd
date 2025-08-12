@@ -10,6 +10,9 @@ onready var label = $label
 func _ready():
 	update()
 	
+func get_object_position() -> Vector3:
+	return tile.global_position
+	
 func update():
 	#label.text = "(%s)" % id
 	#label.visible = texture != null

@@ -65,6 +65,7 @@ class HexMapFileData:
 	
 const TileMapDataTypeLand = 1
 const TileMapDataTypeWater = 2
+const TileMapDataTypeHill = 3
 
 class TileMapData:
 	var id :Vector2
