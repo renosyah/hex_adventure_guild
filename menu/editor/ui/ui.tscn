@@ -45,19 +45,36 @@ margin_right = 600.0
 margin_bottom = 856.0
 size_flags_vertical = 3
 
-[node name="tile_options" type="HBoxContainer" parent="SafeArea/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="SafeArea/VBoxContainer"]
 margin_top = 860.0
 margin_right = 600.0
-margin_bottom = 980.0
-rect_min_size = Vector2( 0, 120 )
-mouse_filter = 2
-alignment = 1
+margin_bottom = 900.0
+rect_min_size = Vector2( 0, 40 )
 
-[node name="MarginContainer" type="MarginContainer" parent="SafeArea/VBoxContainer"]
-margin_top = 984.0
+[node name="HBoxContainer2" type="HBoxContainer" parent="SafeArea/VBoxContainer"]
+margin_top = 904.0
 margin_right = 600.0
 margin_bottom = 1024.0
-rect_min_size = Vector2( 0, 40 )
+
+[node name="MarginContainer" type="MarginContainer" parent="SafeArea/VBoxContainer/HBoxContainer2"]
+margin_right = 40.0
+margin_bottom = 120.0
+rect_min_size = Vector2( 40, 0 )
+
+[node name="tile_options" type="HBoxContainer" parent="SafeArea/VBoxContainer/HBoxContainer2"]
+margin_left = 44.0
+margin_right = 556.0
+margin_bottom = 120.0
+rect_min_size = Vector2( 0, 120 )
+mouse_filter = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="SafeArea/VBoxContainer/HBoxContainer2"]
+margin_left = 560.0
+margin_right = 600.0
+margin_bottom = 120.0
+rect_min_size = Vector2( 40, 0 )
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="SafeArea"]
 margin_top = 388.0

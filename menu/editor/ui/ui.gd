@@ -9,8 +9,7 @@ signal on_save_map
 const tile_card_scene = preload("res://assets/tile_card/tile_card.tscn")
 
 onready var movable_camera_ui = $SafeArea/VBoxContainer/movable_camera_ui
-onready var tile_options = $SafeArea/VBoxContainer/tile_options
-
+onready var tile_options = $SafeArea/VBoxContainer/HBoxContainer2/tile_options
 onready var btn_adjacent = $SafeArea/VBoxContainer2/btn_adjacent
 onready var btn_view = $SafeArea/VBoxContainer2/btn_view
 onready var btn_path = $SafeArea/VBoxContainer2/btn_path
@@ -29,11 +28,11 @@ func show_tile_options():
 	_create_tile_card(hex, null, HexMapData.TileMapDataTypeLand)
 	_create_tile_card(hex, null, HexMapData.TileMapDataTypeWater)
 	_create_tile_card(hex, preload("res://scenes/object_tile/models/tree_1.png"))
-	_create_tile_card(hex, preload("res://scenes/object_tile/models/tree_2.png"))
-	_create_tile_card(hex, preload("res://scenes/object_tile/models/tree_3.png"))
+	#_create_tile_card(hex, preload("res://scenes/object_tile/models/tree_2.png"))
+	#_create_tile_card(hex, preload("res://scenes/object_tile/models/tree_3.png"))
 	_create_tile_card(hex, preload("res://scenes/object_tile/models/rock_1.png"))
-	_create_tile_card(hex, preload("res://scenes/object_tile/models/rock_2.png"))
-	_create_tile_card(hex, preload("res://scenes/object_tile/models/rock_3.png"))
+	#_create_tile_card(hex, preload("res://scenes/object_tile/models/rock_2.png"))
+	#_create_tile_card(hex, preload("res://scenes/object_tile/models/rock_3.png"))
 	
 func _create_tile_card(tile_model :Resource, object_model :Resource = null, type :int = 0) -> TileCard:
 	var data = _create_tile_option(tile_model,object_model)
