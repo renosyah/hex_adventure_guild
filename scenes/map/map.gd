@@ -3,6 +3,7 @@ extends Node
 signal on_tile_click(tile)
 
 const tile_scene :PackedScene = preload("res://scenes/hex_tile/hext_tile.tscn")
+const tile_sea_scene :PackedScene = preload("res://scenes/hex_tile/hext_tile_sea.tscn")
 const object_scene :PackedScene = preload("res://scenes/object_tile/object_tile.tscn")
 
 var _click_position :Vector3
@@ -62,7 +63,13 @@ func _spawn_tiles():
 		_spawn_tile(data)
 		
 func _spawn_tile(data :HexMapData.TileMapData):
-	var tile_node :HexTile = tile_scene.instance()
+	var tile_node :HexTile
+	
+	match (data.type):
+		HexMapData.TileMapDataTypeLand:
+			tile_node = tile_scene.instance()
+		HexMapData.TileMapDataTypeWater:
+			tile_node = tile_sea_scene.instance()
 	
 	if data.model:
 		tile_node.texture = data.model

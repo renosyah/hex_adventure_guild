@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=2]
 
 [ext_resource path="res://scenes/object_tile/object_tile.gd" type="Script" id=1]
-[ext_resource path="res://scenes/object_tile/models/castle.png" type="Texture" id=2]
 
 [node name="object" type="Spatial"]
 script = ExtResource( 1 )
@@ -10,4 +9,3 @@ script = ExtResource( 1 )
 transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0.5, 0 )
 double_sided = false
 alpha_cut = 2
-texture = ExtResource( 2 )

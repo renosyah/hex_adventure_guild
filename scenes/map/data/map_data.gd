@@ -63,9 +63,13 @@ class HexMapFileData:
 			list.append(x.to_dictionary())
 		return list
 	
+const TileMapDataTypeLand = 0
+const TileMapDataTypeWater = 1
+
 class TileMapData:
 	var id :Vector2
 	var model :Resource
+	var type :int
 	var pos :Vector3
 	var rotation :Vector3
 	var object :ObjectMapData
@@ -76,6 +80,7 @@ class TileMapData:
 		if _data.has("model"):
 			model = load(_data["model"])
 			
+		type = _data["type"]
 		pos = _data["pos"]
 		rotation = _data["rotation"]
 		
@@ -90,6 +95,7 @@ class TileMapData:
 		if model:
 			data["model"] = model.resource_path
 			
+		data["type"] = type
 		data["pos"] = pos
 		data["rotation"] = rotation
 		

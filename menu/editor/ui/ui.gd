@@ -18,14 +18,18 @@ func _ready():
 	
 func show_tile_options():
 	var hex = preload("res://scenes/hex_tile/models/hex.png")
-	_create_tile_card(hex)
-	_create_tile_card(hex, preload("res://scenes/object_tile/models/castle.png"))
+	_create_tile_card(hex, null, HexMapData.TileMapDataTypeLand)
+	_create_tile_card(hex, null, HexMapData.TileMapDataTypeWater)
 	_create_tile_card(hex, preload("res://scenes/object_tile/models/tree_1.png"))
 	_create_tile_card(hex, preload("res://scenes/object_tile/models/tree_2.png"))
 	_create_tile_card(hex, preload("res://scenes/object_tile/models/tree_3.png"))
+	_create_tile_card(hex, preload("res://scenes/object_tile/models/rock_1.png"))
+	_create_tile_card(hex, preload("res://scenes/object_tile/models/rock_2.png"))
+	_create_tile_card(hex, preload("res://scenes/object_tile/models/rock_3.png"))
 	
-func _create_tile_card(tile_model :Resource, object_model :Resource = null) -> TileCard:
+func _create_tile_card(tile_model :Resource, object_model :Resource = null, type :int = 0) -> TileCard:
 	var data = _create_tile_option(tile_model,object_model)
+	data.type = type
 	var card :TileCard = tile_card_scene.instance()
 	card.data = data
 	card.connect("on_grab", self ,"_on_tile_card_grab")

@@ -6,10 +6,12 @@ signal on_draging
 signal on_release
 signal on_cancel
 
+const tile_scene :PackedScene = preload("res://scenes/hex_tile/hext_tile.tscn")
+const tile_sea_scene :PackedScene = preload("res://scenes/hex_tile/hext_tile_sea.tscn")
+const object_scene :PackedScene = preload("res://scenes/object_tile/object_tile.tscn")
+
 var data :HexMapData.TileMapData
 
-onready var hext_tile = $Viewport/Spatial/hext_tile
-onready var object = $Viewport/Spatial/object
 onready var texture_rect = $TextureRect
 onready var viewport = $Viewport
 onready var spatial = $Viewport/Spatial
@@ -20,15 +22,34 @@ var _drag_pos = Vector2()
 
 func _ready():
 	texture_rect.texture = viewport.get_texture()
-	hext_tile.texture = data.model
-	hext_tile.update()
+	viewport.world.environment = get_viewport().world.environment
+	_spawn_tile()
+	
+func _spawn_tile():
+	var tile_node :HexTile
+	
+	match (data.type):
+		HexMapData.TileMapDataTypeLand:
+			tile_node = tile_scene.instance()
+		HexMapData.TileMapDataTypeWater:
+			tile_node = tile_sea_scene.instance()
+	
+	if data.model:
+		tile_node.texture = data.model
+		
+	tile_node.id = data.id
+	tile_node.name = str(tile_node.id)
+	spatial.add_child(tile_node)
+	tile_node.translation = data.pos
+	tile_node.rotation = data.rotation
 	
 	if data.object:
-		object.texture = data.object.model
-		object.update()
-	
-	viewport.world.environment = get_viewport().world.environment
-	
+		var object_node :ObjectTile = object_scene.instance()
+		object_node.texture = data.object.model
+		tile_node.add_child(object_node)
+		object_node.set_as_toplevel(true)
+		object_node.rotation = Vector3.ZERO
+		
 func get_card_image() -> TextureRect:
 	return texture_rect.duplicate()
 
