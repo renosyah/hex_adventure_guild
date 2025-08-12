@@ -11,7 +11,7 @@ func _ready():
 	update()
 	
 func get_object_position() -> Vector3:
-	return tile.global_position
+	return tile.global_position + Vector3.FORWARD * 0.3
 	
 func update():
 	#label.text = "(%s)" % id

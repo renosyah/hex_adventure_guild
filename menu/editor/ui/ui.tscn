@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://camera/movable_camera_ui.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/SafeArea/SafeArea.gd" type="Script" id=2]
@@ -6,6 +6,12 @@
 [ext_resource path="res://menu/editor/ui/ui.gd" type="Script" id=4]
 [ext_resource path="res://assets/icons/view.png" type="Texture" id=5]
 [ext_resource path="res://assets/icons/move.png" type="Texture" id=6]
+[ext_resource path="res://menu/editor/ui/object_option/object_option.tscn" type="PackedScene" id=7]
+[ext_resource path="res://assets/icons/hill_tile.png" type="Texture" id=8]
+[ext_resource path="res://assets/icons/land_tile.png" type="Texture" id=9]
+[ext_resource path="res://assets/icons/water_tile.png" type="Texture" id=10]
+[ext_resource path="res://assets/icons/card.png" type="Texture" id=11]
+[ext_resource path="res://assets/icons/menu_button.png" type="Texture" id=12]
 
 [node name="ui" type="Control"]
 anchor_right = 1.0
@@ -35,53 +41,33 @@ margin_left = 500.0
 margin_right = 600.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 100, 80 )
-text = "Save"
+icon = ExtResource( 12 )
+flat = true
+expand_icon = true
 
 [node name="movable_camera_ui" parent="SafeArea/VBoxContainer" instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 84.0
 margin_right = 600.0
-margin_bottom = 856.0
+margin_bottom = 876.0
 size_flags_vertical = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="SafeArea/VBoxContainer"]
-margin_top = 860.0
+margin_top = 880.0
 margin_right = 600.0
-margin_bottom = 900.0
+margin_bottom = 920.0
 rect_min_size = Vector2( 0, 40 )
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="SafeArea/VBoxContainer"]
-margin_top = 904.0
-margin_right = 600.0
-margin_bottom = 1024.0
-
-[node name="MarginContainer" type="MarginContainer" parent="SafeArea/VBoxContainer/HBoxContainer2"]
-margin_right = 40.0
-margin_bottom = 120.0
-rect_min_size = Vector2( 40, 0 )
-
-[node name="tile_options" type="HBoxContainer" parent="SafeArea/VBoxContainer/HBoxContainer2"]
-margin_left = 44.0
-margin_right = 556.0
-margin_bottom = 120.0
-rect_min_size = Vector2( 0, 120 )
-mouse_filter = 2
-size_flags_horizontal = 3
-alignment = 1
-
-[node name="MarginContainer2" type="MarginContainer" parent="SafeArea/VBoxContainer/HBoxContainer2"]
-margin_left = 560.0
-margin_right = 600.0
-margin_bottom = 120.0
-rect_min_size = Vector2( 40, 0 )
+[node name="object_option" parent="SafeArea/VBoxContainer" instance=ExtResource( 7 )]
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="SafeArea"]
-margin_top = 388.0
-margin_right = 80.0
-margin_bottom = 636.0
-size_flags_horizontal = 0
-size_flags_vertical = 4
+margin_left = 520.0
+margin_top = 542.0
+margin_right = 600.0
+margin_bottom = 1024.0
+size_flags_horizontal = 8
+size_flags_vertical = 8
 
 [node name="btn_adjacent" type="Button" parent="SafeArea/VBoxContainer2"]
 margin_right = 80.0
@@ -90,7 +76,15 @@ rect_min_size = Vector2( 80, 80 )
 toggle_mode = true
 pressed = true
 icon = ExtResource( 3 )
+flat = true
 expand_icon = true
+
+[node name="TextureRect2" type="TextureRect" parent="SafeArea/VBoxContainer2/btn_adjacent"]
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 11 )
+expand = true
 
 [node name="btn_view" type="Button" parent="SafeArea/VBoxContainer2"]
 margin_top = 84.0
@@ -99,7 +93,15 @@ margin_bottom = 164.0
 rect_min_size = Vector2( 80, 80 )
 toggle_mode = true
 icon = ExtResource( 5 )
+flat = true
 expand_icon = true
+
+[node name="TextureRect3" type="TextureRect" parent="SafeArea/VBoxContainer2/btn_view"]
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 11 )
+expand = true
 
 [node name="btn_path" type="Button" parent="SafeArea/VBoxContainer2"]
 margin_top = 168.0
@@ -108,6 +110,87 @@ margin_bottom = 248.0
 rect_min_size = Vector2( 80, 80 )
 toggle_mode = true
 icon = ExtResource( 6 )
+flat = true
 expand_icon = true
 
+[node name="TextureRect4" type="TextureRect" parent="SafeArea/VBoxContainer2/btn_path"]
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 11 )
+expand = true
+
+[node name="MarginContainer" type="MarginContainer" parent="SafeArea/VBoxContainer2"]
+margin_top = 252.0
+margin_right = 80.0
+margin_bottom = 482.0
+rect_min_size = Vector2( 0, 230 )
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="SafeArea"]
+margin_top = 542.0
+margin_right = 80.0
+margin_bottom = 1024.0
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="btn_tile_land" type="Button" parent="SafeArea/VBoxContainer3"]
+margin_right = 80.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 80, 80 )
+icon = ExtResource( 9 )
+flat = true
+expand_icon = true
+
+[node name="TextureRect" type="TextureRect" parent="SafeArea/VBoxContainer3/btn_tile_land"]
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 11 )
+expand = true
+
+[node name="btn_tile_hill" type="Button" parent="SafeArea/VBoxContainer3"]
+margin_top = 84.0
+margin_right = 80.0
+margin_bottom = 164.0
+rect_min_size = Vector2( 80, 80 )
+icon = ExtResource( 8 )
+flat = true
+expand_icon = true
+
+[node name="TextureRect2" type="TextureRect" parent="SafeArea/VBoxContainer3/btn_tile_hill"]
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 11 )
+expand = true
+
+[node name="btn_tile_water" type="Button" parent="SafeArea/VBoxContainer3"]
+margin_top = 168.0
+margin_right = 80.0
+margin_bottom = 248.0
+rect_min_size = Vector2( 80, 80 )
+icon = ExtResource( 10 )
+flat = true
+expand_icon = true
+
+[node name="TextureRect3" type="TextureRect" parent="SafeArea/VBoxContainer3/btn_tile_water"]
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 11 )
+expand = true
+
+[node name="MarginContainer" type="MarginContainer" parent="SafeArea/VBoxContainer3"]
+margin_top = 252.0
+margin_right = 80.0
+margin_bottom = 482.0
+rect_min_size = Vector2( 0, 230 )
+
 [connection signal="pressed" from="SafeArea/VBoxContainer/HBoxContainer/save" to="." method="_on_save_pressed"]
+[connection signal="on_tile_card_cancel" from="SafeArea/VBoxContainer/object_option" to="." method="_on_object_option_on_tile_card_cancel"]
+[connection signal="on_tile_card_draging" from="SafeArea/VBoxContainer/object_option" to="." method="_on_object_option_on_tile_card_draging"]
+[connection signal="on_tile_card_grab" from="SafeArea/VBoxContainer/object_option" to="." method="_on_object_option_on_tile_card_grab"]
+[connection signal="on_tile_card_release" from="SafeArea/VBoxContainer/object_option" to="." method="_on_object_option_on_tile_card_release"]
+[connection signal="pressed" from="SafeArea/VBoxContainer3/btn_tile_land" to="." method="_on_btn_tile_land_pressed"]
+[connection signal="pressed" from="SafeArea/VBoxContainer3/btn_tile_hill" to="." method="_on_btn_tile_hill_pressed"]
+[connection signal="pressed" from="SafeArea/VBoxContainer3/btn_tile_water" to="." method="_on_btn_tile_water_pressed"]

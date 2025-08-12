@@ -1,7 +1,7 @@
 extends Node
 class_name HexMapUtil
 
-static func generate_empty_map(radius: int = 6) -> HexMapData.HexMapFileData:
+static func generate_empty_map(radius: int = 3) -> HexMapData.HexMapFileData:
 	var generated_tiles :Array = create_adjacent_tiles(Vector2.ZERO, radius)
 	var tile_ids :Dictionary = {}
 	var index = 1

@@ -4,6 +4,7 @@ onready var ui = $ui
 onready var movable_camera = $movable_camera
 onready var map = $map
 onready var tile_highlight = $tile_highlight
+onready var timer = $Timer
 
 var tile_highlights = []
 
@@ -51,19 +52,25 @@ func _on_map_on_tile_click(tile :HexTile):
 	var tiles = []
 	var type = 1
 	
-	if ui.btn_adjacent.pressed:
+	if ui.btns[0].pressed:
 		type = 1
 		tiles = map.get_adjacent_tile(tile.id, 2)
-	elif ui.btn_view.pressed:
+	elif ui.btns[1].pressed:
 		type = 2
 		tiles = map.get_adjacent_view_tile(tile.id, 2)
-	elif ui.btn_path.pressed:
+	elif ui.btns[2].pressed:
 		type = 3
 		tiles = map.get_astar_adjacent_tile(tile.id, 2)
-		
+	
+	tiles.erase(tile)
+	tile_highlight.visible = true
+	tile_highlight.translation = tile.global_position
+	
 	for i in tiles:
 		var x :HexTile = i
 		_add_tile_highlights(x.global_position, type)
+		
+	timer.start()
 
 func _on_ui_on_tile_card_grab(pos :Vector2):
 	_clear_tile_highlights()
@@ -92,8 +99,12 @@ func _on_ui_on_tile_card_release(pos :Vector2, data:HexMapData.TileMapData):
 func _on_ui_on_tile_card_cancel():
 	tile_highlight.visible = false
 	
+func _on_Timer_timeout():
+	_clear_tile_highlights()
+
 func _on_ui_on_save_map():
 	var data:Dictionary = map.export_data().to_dictionary()
 	SaveLoad.save("%s.map" % data.map_name, data)
+
 
 

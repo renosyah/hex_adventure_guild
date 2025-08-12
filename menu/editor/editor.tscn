@@ -27,9 +27,14 @@ directional_shadow_mode = 0
 
 [node name="tile_highlight" parent="." instance=ExtResource( 6 )]
 
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
 [connection signal="on_save_map" from="ui" to="." method="_on_ui_on_save_map"]
 [connection signal="on_tile_card_cancel" from="ui" to="." method="_on_ui_on_tile_card_cancel"]
 [connection signal="on_tile_card_draging" from="ui" to="." method="_on_ui_on_tile_card_draging"]
 [connection signal="on_tile_card_grab" from="ui" to="." method="_on_ui_on_tile_card_grab"]
 [connection signal="on_tile_card_release" from="ui" to="." method="_on_ui_on_tile_card_release"]
 [connection signal="on_tile_click" from="map" to="." method="_on_map_on_tile_click"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
