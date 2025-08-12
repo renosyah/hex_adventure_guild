@@ -27,7 +27,7 @@ static func generate_empty_map(radius: int = 6) -> HexMapData.HexMapFileData:
 		var data :HexMapData.NavigationData = HexMapData.NavigationData.new()
 		data.id = key
 		data.navigation_id = tile_ids[key]
-		data.enable = true
+		data.enable = false
 		
 		var neighbors = []
 		var adjacents = get_adjacent_tile(tile_ids, key, 1)
@@ -101,29 +101,26 @@ static func get_adjacent_tile(tiles :Dictionary, from: Vector2, radius: int = 1)
 	return datas # [Vector2]
 	
 static func get_adjacent_tile_view(tiles: Dictionary, from: Vector2, blocked: Array, radius: int = 1) -> Array:
-	var visited := {}
-	var frontier := [from]
-	visited[from] = true
+	var results: Array = []
 
-	for step in range(radius):
-		var next_frontier := []
-		for current in frontier:
-			var directions = get_directions(current)
-			for dir in directions:
-				var neighbor = current + dir
-				if not tiles.has(neighbor) or visited.has(neighbor):
-					continue
-					
-				if neighbor in blocked:
-					continue
-					
-				visited[neighbor] = true
-				next_frontier.append(neighbor)
-		frontier = next_frontier
-		
-	visited.erase(from)
-	return visited.keys()
-	
+	for base_dir in get_directions(from):
+		var current = from
+		for step in range(radius):
+			var dir = base_dir
+			if step > 0:
+				dir = get_directions(current)[get_directions(from).find(base_dir)]
+			current += dir
+			
+			if not tiles.has(current):
+				break
+				
+			if current in blocked:
+				break
+				
+			results.append(current)
+			
+	return results
+
 static func get_astar_adjacent_tile(navigation_id: int, navigation :AStar2D, radius: int = 1) -> Array:
 	var visited := {}
 	var result := []

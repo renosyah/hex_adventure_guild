@@ -15,7 +15,7 @@ onready var _tile_holder = $tile_holder
 
 onready var _navigation :AStar2D = AStar2D.new()
 
-var _spawned_tiles :Dictionary = {} # { Vector2 : BaseTile }
+var _spawned_tiles :Dictionary = {} # { Vector2 : HexTile }
 var _hex_map_data :HexMapData.HexMapFileData
 
 func generate_from_data(data: HexMapData.HexMapFileData):
@@ -32,15 +32,19 @@ func export_data() -> HexMapData.HexMapFileData:
 	return _hex_map_data
 	
 func get_tiles() -> Array:
-	return _spawned_tiles.values()
+	return _spawned_tiles.values() # [ Vector2 ]
 	
 func get_tile(id :Vector2) -> Array:
-	return _spawned_tiles[id]
+	return _spawned_tiles[id] # HexTile
 	
+# use this for general purpose
 func get_adjacent(from: Vector2, radius: int = 1) -> Array:
 	var list :Array = HexMapUtil.get_adjacent_tile(_hex_map_data.tile_ids, from, radius)
 	return [from] + list # [ Vector2 ]
 	
+# use this for view
+# if a tile got block, remaining tile in view will not included
+# note : view will only cast to adjacent to one direction in straigh
 func get_adjacent_view(from: Vector2, radius: int = 1) -> Array:
 	var blocked = []
 	for i in _hex_map_data.navigation_map:
@@ -51,18 +55,20 @@ func get_adjacent_view(from: Vector2, radius: int = 1) -> Array:
 	var list :Array = HexMapUtil.get_adjacent_tile_view(_hex_map_data.tile_ids, from, blocked, radius)
 	return [from] + list # [ Vector2 ]
 	
+# use this for navigation
+# return a walkable path
 func get_astar_adjacent(from: Vector2, radius: int = 1) -> Array:
 	var list :Array = HexMapUtil.get_astar_adjacent_tile(_hex_map_data.tile_ids[from], _navigation, radius)
 	return [from] + list # [ Vector2 ]
 	
 func get_adjacent_tile(from: Vector2, radius: int = 1) -> Array:
-	return _ids_to_tile_nodes(get_adjacent(from, radius)) # [ BaseTile ]
+	return _ids_to_tile_nodes(get_adjacent(from, radius)) # [ HexTile ]
 	
-func get_adjacent_tile_view(from: Vector2, radius: int = 1) -> Array:
-	return _ids_to_tile_nodes(get_adjacent_view(from, radius)) # [ BaseTile ]
+func get_adjacent_view_tile(from: Vector2, radius: int = 1) -> Array:
+	return _ids_to_tile_nodes(get_adjacent_view(from, radius)) # [ HexTile ]
 	
 func get_astar_adjacent_tile(from: Vector2, radius: int = 1) -> Array:
-	return _ids_to_tile_nodes(get_astar_adjacent(from, radius)) # [ BaseTile ]
+	return _ids_to_tile_nodes(get_astar_adjacent(from, radius)) # [ HexTile ]
 	
 func get_closes_tile(from :Vector3) -> HexTile:
 	var current = _tile_holder.get_child(0)
@@ -75,7 +81,7 @@ func get_closes_tile(from :Vector3) -> HexTile:
 		if dist_2 < dist_1:
 			current = i
 			
-	return current # BaseTile
+	return current # HexTile
 	
 func update_navigation_tile(at :Vector2, enable :bool):
 	var data :HexMapData.NavigationData

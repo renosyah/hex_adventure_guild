@@ -11,9 +11,17 @@ const tile_card_scene = preload("res://assets/tile_card/tile_card.tscn")
 onready var movable_camera_ui = $SafeArea/VBoxContainer/movable_camera_ui
 onready var tile_options = $SafeArea/VBoxContainer/tile_options
 
+onready var btn_adjacent = $SafeArea/VBoxContainer2/btn_adjacent
+onready var btn_view = $SafeArea/VBoxContainer2/btn_view
+onready var btn_path = $SafeArea/VBoxContainer2/btn_path
+onready var btns = [btn_adjacent, btn_view, btn_path]
+
 var _grabbed_card
 
 func _ready():
+	for i in btns:
+		i.connect("pressed", self , "_btn_press", [i])
+		
 	show_tile_options()
 	
 func show_tile_options():
@@ -79,3 +87,9 @@ func _create_tile_option(tile_model :Resource, object_model :Resource) -> HexMap
 	
 func _on_save_pressed():
 	emit_signal("on_save_map")
+	
+func _btn_press(btn):
+	btn_adjacent.pressed = false
+	
+	for i in btns:
+		i.pressed = (i == btn)

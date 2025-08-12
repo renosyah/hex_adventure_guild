@@ -23,12 +23,20 @@ func _load_or_generate_map():
 		
 	tile_highlight.visible = false
 	
-func _add_tile_highlights(pos :Vector3):
+func _add_tile_highlights(pos :Vector3, type :int):
 	var x = tile_highlight.duplicate()
 	add_child(x)
 	x.visible = true
 	x.translation = pos
-	x.show_move()
+	
+	match (type):
+		1:
+			x.show()
+		2:
+			x.show_view()
+		3:
+			x.show_move()
+			
 	tile_highlights.append(x)
 	
 func _clear_tile_highlights():
@@ -40,10 +48,22 @@ func _clear_tile_highlights():
 func _on_map_on_tile_click(tile :HexTile):
 	_clear_tile_highlights()
 	
-	var tiles = map.get_adjacent_tile_view(tile.id, 2)
+	var tiles = []
+	var type = 1
+	
+	if ui.btn_adjacent.pressed:
+		type = 1
+		tiles = map.get_adjacent_tile(tile.id, 2)
+	elif ui.btn_view.pressed:
+		type = 2
+		tiles = map.get_adjacent_view_tile(tile.id, 2)
+	elif ui.btn_path.pressed:
+		type = 3
+		tiles = map.get_astar_adjacent_tile(tile.id, 2)
+		
 	for i in tiles:
 		var x :HexTile = i
-		_add_tile_highlights(x.global_position)
+		_add_tile_highlights(x.global_position, type)
 
 func _on_ui_on_tile_card_grab(pos :Vector2):
 	_clear_tile_highlights()

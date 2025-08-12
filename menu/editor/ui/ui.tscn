@@ -1,8 +1,11 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://camera/movable_camera_ui.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/SafeArea/SafeArea.gd" type="Script" id=2]
+[ext_resource path="res://assets/tile_higlight/adjacent.png" type="Texture" id=3]
 [ext_resource path="res://menu/editor/ui/ui.gd" type="Script" id=4]
+[ext_resource path="res://assets/tile_higlight/view.png" type="Texture" id=5]
+[ext_resource path="res://assets/tile_higlight/move.png" type="Texture" id=6]
 
 [node name="ui" type="Control"]
 anchor_right = 1.0
@@ -55,5 +58,39 @@ margin_top = 984.0
 margin_right = 600.0
 margin_bottom = 1024.0
 rect_min_size = Vector2( 0, 40 )
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="SafeArea"]
+margin_top = 388.0
+margin_right = 80.0
+margin_bottom = 636.0
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="btn_adjacent" type="Button" parent="SafeArea/VBoxContainer2"]
+margin_right = 80.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 80, 80 )
+toggle_mode = true
+pressed = true
+icon = ExtResource( 3 )
+expand_icon = true
+
+[node name="btn_view" type="Button" parent="SafeArea/VBoxContainer2"]
+margin_top = 84.0
+margin_right = 80.0
+margin_bottom = 164.0
+rect_min_size = Vector2( 80, 80 )
+toggle_mode = true
+icon = ExtResource( 5 )
+expand_icon = true
+
+[node name="btn_path" type="Button" parent="SafeArea/VBoxContainer2"]
+margin_top = 168.0
+margin_right = 80.0
+margin_bottom = 248.0
+rect_min_size = Vector2( 80, 80 )
+toggle_mode = true
+icon = ExtResource( 6 )
+expand_icon = true
 
 [connection signal="pressed" from="SafeArea/VBoxContainer/HBoxContainer/save" to="." method="_on_save_pressed"]
