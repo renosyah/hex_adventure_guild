@@ -33,7 +33,10 @@ func _spawn_tile():
 			tile_node = tile_scene.instance()
 		HexMapData.TileMapDataTypeWater:
 			tile_node = tile_sea_scene.instance()
-	
+			
+	if tile_node == null:
+		 tile_node = tile_scene.instance()
+		
 	if data.model:
 		tile_node.texture = data.model
 		

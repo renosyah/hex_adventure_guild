@@ -47,9 +47,14 @@ func get_adjacent(from: Vector2, radius: int = 1) -> Array:
 # note : view will only cast to adjacent to one direction in straigh
 func get_adjacent_view(from: Vector2, radius: int = 1) -> Array:
 	var blocked = []
-	for i in _hex_map_data.navigation_map:
-		var x :HexMapData.NavigationData = i
-		if not x.enable:
+	var allow_see = [
+		HexMapData.TileMapDataTypeLand,
+		HexMapData.TileMapDataTypeWater,
+	]
+	for i in _hex_map_data.tiles:
+		var x :HexMapData.TileMapData = i
+		
+		if not allow_see.has(x.type) or x.object != null:
 			blocked.append(x.id)
 			
 	var list :Array = HexMapUtil.get_adjacent_tile_view(_hex_map_data.tile_ids, from, blocked, radius)
@@ -126,7 +131,10 @@ func _spawn_tile(data :HexMapData.TileMapData):
 			tile_node = tile_scene.instance()
 		HexMapData.TileMapDataTypeWater:
 			tile_node = tile_sea_scene.instance()
-	
+			
+	if tile_node == null:
+		 tile_node = tile_scene.instance()
+		
 	if data.model:
 		tile_node.texture = data.model
 		

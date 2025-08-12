@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/adjacent.png-03b61f23224f475feb4232f9475ae64f.stex"
+path="res://.import/view.png-b22223b3fdb92802358660885bec8ad5.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tile_higlight/adjacent.png"
-dest_files=[ "res://.import/adjacent.png-03b61f23224f475feb4232f9475ae64f.stex" ]
+source_file="res://assets/icons/view.png"
+dest_files=[ "res://.import/view.png-b22223b3fdb92802358660885bec8ad5.stex" ]
 
 [params]
 

@@ -63,8 +63,8 @@ class HexMapFileData:
 			list.append(x.to_dictionary())
 		return list
 	
-const TileMapDataTypeLand = 0
-const TileMapDataTypeWater = 1
+const TileMapDataTypeLand = 1
+const TileMapDataTypeWater = 2
 
 class TileMapData:
 	var id :Vector2
