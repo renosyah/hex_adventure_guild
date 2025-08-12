@@ -1,6 +1,57 @@
 extends Node
 class_name HexMapUtil
 
+static func generate_randomize_map(_seed :int, radius: int = 3) -> HexMapData.HexMapFileData:
+	var blocked = []
+	var data = generate_empty_map(radius)
+	var noise = OpenSimplexNoise.new()
+	var rng = RandomNumberGenerator.new()
+	rng.seed = _seed
+	
+	noise.seed = _seed
+	noise.octaves = 3
+	noise.period = 12.0
+	noise.persistence = 0.856
+	noise.lacunarity = 1.745
+	
+	var objs = [
+		preload("res://scenes/object_tile/models/tree_1.png"),
+		preload("res://scenes/object_tile/models/tree_2.png"),
+		preload("res://scenes/object_tile/models/tree_3.png"),
+		preload("res://scenes/object_tile/models/rock_1.png"),
+		preload("res://scenes/object_tile/models/rock_2.png"),
+		preload("res://scenes/object_tile/models/rock_3.png")
+	]
+	
+	for i in data.tiles:
+		var x :HexMapData.TileMapData = i
+		var value = 2 * abs(noise.get_noise_2dv(x.id))
+		x.model = preload("res://scenes/hex_tile/models/hex.png")
+		
+		if value > 0.8:
+			x.type = HexMapData.TileMapDataTypeHill
+			blocked.append(x.id)
+			
+		elif value > 0.1 and value < 0.8:
+			x.type = HexMapData.TileMapDataTypeLand
+			
+		else:
+			x.type = HexMapData.TileMapDataTypeWater
+			blocked.append(x.id)
+			
+			
+		if x.type == HexMapData.TileMapDataTypeLand or x.type == HexMapData.TileMapDataTypeHill:
+			if rng.randf() < 0.4:
+				x.object = HexMapData.ObjectMapData.new()
+				x.object.model = objs[rng.randf_range(0, objs.size() - 1)]
+				blocked.append(x.id)
+			
+	for i in data.navigation_map:
+		var x :HexMapData.NavigationData = i
+		x.enable = not blocked.has(x.id)
+		
+	return data
+	
 static func generate_empty_map(radius: int = 3) -> HexMapData.HexMapFileData:
 	var generated_tiles :Array = create_adjacent_tiles(Vector2.ZERO, radius)
 	var tile_ids :Dictionary = {}

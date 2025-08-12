@@ -6,7 +6,8 @@ onready var map = $map
 onready var tile_highlight = $tile_highlight
 onready var timer = $Timer
 
-var tile_highlights = []
+var _tile_highlights = []
+var _ranges = 2
 
 func _ready():
 	_load_or_generate_map()
@@ -38,13 +39,13 @@ func _add_tile_highlights(pos :Vector3, type :int):
 		3:
 			x.show_move()
 			
-	tile_highlights.append(x)
+	_tile_highlights.append(x)
 	
 func _clear_tile_highlights():
-	for i in tile_highlights:
+	for i in _tile_highlights:
 		i.queue_free()
 		
-	tile_highlights.clear()
+	_tile_highlights.clear()
 	
 func _on_map_on_tile_click(tile :HexTile):
 	_clear_tile_highlights()
@@ -54,13 +55,13 @@ func _on_map_on_tile_click(tile :HexTile):
 	
 	if ui.btns[0].pressed:
 		type = 1
-		tiles = map.get_adjacent_tile(tile.id, 2)
+		tiles = map.get_adjacent_tile(tile.id, _ranges)
 	elif ui.btns[1].pressed:
 		type = 2
-		tiles = map.get_adjacent_view_tile(tile.id, 2)
+		tiles = map.get_adjacent_view_tile(tile.id, _ranges)
 	elif ui.btns[2].pressed:
 		type = 3
-		tiles = map.get_astar_adjacent_tile(tile.id, 2)
+		tiles = map.get_astar_adjacent_tile(tile.id, _ranges)
 	
 	tiles.erase(tile)
 	tile_highlight.visible = true
@@ -101,10 +102,22 @@ func _on_ui_on_tile_card_cancel():
 	
 func _on_Timer_timeout():
 	_clear_tile_highlights()
+	tile_highlight.visible = false
 
+func _on_ui_on_change_range(v):
+	_ranges = v
+	
+func _on_ui_on_randomize_map():
+	var seeding = rand_range(-1000, 1000)
+	map.generate_from_data(HexMapUtil.generate_randomize_map(seeding))
+	
 func _on_ui_on_save_map():
 	var data:Dictionary = map.export_data().to_dictionary()
 	SaveLoad.save("%s.map" % data.map_name, data)
+
+
+
+
 
 
 

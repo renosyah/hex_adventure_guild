@@ -31,6 +31,8 @@ directional_shadow_mode = 0
 wait_time = 3.0
 one_shot = true
 
+[connection signal="on_change_range" from="ui" to="." method="_on_ui_on_change_range"]
+[connection signal="on_randomize_map" from="ui" to="." method="_on_ui_on_randomize_map"]
 [connection signal="on_save_map" from="ui" to="." method="_on_ui_on_save_map"]
 [connection signal="on_tile_card_cancel" from="ui" to="." method="_on_ui_on_tile_card_cancel"]
 [connection signal="on_tile_card_draging" from="ui" to="." method="_on_ui_on_tile_card_draging"]

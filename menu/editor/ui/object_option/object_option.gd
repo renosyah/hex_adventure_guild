@@ -10,6 +10,8 @@ const tile_card_scene = preload("res://assets/tile_card/tile_card.tscn")
 export var tile_model :Resource
 export var type :int = 0
 
+onready var prev_object = $VBoxContainer/HBoxContainer2/prev_object
+onready var next_object = $VBoxContainer/HBoxContainer2/next_object
 onready var tile_options = $VBoxContainer/HBoxContainer2/tile_options
 onready var objects :Array = [
 	[
@@ -34,12 +36,22 @@ func show_options():
 	_clean()
 	
 	if type == HexMapData.TileMapDataTypeWater:
+		prev_object.visible = false
+		next_object.visible = false
+		
 		_create_tile_card(tile_model, null, type)
 		
 	else:
+		prev_object.visible = true
+		next_object.visible = true
+		
 		for i in objects[index]:
 			_create_tile_card(tile_model, i, type)
-
+			
+	prev_object.modulate.a = 1 if index > 0 else 0
+	next_object.modulate.a = 1 if index < objects.size() - 1 else 0
+	
+	
 func _clean():
 	for i in tile_options.get_children():
 		tile_options.remove_child(i)
