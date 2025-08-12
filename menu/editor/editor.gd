@@ -5,6 +5,8 @@ onready var movable_camera = $movable_camera
 onready var map = $map
 onready var tile_highlight = $tile_highlight
 
+var tile_highlights = []
+
 func _ready():
 	_load_or_generate_map()
 
@@ -21,11 +23,30 @@ func _load_or_generate_map():
 		
 	tile_highlight.visible = false
 	
-func _on_map_on_tile_click(tile):
-	tile_highlight.translation = tile.global_position
-	tile_highlight.visible = true
+func _add_tile_highlights(pos :Vector3):
+	var x = tile_highlight.duplicate()
+	add_child(x)
+	x.visible = true
+	x.translation = pos
+	x.show_move()
+	tile_highlights.append(x)
+	
+func _clear_tile_highlights():
+	for i in tile_highlights:
+		i.queue_free()
+		
+	tile_highlights.clear()
+	
+func _on_map_on_tile_click(tile :HexTile):
+	_clear_tile_highlights()
+	
+	var tiles = map.get_adjacent_tile_view(tile.id, 2)
+	for i in tiles:
+		var x :HexTile = i
+		_add_tile_highlights(x.global_position)
 
 func _on_ui_on_tile_card_grab(pos :Vector2):
+	_clear_tile_highlights()
 	tile_highlight.visible = true
 	_on_ui_on_tile_card_draging(pos)
 
@@ -44,6 +65,9 @@ func _on_ui_on_tile_card_release(pos :Vector2, data:HexMapData.TileMapData):
 	
 	map.update_spawn_tile(data)
 	tile_highlight.visible = false
+	
+	var enable_nav = data.object == null && data.type != HexMapData.TileMapDataTypeWater
+	map.update_navigation_tile(tile.id, enable_nav)
 
 func _on_ui_on_tile_card_cancel():
 	tile_highlight.visible = false

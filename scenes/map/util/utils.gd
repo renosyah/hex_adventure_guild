@@ -21,14 +21,37 @@ static func generate_empty_map(radius: int = 6) -> HexMapData.HexMapFileData:
 		data.rotation = ROTATION_DIRECTIONS[0]
 		
 		tiles.append(data)
+		
+	var navigation_map = []
+	for key in tile_ids.keys():
+		var data :HexMapData.NavigationData = HexMapData.NavigationData.new()
+		data.id = key
+		data.navigation_id = tile_ids[key]
+		data.enable = true
+		
+		var neighbors = []
+		var adjacents = get_adjacent_tile(tile_ids, key, 1)
+		for i in adjacents:
+			neighbors.append(tile_ids[i])
+		
+		data.neighbors = neighbors
+		navigation_map.append(data)
 	
 	var n = HexMapData.HexMapFileData.new()
 	n.map_name = "random"
 	n.map_size = radius
 	n.tile_ids = tile_ids
 	n.tiles = tiles
+	n.navigation_map = navigation_map
 	return n
 	
+const ROTATION_DIRECTIONS = [
+	Vector3(0,deg2rad(60),0),
+	Vector3(0,deg2rad(-60),0),
+	Vector3(0,deg2rad(120),0),
+	Vector3(0,deg2rad(-120),0),
+]
+
 const ODD_TILE = [
 	Vector2.RIGHT,            # (1, 0)
 	Vector2.UP + Vector2.RIGHT, # (1, -1)
@@ -47,13 +70,11 @@ const EVEN_TILE = [
 	Vector2.DOWN              # (0, 1)
 ]
 
-const ROTATION_DIRECTIONS = [
-	Vector3(0,deg2rad(60),0),
-	Vector3(0,deg2rad(-60),0),
-	Vector3(0,deg2rad(120),0),
-	Vector3(0,deg2rad(-120),0),
-]
-
+static func get_directions(tile: Vector2) -> Array:
+	if int(tile.y) % 2 != 0:
+		return ODD_TILE
+	return EVEN_TILE
+	
 # tiles :Dictionary = {Vector2: any }
 static func get_adjacent_tile(tiles :Dictionary, from: Vector2, radius: int = 1) -> Array:
 	var visited := {}
@@ -78,6 +99,30 @@ static func get_adjacent_tile(tiles :Dictionary, from: Vector2, radius: int = 1)
 	frontier.clear()
 	
 	return datas # [Vector2]
+	
+static func get_adjacent_tile_view(tiles: Dictionary, from: Vector2, blocked: Array, radius: int = 1) -> Array:
+	var visited := {}
+	var frontier := [from]
+	visited[from] = true
+
+	for step in range(radius):
+		var next_frontier := []
+		for current in frontier:
+			var directions = get_directions(current)
+			for dir in directions:
+				var neighbor = current + dir
+				if not tiles.has(neighbor) or visited.has(neighbor):
+					continue
+					
+				if neighbor in blocked:
+					continue
+					
+				visited[neighbor] = true
+				next_frontier.append(neighbor)
+		frontier = next_frontier
+		
+	visited.erase(from)
+	return visited.keys()
 	
 static func get_astar_adjacent_tile(navigation_id: int, navigation :AStar2D, radius: int = 1) -> Array:
 	var visited := {}
@@ -108,11 +153,7 @@ static func get_astar_adjacent_tile(navigation_id: int, navigation :AStar2D, rad
 	
 	return result # [Vector2]
 	
-static func get_directions(tile: Vector2) -> Array:
-	if int(tile.y) % 2 != 0:
-		return ODD_TILE
-		
-	return EVEN_TILE
+
 	
 static func create_adjacent_tiles(from: Vector2, radius: int = 1) -> Array:
 	var visited := {}

@@ -52,8 +52,13 @@ func _on_tile_card_draging(card :TileCard, pos:Vector2):
 	
 func _on_tile_card_release(card :TileCard, pos:Vector2):
 	_grabbed_card.queue_free()
+	
+	# duplicate the data
+	# so it will not modified other pointer
 	var dup:HexMapData.TileMapData = HexMapData.TileMapData.new()
 	dup.from_dictionary(card.data.to_dictionary())
+	
+	
 	emit_signal("on_tile_card_release", pos, dup)
 	
 func _on_tile_card_cancel():

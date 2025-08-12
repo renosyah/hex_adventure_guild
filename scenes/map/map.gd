@@ -41,8 +41,28 @@ func get_adjacent(from: Vector2, radius: int = 1) -> Array:
 	var list :Array = HexMapUtil.get_adjacent_tile(_hex_map_data.tile_ids, from, radius)
 	return [from] + list # [ Vector2 ]
 	
+func get_adjacent_view(from: Vector2, radius: int = 1) -> Array:
+	var blocked = []
+	for i in _hex_map_data.navigation_map:
+		var x :HexMapData.NavigationData = i
+		if not x.enable:
+			blocked.append(x.id)
+			
+	var list :Array = HexMapUtil.get_adjacent_tile_view(_hex_map_data.tile_ids, from, blocked, radius)
+	return [from] + list # [ Vector2 ]
+	
+func get_astar_adjacent(from: Vector2, radius: int = 1) -> Array:
+	var list :Array = HexMapUtil.get_astar_adjacent_tile(_hex_map_data.tile_ids[from], _navigation, radius)
+	return [from] + list # [ Vector2 ]
+	
 func get_adjacent_tile(from: Vector2, radius: int = 1) -> Array:
 	return _ids_to_tile_nodes(get_adjacent(from, radius)) # [ BaseTile ]
+	
+func get_adjacent_tile_view(from: Vector2, radius: int = 1) -> Array:
+	return _ids_to_tile_nodes(get_adjacent_view(from, radius)) # [ BaseTile ]
+	
+func get_astar_adjacent_tile(from: Vector2, radius: int = 1) -> Array:
+	return _ids_to_tile_nodes(get_astar_adjacent(from, radius)) # [ BaseTile ]
 	
 func get_closes_tile(from :Vector3) -> HexTile:
 	var current = _tile_holder.get_child(0)
@@ -56,6 +76,36 @@ func get_closes_tile(from :Vector3) -> HexTile:
 			current = i
 			
 	return current # BaseTile
+	
+func update_navigation_tile(at :Vector2, enable :bool):
+	var data :HexMapData.NavigationData
+	for i in _hex_map_data.navigation_map:
+		if i.id == at:
+			data = i
+			
+	if data == null:
+		return
+		
+	data.enable = enable
+	
+	if _navigation.has_point(data.navigation_id):
+		_navigation.set_point_disabled(data.navigation_id, !data.enable)
+	
+func update_spawn_tile(data :HexMapData.TileMapData):
+	var _spawned_tile :HexTile = _spawned_tiles[data.id]
+	_tile_holder.remove_child(_spawned_tile)
+	_spawned_tile.queue_free()
+	
+	_spawn_tile(data)
+	
+	var pos = 0
+	for i in _hex_map_data.tiles:
+		var x :HexMapData.TileMapData = i
+		if x.id == data.id:
+			_hex_map_data.tiles[pos] = data
+			return
+			
+		pos += 1
 	
 func _spawn_tiles():
 	for i in _hex_map_data.tiles:
@@ -88,22 +138,7 @@ func _spawn_tile(data :HexMapData.TileMapData):
 		object_node.set_as_toplevel(true)
 		object_node.rotation = Vector3.ZERO
 	
-func update_spawn_tile(data :HexMapData.TileMapData):
-	var _spawned_tile :HexTile = _spawned_tiles[data.id]
-	_tile_holder.remove_child(_spawned_tile)
-	_spawned_tile.queue_free()
-	
-	_spawn_tile(data)
-	
-	var pos = 0
-	for i in _hex_map_data.tiles:
-		var x :HexMapData.TileMapData = i
-		if x.id == data.id:
-			_hex_map_data.tiles[pos] = data
-			return
-			
-		pos += 1
-	
+
 func _update_navigations():
 	_add_point(_navigation, _hex_map_data.navigation_map)
 	_connect_point(_navigation, _hex_map_data.navigation_map)
