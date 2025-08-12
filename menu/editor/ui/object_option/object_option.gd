@@ -10,6 +10,7 @@ const tile_card_scene = preload("res://assets/tile_card/tile_card.tscn")
 export var tile_model :Resource
 export var type :int = 0
 
+onready var label = $HBoxContainer/TextureRect/Label
 onready var prev_object = $VBoxContainer/HBoxContainer2/prev_object
 onready var next_object = $VBoxContainer/HBoxContainer2/next_object
 onready var tile_options = $VBoxContainer/HBoxContainer2/tile_options
@@ -50,6 +51,16 @@ func show_options():
 			
 	prev_object.modulate.a = 1 if index > 0 else 0
 	next_object.modulate.a = 1 if index < objects.size() - 1 else 0
+	_set_label()
+	
+func _set_label():
+	match (type):
+		HexMapData.TileMapDataTypeLand:
+			label.text = "Land\n"
+		HexMapData.TileMapDataTypeWater:
+			label.text = "Water\n"
+		HexMapData.TileMapDataTypeHill:
+			label.text = "Hill\n"
 	
 	
 func _clean():

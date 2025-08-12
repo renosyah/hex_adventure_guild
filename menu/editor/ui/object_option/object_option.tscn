@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://menu/editor/ui/assets/next.png" type="Texture" id=1]
 [ext_resource path="res://menu/editor/ui/assets/prev.png" type="Texture" id=2]
 [ext_resource path="res://menu/editor/ui/assets/board.png" type="Texture" id=3]
 [ext_resource path="res://menu/editor/ui/object_option/object_option.gd" type="Script" id=4]
+[ext_resource path="res://assets/fonts/montserrat_eb_14.tres" type="DynamicFont" id=5]
 
 [node name="object_option" type="Control"]
 margin_top = 924.0
@@ -33,6 +34,19 @@ rect_min_size = Vector2( 500, 100 )
 size_flags_horizontal = 5
 texture = ExtResource( 3 )
 expand = true
+
+[node name="Label" type="Label" parent="HBoxContainer/TextureRect"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -45.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 5 )
+text = "Hill
+"
+align = 1
+valign = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
 margin_left = 554.0
