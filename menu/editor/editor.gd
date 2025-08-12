@@ -14,15 +14,16 @@ func _ready():
 
 func _load_or_generate_map():
 	ui.movable_camera_ui.target = movable_camera
-	var data:HexMapData.HexMapFileData = HexMapData.HexMapFileData.new()
-	var d = SaveLoad.load_save("random.map")
-	if d:
-		data.from_dictionary(d)
-		map.generate_from_data(data)
-		
-	else:
-		map.generate_from_data(HexMapUtil.generate_empty_map())
-		
+#	var data:HexMapData.HexMapFileData = HexMapData.HexMapFileData.new()
+#	var d = SaveLoad.load_save("random.map")
+#	if d:
+#		data.from_dictionary(d)
+#		map.generate_from_data(data)
+#
+#	else:
+#		map.generate_from_data(HexMapUtil.generate_empty_map())
+
+	map.generate_from_data(HexMapUtil.generate_empty_map())
 	tile_highlight.visible = false
 	
 func _add_tile_highlights(pos :Vector3, type :int):
@@ -108,6 +109,7 @@ func _on_ui_on_change_range(v):
 	_ranges = v
 	
 func _on_ui_on_randomize_map():
+	_on_Timer_timeout()
 	var seeding = rand_range(-1000, 1000)
 	map.generate_from_data(HexMapUtil.generate_randomize_map(seeding))
 	
