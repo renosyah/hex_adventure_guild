@@ -60,7 +60,7 @@ func _on_tile_option_on_water_tile():
 	object_option.tile_name = "Water"
 	object_option.tile_model = preload("res://scenes/hex_tile/models/hex.png")
 	object_option.type = HexMapData.TileMapDataTypeWater
-	object_option.objects = [ [ null ] ]
+	object_option.objects = [ [ null ] ] # cannot put anything on water :(
 	object_option.show_options()
 	
 func _on_tile_option_on_randomize():

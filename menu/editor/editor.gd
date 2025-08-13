@@ -41,14 +41,15 @@ func _on_map_on_tile_click(tile :HexTile):
 	
 	var tiles = []
 	var type = 1
+	var btns = ui.get_nav_option_buttons()
 	
-	if ui.get_nav_option_buttons()[0].pressed:
+	if btns[0].is_toggled():
 		type = 1
 		tiles = map.get_adjacent_tile(tile.id, _ranges)
-	elif ui.get_nav_option_buttons()[1].pressed:
+	elif btns[1].is_toggled():
 		type = 2
 		tiles = map.get_adjacent_view_tile(tile.id, _ranges)
-	elif ui.get_nav_option_buttons()[2].pressed:
+	elif btns[2].is_toggled():
 		type = 3
 		tiles = map.get_astar_adjacent_tile(tile.id, _ranges)
 	
@@ -103,7 +104,7 @@ func _on_ui_on_randomize_map():
 	
 func _on_ui_on_save_map():
 	var data:Dictionary = map.export_data().to_dictionary()
-	SaveLoad.save("%s.json" % data.map_name, to_json(data))
+	SaveLoad.save("%s.map" % data.map_name, data)
 
 
 

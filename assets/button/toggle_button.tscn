@@ -1,0 +1,141 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/icons/card.png" type="Texture" id=1]
+[ext_resource path="res://assets/button/toggle_button.gd" type="Script" id=3]
+
+[sub_resource type="Animation" id=2]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Control/MarginContainer:rect_rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Control/MarginContainer:rect_min_size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Control/MarginContainer:rect_scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0.916862, 0.931476 ) ]
+}
+
+[sub_resource type="Animation" id=1]
+resource_name = "pressed"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Control/MarginContainer:rect_rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 7.63446, 0.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Control/MarginContainer:rect_scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 0.916862, 0.931476 ) ]
+}
+
+[node name="toggle_button" type="Button"]
+margin_right = 80.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 80, 80 )
+rect_pivot_offset = Vector2( 40, 40 )
+flat = true
+expand_icon = true
+script = ExtResource( 3 )
+
+[node name="Control" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -40.0
+margin_top = -40.0
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 0.916862, 0.931476 )
+rect_pivot_offset = Vector2( 40, 40 )
+mouse_filter = 2
+
+[node name="bg" type="TextureRect" parent="Control/MarginContainer"]
+margin_right = 80.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 60, 60 )
+mouse_filter = 2
+texture = ExtResource( 1 )
+expand = true
+
+[node name="toggle" type="TextureRect" parent="Control/MarginContainer"]
+visible = false
+modulate = Color( 0.352941, 0.352941, 0.352941, 1 )
+margin_right = 80.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 60, 60 )
+mouse_filter = 2
+texture = ExtResource( 1 )
+expand = true
+
+[node name="Control" type="Control" parent="Control/MarginContainer"]
+margin_right = 80.0
+margin_bottom = 80.0
+mouse_filter = 2
+
+[node name="TextureRect2" type="TextureRect" parent="Control/MarginContainer/Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -30.0
+margin_top = -30.0
+margin_right = 30.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 60, 60 )
+mouse_filter = 2
+expand = true
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 2 )
+anims/pressed = SubResource( 1 )
