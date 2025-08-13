@@ -86,14 +86,14 @@ func _on_ui_on_tile_card_release(pos :Vector2, data:HexMapData.TileMapData):
 	
 	var enable_nav = data.object == null && data.type != HexMapData.TileMapDataTypeWater
 	map.update_navigation_tile(tile.id, enable_nav)
-
+	
 func _on_ui_on_tile_card_cancel():
 	tile_highlight.visible = false
 	
 func _on_Timer_timeout():
 	_clear_tile_highlights()
 	tile_highlight.visible = false
-
+	
 func _on_ui_on_change_range(v):
 	_ranges = v
 	
