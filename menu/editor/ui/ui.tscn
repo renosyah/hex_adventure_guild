@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://camera/movable_camera_ui.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/SafeArea/SafeArea.gd" type="Script" id=2]
 [ext_resource path="res://menu/editor/ui/nav_option/nav_option.tscn" type="PackedScene" id=3]
 [ext_resource path="res://menu/editor/ui/ui.gd" type="Script" id=4]
 [ext_resource path="res://menu/editor/ui/tile_option/tile_option.tscn" type="PackedScene" id=5]
+[ext_resource path="res://assets/button/toggle_button.tscn" type="PackedScene" id=6]
 [ext_resource path="res://menu/editor/ui/object_option/object_option.tscn" type="PackedScene" id=7]
 [ext_resource path="res://assets/icons/menu_button.png" type="Texture" id=12]
 [ext_resource path="res://assets/fonts/montserrat_eb_14.tres" type="DynamicFont" id=13]
@@ -40,11 +41,12 @@ rect_min_size = Vector2( 4, 0 )
 
 [node name="MarginContainer" type="MarginContainer" parent="SafeArea/VBoxContainer/HBoxContainer"]
 margin_left = 8.0
-margin_right = 208.0
+margin_right = 408.0
 margin_bottom = 80.0
+rect_min_size = Vector2( 400, 0 )
 
 [node name="TextureRect" type="TextureRect" parent="SafeArea/VBoxContainer/HBoxContainer/MarginContainer"]
-margin_right = 200.0
+margin_right = 400.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 200, 0 )
 texture = ExtResource( 15 )
@@ -52,7 +54,7 @@ expand = true
 
 [node name="Label" type="Label" parent="SafeArea/VBoxContainer/HBoxContainer/MarginContainer"]
 margin_top = 29.0
-margin_right = 200.0
+margin_right = 400.0
 margin_bottom = 50.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = ExtResource( 13 )
@@ -61,7 +63,7 @@ align = 1
 valign = 1
 
 [node name="MarginContainer2" type="MarginContainer" parent="SafeArea/VBoxContainer/HBoxContainer"]
-margin_left = 212.0
+margin_left = 412.0
 margin_right = 496.0
 margin_bottom = 80.0
 size_flags_horizontal = 3
@@ -75,10 +77,45 @@ icon = ExtResource( 12 )
 flat = true
 expand_icon = true
 
+[node name="HBoxContainer2" type="HBoxContainer" parent="SafeArea/VBoxContainer"]
+margin_top = 84.0
+margin_right = 600.0
+margin_bottom = 164.0
+
+[node name="MarginContainer3" type="MarginContainer" parent="SafeArea/VBoxContainer/HBoxContainer2"]
+margin_right = 4.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 4, 0 )
+
+[node name="checkbox_tile_label" parent="SafeArea/VBoxContainer/HBoxContainer2" instance=ExtResource( 6 )]
+margin_left = 8.0
+margin_right = 88.0
+
+[node name="TextureRect2" type="TextureRect" parent="SafeArea/VBoxContainer/HBoxContainer2"]
+margin_left = 92.0
+margin_right = 292.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 200, 0 )
+texture = ExtResource( 15 )
+expand = true
+
+[node name="Label" type="Label" parent="SafeArea/VBoxContainer/HBoxContainer2/TextureRect2"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -66.5
+margin_top = -10.5
+margin_right = 66.5
+margin_bottom = 10.5
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 13 )
+text = "Show Tile Label"
+
 [node name="movable_camera_ui" parent="SafeArea/VBoxContainer" instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 84.0
+margin_top = 168.0
 margin_right = 600.0
 margin_bottom = 876.0
 size_flags_vertical = 3
@@ -96,6 +133,7 @@ rect_min_size = Vector2( 0, 40 )
 [node name="nav_option" parent="SafeArea" instance=ExtResource( 3 )]
 
 [connection signal="pressed" from="SafeArea/VBoxContainer/HBoxContainer/save" to="." method="_on_save_pressed"]
+[connection signal="pressed" from="SafeArea/VBoxContainer/HBoxContainer2/checkbox_tile_label" to="." method="_on_checkbox_tile_label_pressed"]
 [connection signal="on_tile_card_cancel" from="SafeArea/VBoxContainer/object_option" to="." method="_on_object_option_on_tile_card_cancel"]
 [connection signal="on_tile_card_draging" from="SafeArea/VBoxContainer/object_option" to="." method="_on_object_option_on_tile_card_draging"]
 [connection signal="on_tile_card_grab" from="SafeArea/VBoxContainer/object_option" to="." method="_on_object_option_on_tile_card_grab"]

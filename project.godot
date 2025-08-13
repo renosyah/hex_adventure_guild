@@ -98,9 +98,9 @@ _global_script_class_icons={
 
 [application]
 
-config/name="hex_adventure_guild"
+config/name="Hex Adventure Guild"
 run/main_scene="res://menu/main/main.tscn"
-config/icon="res://icon.png"
+config/icon="res://assets/icons/hill_tile.png"
 
 [autoload]
 

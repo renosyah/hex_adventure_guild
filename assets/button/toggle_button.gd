@@ -8,8 +8,11 @@ onready var toggle = $Control/MarginContainer/toggle
 onready var animation_player = $AnimationPlayer
 
 func _ready():
-	texture_rect_2.texture = button_icon
+	update_icon()
 	connect("pressed", self ,"_on_toggle_button_pressed")
+
+func update_icon():
+	texture_rect_2.texture = button_icon
 
 func toggle(v):
 	toggle.visible = v

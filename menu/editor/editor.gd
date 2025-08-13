@@ -101,10 +101,15 @@ func _on_ui_on_randomize_map():
 	_on_Timer_timeout()
 	var seeding = rand_range(-1000, 1000)
 	map.generate_from_data(HexMapUtil.generate_randomize_map(seeding))
+
+func _on_ui_on_show_tile_label(v):
+	map.show_tile_label(v)
 	
 func _on_ui_on_save_map():
 	var data:Dictionary = map.export_data().to_dictionary()
 	SaveLoad.save("%s.map" % data.map_name, data)
+
+
 
 
 

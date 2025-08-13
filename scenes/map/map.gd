@@ -19,6 +19,7 @@ onready var _navigation :AStar2D = AStar2D.new()
 
 var _spawned_tiles :Dictionary = {} # { Vector2 : HexTile }
 var _hex_map_data :HexMapData.HexMapFileData
+var _show_label :bool = false
 
 func generate_from_data(data: HexMapData.HexMapFileData):
 	_clean()
@@ -120,6 +121,12 @@ func update_spawn_tile(data :HexMapData.TileMapData):
 			
 		pos += 1
 	
+func show_tile_label(v :bool):
+	_show_label = v
+	for i in _spawned_tiles.values():
+		var x :HexTile = i
+		x.show_label(_show_label)
+	
 func _spawn_tiles():
 	for i in _hex_map_data.tiles:
 		var data :HexMapData.TileMapData = i
@@ -149,6 +156,8 @@ func _spawn_tile(data :HexMapData.TileMapData):
 	tile_node.rotation = data.rotation
 	_spawned_tiles[data.id] = tile_node
 	
+	tile_node.show_label(_show_label)
+	
 	if data.object:
 		var object_node :ObjectTile = object_scene.instance()
 		object_node.texture = data.object.model
@@ -156,7 +165,7 @@ func _spawn_tile(data :HexMapData.TileMapData):
 		object_node.set_as_toplevel(true)
 		object_node.translation = tile_node.get_object_position()
 		object_node.rotation = Vector3.ZERO
-	
+		
 
 func _update_navigations():
 	_add_point(_navigation, _hex_map_data.navigation_map)

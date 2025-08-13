@@ -9,6 +9,7 @@ onready var label = $label
 
 func _ready():
 	label.visible = false
+	label.set_as_toplevel(true)
 	update()
 	
 func get_object_position() -> Vector3:

@@ -3,11 +3,11 @@ extends Control
 signal output
 
 var target :Spatial
-export var zoom :float = 40
+export var min_zoom :float = 5
+export var max_zoom :float = 20
 
-var move_speed := 0.0045
+var move_speed := 0.018
 var zoom_speed := 0.02
-onready var current_zoom = zoom
 
 var touches := {}
 var is_pinch_zoom := false
@@ -29,11 +29,10 @@ func _unhandled_input(event):
 		touches[event.index] = event.position
 		if touches.size() == 1:
 			var delta = event.relative
-			var zoom_factor = clamp(current_zoom / 10.0, 0.2, 3.0)
+			var zoom_factor = (target.translation.y / max_zoom)
 			var adjusted_move_speed = move_speed * zoom_factor
-			
 			target.translate(Vector3(-delta.x * adjusted_move_speed, 0, -delta.y * adjusted_move_speed))
-
+	
 		elif touches.size() == 2:
 			# Pinch zoom
 			var keys = touches.keys()
@@ -45,15 +44,13 @@ func _unhandled_input(event):
 			if !is_pinch_zoom:
 				is_pinch_zoom = true
 				last_pinch_distance = current_distance
+				
 			else:
 				var delta_distance = current_distance - last_pinch_distance
-				
 				target.translate(Vector3(0, -delta_distance * zoom_speed, 0))
+				target.translation.y = clamp(target.translation.y, min_zoom, max_zoom)
 				last_pinch_distance = current_distance
 				
-func _process(delta):
-	current_zoom = clamp(current_zoom, 5, 50)
-
 func _is_point_inside_area(point: Vector2) -> bool:
 	var x: bool = point.x >= rect_global_position.x and point.x <= rect_global_position.x + (rect_size.x * get_global_transform_with_canvas().get_scale().x)
 	var y: bool = point.y >= rect_global_position.y and point.y <= rect_global_position.y + (rect_size.y * get_global_transform_with_canvas().get_scale().y)

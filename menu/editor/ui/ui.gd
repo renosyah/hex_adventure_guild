@@ -5,8 +5,12 @@ signal on_tile_card_draging(pos)
 signal on_tile_card_release(pos,data)
 signal on_tile_card_cancel()
 signal on_change_range(v)
+signal on_show_tile_label(v)
 signal on_randomize_map
 signal on_save_map
+
+const checkbox_off = preload("res://assets/icons/checkbox_off.png")
+const checkbox_on = preload("res://assets/icons/checkbox_on.png")
 
 onready var object_models = [
 	[ null ],
@@ -17,8 +21,13 @@ onready var object_models = [
 onready var movable_camera_ui = $SafeArea/VBoxContainer/movable_camera_ui
 onready var object_option = $SafeArea/VBoxContainer/object_option
 onready var nav_option = $SafeArea/nav_option
+onready var checkbox_tile_label = $SafeArea/VBoxContainer/HBoxContainer2/checkbox_tile_label
+
+var _checkbox :bool = false
 
 func _ready():
+	checkbox_tile_label.button_icon = checkbox_on if _checkbox else checkbox_off
+	checkbox_tile_label.update_icon()
 	_on_tile_option_on_land_tile()
 	
 func get_nav_option_buttons():
@@ -68,3 +77,9 @@ func _on_tile_option_on_randomize():
 	
 func _on_nav_option_on_change_range(v):
 	emit_signal("on_change_range", v)
+	
+func _on_checkbox_tile_label_pressed():
+	_checkbox = not _checkbox
+	checkbox_tile_label.button_icon = checkbox_on if _checkbox else checkbox_off
+	checkbox_tile_label.update_icon()
+	emit_signal("on_show_tile_label", _checkbox)
