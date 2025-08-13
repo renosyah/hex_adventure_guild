@@ -3,7 +3,7 @@ extends Node
 signal on_tile_click(tile)
 
 const camera_foward_offset = Vector3.FORWARD * 8
-const procedural_tile_limit = 6
+const procedural_tile_limit = Vector2(6, 7)
 const tile_scene :PackedScene = preload("res://scenes/hex_tile/hext_tile.tscn")
 const tile_sea_scene :PackedScene = preload("res://scenes/hex_tile/hext_tile_sea.tscn")
 const tile_hill_scene :PackedScene = preload("res://scenes/hex_tile/hext_tile_hill.tscn")
@@ -113,7 +113,7 @@ func update_navigation_tile(at :Vector2, enable :bool):
 	
 func update_spawn_tile(data :TileMapData):
 	var _spawned_tile :HexTile = _spawned_tiles[data.id]
-	var key = _get_tile_chunk(Vector2(data.pos.x, data.pos.z), Vector2.ONE * procedural_tile_limit)
+	var key = _get_tile_chunk(Vector2(data.pos.x, data.pos.z),procedural_tile_limit)
 	if _chunks.has(key):
 		_chunks[key].erase(_spawned_tile)
 		
@@ -193,7 +193,7 @@ func _spawn_tile(data :TileMapData) -> HexTile:
 		object_node.rotation = Vector3.ZERO
 		
 	var pos :Vector3 = data.pos
-	var key = _get_tile_chunk(Vector2(pos.x, pos.z), Vector2.ONE * procedural_tile_limit)
+	var key = _get_tile_chunk(Vector2(pos.x, pos.z), procedural_tile_limit)
 	if not _chunks.has(key):
 		_chunks[key] = []
 		
