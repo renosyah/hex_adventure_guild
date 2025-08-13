@@ -1,19 +1,12 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://camera/movable_camera_ui.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/SafeArea/SafeArea.gd" type="Script" id=2]
-[ext_resource path="res://assets/icons/adjacent.png" type="Texture" id=3]
+[ext_resource path="res://menu/editor/ui/nav_option/nav_option.tscn" type="PackedScene" id=3]
 [ext_resource path="res://menu/editor/ui/ui.gd" type="Script" id=4]
-[ext_resource path="res://assets/icons/view.png" type="Texture" id=5]
-[ext_resource path="res://assets/icons/move.png" type="Texture" id=6]
+[ext_resource path="res://menu/editor/ui/tile_option/tile_option.tscn" type="PackedScene" id=5]
 [ext_resource path="res://menu/editor/ui/object_option/object_option.tscn" type="PackedScene" id=7]
-[ext_resource path="res://assets/icons/hill_tile.png" type="Texture" id=8]
-[ext_resource path="res://assets/icons/land_tile.png" type="Texture" id=9]
-[ext_resource path="res://assets/icons/water_tile.png" type="Texture" id=10]
-[ext_resource path="res://assets/icons/card.png" type="Texture" id=11]
 [ext_resource path="res://assets/icons/menu_button.png" type="Texture" id=12]
-[ext_resource path="res://assets/fonts/montserrat_eb_14.tres" type="DynamicFont" id=13]
-[ext_resource path="res://assets/icons/random.png" type="Texture" id=14]
 
 [node name="ui" type="Control"]
 anchor_right = 1.0
@@ -63,175 +56,17 @@ rect_min_size = Vector2( 0, 40 )
 
 [node name="object_option" parent="SafeArea/VBoxContainer" instance=ExtResource( 7 )]
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="SafeArea"]
-margin_left = 520.0
-margin_top = 458.0
-margin_right = 600.0
-margin_bottom = 1024.0
-size_flags_horizontal = 8
-size_flags_vertical = 8
+[node name="tile_option" parent="SafeArea" instance=ExtResource( 5 )]
 
-[node name="btn_range" type="Button" parent="SafeArea/VBoxContainer2"]
-self_modulate = Color( 0, 0, 0, 1 )
-margin_right = 80.0
-margin_bottom = 80.0
-rect_min_size = Vector2( 80, 80 )
-custom_fonts/font = ExtResource( 13 )
-toggle_mode = true
-pressed = true
-text = "x2"
-flat = true
-expand_icon = true
-
-[node name="TextureRect2" type="TextureRect" parent="SafeArea/VBoxContainer2/btn_range"]
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-texture = ExtResource( 11 )
-expand = true
-
-[node name="btn_adjacent" type="Button" parent="SafeArea/VBoxContainer2"]
-margin_top = 84.0
-margin_right = 80.0
-margin_bottom = 164.0
-rect_min_size = Vector2( 80, 80 )
-toggle_mode = true
-pressed = true
-icon = ExtResource( 3 )
-flat = true
-expand_icon = true
-
-[node name="TextureRect2" type="TextureRect" parent="SafeArea/VBoxContainer2/btn_adjacent"]
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-texture = ExtResource( 11 )
-expand = true
-
-[node name="btn_view" type="Button" parent="SafeArea/VBoxContainer2"]
-margin_top = 168.0
-margin_right = 80.0
-margin_bottom = 248.0
-rect_min_size = Vector2( 80, 80 )
-toggle_mode = true
-icon = ExtResource( 5 )
-flat = true
-expand_icon = true
-
-[node name="TextureRect3" type="TextureRect" parent="SafeArea/VBoxContainer2/btn_view"]
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-texture = ExtResource( 11 )
-expand = true
-
-[node name="btn_path" type="Button" parent="SafeArea/VBoxContainer2"]
-margin_top = 252.0
-margin_right = 80.0
-margin_bottom = 332.0
-rect_min_size = Vector2( 80, 80 )
-toggle_mode = true
-icon = ExtResource( 6 )
-flat = true
-expand_icon = true
-
-[node name="TextureRect4" type="TextureRect" parent="SafeArea/VBoxContainer2/btn_path"]
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-texture = ExtResource( 11 )
-expand = true
-
-[node name="MarginContainer" type="MarginContainer" parent="SafeArea/VBoxContainer2"]
-margin_top = 336.0
-margin_right = 80.0
-margin_bottom = 566.0
-rect_min_size = Vector2( 0, 230 )
-
-[node name="VBoxContainer3" type="VBoxContainer" parent="SafeArea"]
-margin_top = 458.0
-margin_right = 80.0
-margin_bottom = 1024.0
-size_flags_horizontal = 0
-size_flags_vertical = 8
-
-[node name="btn_tile_random" type="Button" parent="SafeArea/VBoxContainer3"]
-margin_right = 80.0
-margin_bottom = 80.0
-rect_min_size = Vector2( 80, 80 )
-custom_fonts/font = ExtResource( 13 )
-icon = ExtResource( 14 )
-flat = true
-expand_icon = true
-
-[node name="TextureRect3" type="TextureRect" parent="SafeArea/VBoxContainer3/btn_tile_random"]
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-texture = ExtResource( 11 )
-expand = true
-
-[node name="btn_tile_land" type="Button" parent="SafeArea/VBoxContainer3"]
-margin_top = 84.0
-margin_right = 80.0
-margin_bottom = 164.0
-rect_min_size = Vector2( 80, 80 )
-icon = ExtResource( 9 )
-flat = true
-expand_icon = true
-
-[node name="TextureRect" type="TextureRect" parent="SafeArea/VBoxContainer3/btn_tile_land"]
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-texture = ExtResource( 11 )
-expand = true
-
-[node name="btn_tile_hill" type="Button" parent="SafeArea/VBoxContainer3"]
-margin_top = 168.0
-margin_right = 80.0
-margin_bottom = 248.0
-rect_min_size = Vector2( 80, 80 )
-icon = ExtResource( 8 )
-flat = true
-expand_icon = true
-
-[node name="TextureRect2" type="TextureRect" parent="SafeArea/VBoxContainer3/btn_tile_hill"]
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-texture = ExtResource( 11 )
-expand = true
-
-[node name="btn_tile_water" type="Button" parent="SafeArea/VBoxContainer3"]
-margin_top = 252.0
-margin_right = 80.0
-margin_bottom = 332.0
-rect_min_size = Vector2( 80, 80 )
-icon = ExtResource( 10 )
-flat = true
-expand_icon = true
-
-[node name="TextureRect3" type="TextureRect" parent="SafeArea/VBoxContainer3/btn_tile_water"]
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-texture = ExtResource( 11 )
-expand = true
-
-[node name="MarginContainer" type="MarginContainer" parent="SafeArea/VBoxContainer3"]
-margin_top = 336.0
-margin_right = 80.0
-margin_bottom = 566.0
-rect_min_size = Vector2( 0, 230 )
+[node name="nav_option" parent="SafeArea" instance=ExtResource( 3 )]
 
 [connection signal="pressed" from="SafeArea/VBoxContainer/HBoxContainer/save" to="." method="_on_save_pressed"]
 [connection signal="on_tile_card_cancel" from="SafeArea/VBoxContainer/object_option" to="." method="_on_object_option_on_tile_card_cancel"]
 [connection signal="on_tile_card_draging" from="SafeArea/VBoxContainer/object_option" to="." method="_on_object_option_on_tile_card_draging"]
 [connection signal="on_tile_card_grab" from="SafeArea/VBoxContainer/object_option" to="." method="_on_object_option_on_tile_card_grab"]
 [connection signal="on_tile_card_release" from="SafeArea/VBoxContainer/object_option" to="." method="_on_object_option_on_tile_card_release"]
-[connection signal="pressed" from="SafeArea/VBoxContainer2/btn_range" to="." method="_on_btn_range_pressed"]
-[connection signal="pressed" from="SafeArea/VBoxContainer3/btn_tile_random" to="." method="_on_btn_tile_more_pressed"]
-[connection signal="pressed" from="SafeArea/VBoxContainer3/btn_tile_land" to="." method="_on_btn_tile_land_pressed"]
-[connection signal="pressed" from="SafeArea/VBoxContainer3/btn_tile_hill" to="." method="_on_btn_tile_hill_pressed"]
-[connection signal="pressed" from="SafeArea/VBoxContainer3/btn_tile_water" to="." method="_on_btn_tile_water_pressed"]
+[connection signal="on_hill_tile" from="SafeArea/tile_option" to="." method="_on_tile_option_on_hill_tile"]
+[connection signal="on_land_tile" from="SafeArea/tile_option" to="." method="_on_tile_option_on_land_tile"]
+[connection signal="on_randomize" from="SafeArea/tile_option" to="." method="_on_tile_option_on_randomize"]
+[connection signal="on_water_tile" from="SafeArea/tile_option" to="." method="_on_tile_option_on_water_tile"]
+[connection signal="on_change_range" from="SafeArea/nav_option" to="." method="_on_nav_option_on_change_range"]

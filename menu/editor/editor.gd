@@ -54,13 +54,13 @@ func _on_map_on_tile_click(tile :HexTile):
 	var tiles = []
 	var type = 1
 	
-	if ui.btns[0].pressed:
+	if ui.get_nav_option_buttons()[0].pressed:
 		type = 1
 		tiles = map.get_adjacent_tile(tile.id, _ranges)
-	elif ui.btns[1].pressed:
+	elif ui.get_nav_option_buttons()[1].pressed:
 		type = 2
 		tiles = map.get_adjacent_view_tile(tile.id, _ranges)
-	elif ui.btns[2].pressed:
+	elif ui.get_nav_option_buttons()[2].pressed:
 		type = 3
 		tiles = map.get_astar_adjacent_tile(tile.id, _ranges)
 	
