@@ -9,17 +9,28 @@
 [ext_resource path="res://assets/button/toggle_button.tscn" type="PackedScene" id=9]
 
 [node name="tile_option" type="MarginContainer"]
-margin_top = 312.0
-margin_right = 92.0
-margin_bottom = 712.0
+margin_right = 106.0
+margin_bottom = 400.0
 rect_min_size = Vector2( 0, 400 )
 size_flags_horizontal = 0
 size_flags_vertical = 4
 script = ExtResource( 8 )
 
-[node name="TextureRect" type="TextureRect" parent="."]
-margin_right = 60.0
+[node name="Control" type="Control" parent="."]
+margin_right = 10.0
 margin_bottom = 400.0
+rect_min_size = Vector2( 10, 0 )
+size_flags_horizontal = 0
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -56.5
+margin_top = -200.0
+margin_right = 56.5
+margin_bottom = 200.0
 rect_min_size = Vector2( 60, 0 )
 size_flags_horizontal = 0
 texture = ExtResource( 3 )
@@ -27,7 +38,7 @@ expand = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 margin_top = 34.0
-margin_right = 92.0
+margin_right = 106.0
 margin_bottom = 366.0
 size_flags_vertical = 4
 

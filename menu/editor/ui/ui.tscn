@@ -131,6 +131,7 @@ rect_min_size = Vector2( 0, 40 )
 [node name="object_option" parent="SafeArea/VBoxContainer" instance=ExtResource( 7 )]
 
 [node name="tile_option" parent="SafeArea" instance=ExtResource( 5 )]
+margin_left = 0.0
 
 [node name="nav_option" parent="SafeArea" instance=ExtResource( 3 )]
 

@@ -2,7 +2,7 @@ extends Node
 
 signal on_tile_click(tile)
 
-const camera_foward_offset = Vector3.FORWARD * 6
+const camera_foward_offset = Vector3.FORWARD * 8
 const procedural_tile_limit = 6
 const tile_scene :PackedScene = preload("res://scenes/hex_tile/hext_tile.tscn")
 const tile_sea_scene :PackedScene = preload("res://scenes/hex_tile/hext_tile_sea.tscn")
@@ -113,11 +113,18 @@ func update_navigation_tile(at :Vector2, enable :bool):
 	
 func update_spawn_tile(data :TileMapData):
 	var _spawned_tile :HexTile = _spawned_tiles[data.id]
+	var key = _get_tile_chunk(Vector2(data.pos.x, data.pos.z), Vector2.ONE * procedural_tile_limit)
+	if _chunks.has(key):
+		_chunks[key].erase(_spawned_tile)
+		
 	_tile_holder.remove_child(_spawned_tile)
 	_spawned_tile.queue_free()
 	
-	_spawn_tile(data)
+	# spawn new
+	var tile :HexTile = _spawn_tile(data)
+	tile.visible = true
 	
+	# update to _hex_map_data
 	var pos = 0
 	for i in _hex_map_data.tiles:
 		var x :TileMapData = i
@@ -149,7 +156,7 @@ func _spawn_tiles():
 		var data :TileMapData = i
 		_spawn_tile(data)
 		
-func _spawn_tile(data :TileMapData):
+func _spawn_tile(data :TileMapData) -> HexTile:
 	var tile_node :HexTile
 	
 	match (data.type):
@@ -186,11 +193,13 @@ func _spawn_tile(data :TileMapData):
 		object_node.rotation = Vector3.ZERO
 		
 	var pos :Vector3 = data.pos
-	var key = _get_tile_chunk(Vector2(pos.x, pos.z), Vector2.ONE * 6)
+	var key = _get_tile_chunk(Vector2(pos.x, pos.z), Vector2.ONE * procedural_tile_limit)
 	if not _chunks.has(key):
 		_chunks[key] = []
 		
 	_chunks[key].append(tile_node)
+	
+	return tile_node
 	
 func _get_tile_chunk(pos: Vector2, cell_size: Vector2) -> Vector2:
 	var col = int(floor((pos.x + cell_size.x / 2) / cell_size.x))
@@ -260,26 +269,6 @@ func _on_chunk_management_update_map(_chunks_to_remove :Array, _chunks_to_add:Ar
 			for c in _chunks[data.position]:
 				var x :HexTile = c
 				x.visible = true
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
