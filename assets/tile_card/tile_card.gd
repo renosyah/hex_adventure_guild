@@ -12,7 +12,7 @@ const tile_hill_scene :PackedScene = preload("res://scenes/hex_tile/hext_tile_hi
 
 const object_scene :PackedScene = preload("res://scenes/object_tile/object_tile.tscn")
 
-var data :HexMapData.TileMapData
+var data :TileMapData
 
 onready var texture_rect = $TextureRect
 onready var viewport = $Viewport

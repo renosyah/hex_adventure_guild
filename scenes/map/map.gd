@@ -18,10 +18,10 @@ onready var _tile_holder = $tile_holder
 onready var _navigation :AStar2D = AStar2D.new()
 
 var _spawned_tiles :Dictionary = {} # { Vector2 : HexTile }
-var _hex_map_data :HexMapData.HexMapFileData
+var _hex_map_data :HexMapFileData
 var _show_label :bool = false
 
-func generate_from_data(data: HexMapData.HexMapFileData):
+func generate_from_data(data: HexMapFileData):
 	_clean()
 	_hex_map_data = data
 	
@@ -31,7 +31,7 @@ func generate_from_data(data: HexMapData.HexMapFileData):
 	_spawn_tiles()
 	_update_navigations()
 	
-func export_data() -> HexMapData.HexMapFileData:
+func export_data() -> HexMapFileData:
 	return _hex_map_data
 	
 func get_tiles() -> Array:
@@ -55,7 +55,7 @@ func get_adjacent_view(from: Vector2, radius: int = 1) -> Array:
 		HexMapData.TileMapDataTypeWater,
 	]
 	for i in _hex_map_data.tiles:
-		var x :HexMapData.TileMapData = i
+		var x :TileMapData = i
 		
 		if not allow_see.has(x.type) or x.object != null:
 			blocked.append(x.id)
@@ -92,7 +92,7 @@ func get_closes_tile(from :Vector3) -> HexTile:
 	return current # HexTile
 	
 func update_navigation_tile(at :Vector2, enable :bool):
-	var data :HexMapData.NavigationData
+	var data :NavigationData
 	for i in _hex_map_data.navigation_map:
 		if i.id == at:
 			data = i
@@ -105,7 +105,7 @@ func update_navigation_tile(at :Vector2, enable :bool):
 	if _navigation.has_point(data.navigation_id):
 		_navigation.set_point_disabled(data.navigation_id, !data.enable)
 	
-func update_spawn_tile(data :HexMapData.TileMapData):
+func update_spawn_tile(data :TileMapData):
 	var _spawned_tile :HexTile = _spawned_tiles[data.id]
 	_tile_holder.remove_child(_spawned_tile)
 	_spawned_tile.queue_free()
@@ -114,7 +114,7 @@ func update_spawn_tile(data :HexMapData.TileMapData):
 	
 	var pos = 0
 	for i in _hex_map_data.tiles:
-		var x :HexMapData.TileMapData = i
+		var x :TileMapData = i
 		if x.id == data.id:
 			_hex_map_data.tiles[pos] = data
 			return
@@ -129,10 +129,10 @@ func show_tile_label(v :bool):
 	
 func _spawn_tiles():
 	for i in _hex_map_data.tiles:
-		var data :HexMapData.TileMapData = i
+		var data :TileMapData = i
 		_spawn_tile(data)
 		
-func _spawn_tile(data :HexMapData.TileMapData):
+func _spawn_tile(data :TileMapData):
 	var tile_node :HexTile
 	
 	match (data.type):
@@ -174,18 +174,18 @@ func _update_navigations():
 	
 func _add_point(aStar2D :AStar2D, data :Array):
 	for i in data:
-		var x :HexMapData.NavigationData = i
+		var x :NavigationData = i
 		aStar2D.add_point(x.navigation_id, x.id)
 		
 func _connect_point(aStar2D :AStar2D, data :Array):
 	for i in data:
-		var x :HexMapData.NavigationData = i
+		var x :NavigationData = i
 		for next_id in x.neighbors:
 			aStar2D.connect_points(x.navigation_id, next_id, false)
 		
 func _set_obstacle(aStar2D :AStar2D, data :Array):
 	for i in data:
-		var x :HexMapData.NavigationData = i
+		var x :NavigationData = i
 		if aStar2D.has_point(x.navigation_id):
 			aStar2D.set_point_disabled(x.navigation_id, !x.enable)
 			

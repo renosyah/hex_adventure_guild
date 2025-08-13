@@ -9,10 +9,25 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node",
+"class": "ChunkManagement",
+"language": "GDScript",
+"path": "res://addons/chunk_manajement/chunk_management.gd"
+}, {
+"base": "Node",
+"class": "ChunkManagement3D",
+"language": "GDScript",
+"path": "res://addons/chunk_manajement/chunk_management_3d.gd"
+}, {
 "base": "Resource",
 "class": "HexMapData",
 "language": "GDScript",
-"path": "res://scenes/map/data/map_data.gd"
+"path": "res://scenes/map/data/hex_map_data.gd"
+}, {
+"base": "HexMapData",
+"class": "HexMapFileData",
+"language": "GDScript",
+"path": "res://scenes/map/data/hex_map_file_data.gd"
 }, {
 "base": "Node",
 "class": "HexMapUtil",
@@ -54,6 +69,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/Godot-Touch-Input-Manager/CustomInputEvents/InputEventSingleScreenTouch.gd"
 }, {
+"base": "HexMapData",
+"class": "NavigationData",
+"language": "GDScript",
+"path": "res://scenes/map/data/navigation_data.gd"
+}, {
+"base": "HexMapData",
+"class": "ObjectMapData",
+"language": "GDScript",
+"path": "res://scenes/map/data/object_map_data.gd"
+}, {
 "base": "Spatial",
 "class": "ObjectTile",
 "language": "GDScript",
@@ -69,6 +94,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://assets/tile_card/tile_card.gd"
 }, {
+"base": "HexMapData",
+"class": "TileMapData",
+"language": "GDScript",
+"path": "res://scenes/map/data/tile_map_data.gd"
+}, {
 "base": "Button",
 "class": "ToggleButton",
 "language": "GDScript",
@@ -80,7 +110,10 @@ _global_script_classes=[ {
 "path": "res://utils/utils.gd"
 } ]
 _global_script_class_icons={
+"ChunkManagement": "",
+"ChunkManagement3D": "",
 "HexMapData": "",
+"HexMapFileData": "",
 "HexMapUtil": "",
 "HexTile": "",
 "InputEventMultiScreenDrag": "",
@@ -89,9 +122,12 @@ _global_script_class_icons={
 "InputEventSingleScreenDrag": "",
 "InputEventSingleScreenTap": "",
 "InputEventSingleScreenTouch": "",
+"NavigationData": "",
+"ObjectMapData": "",
 "ObjectTile": "",
 "SaveLoad": "",
 "TileCard": "",
+"TileMapData": "",
 "ToggleButton": "",
 "Utils": ""
 }

@@ -1,3 +1,3 @@
 extends Node
 
-var selected_map_data :HexMapData.HexMapFileData
+var selected_map_data : HexMapFileData

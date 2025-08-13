@@ -50,15 +50,15 @@ func _create_tile_card(tile_model :Resource, object_model :Resource = null, type
 	tile_options.add_child(card)
 	return card
 	
-func _create_tile_option(tile_model :Resource, object_model :Resource, type :int = 0) -> HexMapData.TileMapData:
-	var data :HexMapData.TileMapData = HexMapData.TileMapData.new()
+func _create_tile_option(tile_model :Resource, object_model :Resource, type :int = 0) -> TileMapData:
+	var data :TileMapData = TileMapData.new()
 	data.rotation = HexMapUtil.ROTATION_DIRECTIONS[0]
 	data.model = tile_model
 	data.type = type
 	
 	# object is not null and tile type is not water
 	if object_model and data.type != HexMapData.TileMapDataTypeWater:
-		var object :HexMapData.ObjectMapData = HexMapData.ObjectMapData.new()
+		var object :ObjectMapData = ObjectMapData.new()
 		object.model = object_model
 		data.object = object
 		
@@ -80,7 +80,7 @@ func _on_tile_card_release(card :TileCard, pos:Vector2):
 	
 	# duplicate the data
 	# so it will not modified other pointer
-	var dup:HexMapData.TileMapData = HexMapData.TileMapData.new()
+	var dup:TileMapData = TileMapData.new()
 	dup.from_dictionary(card.data.to_dictionary())
 	
 	emit_signal("on_tile_card_release", pos, dup)

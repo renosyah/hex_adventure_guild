@@ -1,7 +1,7 @@
 extends Node
 class_name HexMapUtil
 
-static func generate_randomize_map(_seed :int, radius: int = 3) -> HexMapData.HexMapFileData:
+static func generate_randomize_map(_seed :int, radius: int = 22) -> HexMapFileData:
 	var blocked = []
 	var data = generate_empty_map(radius)
 	var noise = OpenSimplexNoise.new()
@@ -24,7 +24,7 @@ static func generate_randomize_map(_seed :int, radius: int = 3) -> HexMapData.He
 	]
 	
 	for i in data.tiles:
-		var x :HexMapData.TileMapData = i
+		var x :TileMapData = i
 		var value = 2 * abs(noise.get_noise_2dv(x.id))
 		x.model = preload("res://scenes/hex_tile/models/hex.png")
 		
@@ -42,17 +42,17 @@ static func generate_randomize_map(_seed :int, radius: int = 3) -> HexMapData.He
 			
 		if x.type == HexMapData.TileMapDataTypeLand or x.type == HexMapData.TileMapDataTypeHill:
 			if rng.randf() < 0.4:
-				x.object = HexMapData.ObjectMapData.new()
+				x.object = ObjectMapData.new()
 				x.object.model = objs[rng.randf_range(0, objs.size() - 1)]
 				blocked.append(x.id)
 			
 	for i in data.navigation_map:
-		var x :HexMapData.NavigationData = i
+		var x :NavigationData = i
 		x.enable = not blocked.has(x.id)
 		
 	return data
 	
-static func generate_empty_map(radius: int = 3) -> HexMapData.HexMapFileData:
+static func generate_empty_map(radius: int = 3) -> HexMapFileData:
 	var generated_tiles :Array = create_adjacent_tiles(Vector2.ZERO, radius)
 	var tile_ids :Dictionary = {}
 	var index = 1
@@ -66,7 +66,7 @@ static func generate_empty_map(radius: int = 3) -> HexMapData.HexMapFileData:
 		var is_odd :bool = int(id.y) % 2 != 0
 		var x_offset:float = 0.5 if is_odd else 0
 		
-		var data :HexMapData.TileMapData = HexMapData.TileMapData.new()
+		var data :TileMapData = TileMapData.new()
 		data.id = id
 		data.pos = Vector3(id.x + x_offset, 0, id.y * 0.85) * 2
 		data.rotation = ROTATION_DIRECTIONS[0]
@@ -75,7 +75,7 @@ static func generate_empty_map(radius: int = 3) -> HexMapData.HexMapFileData:
 		
 	var navigation_map = []
 	for key in tile_ids.keys():
-		var data :HexMapData.NavigationData = HexMapData.NavigationData.new()
+		var data :NavigationData = NavigationData.new()
 		data.id = key
 		data.navigation_id = tile_ids[key]
 		data.enable = false
@@ -88,7 +88,7 @@ static func generate_empty_map(radius: int = 3) -> HexMapData.HexMapFileData:
 		data.neighbors = neighbors
 		navigation_map.append(data)
 	
-	var n = HexMapData.HexMapFileData.new()
+	var n = HexMapFileData.new()
 	n.map_name = "random"
 	n.map_size = radius
 	n.tile_ids = tile_ids

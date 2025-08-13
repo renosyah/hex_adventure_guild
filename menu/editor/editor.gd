@@ -11,7 +11,15 @@ var _ranges = 2
 
 func _ready():
 	ui.movable_camera_ui.target = movable_camera
-	map.generate_from_data(Global.selected_map_data)
+	
+	var d = SaveLoad.load_save("random.map")
+	if d:
+		var x = HexMapFileData.new()
+		x.from_dictionary(d)
+		map.generate_from_data(x)
+	else:
+		map.generate_from_data(Global.selected_map_data)
+		
 	tile_highlight.visible = false
 	
 func _add_tile_highlights(pos :Vector3, type :int):
@@ -73,7 +81,7 @@ func _on_ui_on_tile_card_draging(pos :Vector2):
 	var tile = map.get_closes_tile(pos_v3)
 	tile_highlight.translation = tile.global_position
 
-func _on_ui_on_tile_card_release(pos :Vector2, data:HexMapData.TileMapData):
+func _on_ui_on_tile_card_release(pos :Vector2, data:TileMapData):
 	var pos_v3 = Utils.screen_to_world(get_viewport().get_camera(), pos)
 	var tile = map.get_closes_tile(pos_v3)
 	
@@ -106,8 +114,8 @@ func _on_ui_on_show_tile_label(v):
 	map.show_tile_label(v)
 	
 func _on_ui_on_save_map():
-	var data:Dictionary = map.export_data().to_dictionary()
-	SaveLoad.save("%s.map" % data.map_name, data)
+	var data = map.export_data()
+	SaveLoad.save("%s.map" % data.map_name, data.to_dictionary())
 
 
 

@@ -6,7 +6,7 @@ const prefix = "user://"
 static func save(_filename: String, _data):
 	var file = File.new()
 	file.open(prefix + _filename, File.WRITE)
-	file.store_var(_data, true)
+	file.store_var(_data, false)
 	file.close()
 
 static func load_save(_filename : String):
