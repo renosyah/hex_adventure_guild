@@ -1,0 +1,29 @@
+[gd_resource type="SpatialMaterial" load_steps=3 format=2]
+
+[sub_resource type="Shader" id=2]
+code = "shader_type spatial;
+render_mode cull_front;
+
+uniform float outline_thickness : hint_range(0.0, 0.1) = 0.03;
+uniform vec4 outline_color : hint_color = vec4(0.0, 0.0, 0.0, 1.0);
+
+void vertex() {
+    VERTEX += NORMAL * outline_thickness;
+}
+
+void fragment() {
+    ALBEDO = outline_color.rgb;
+    ALPHA = outline_color.a;
+}"
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = SubResource( 2 )
+shader_param/outline_thickness = 0.03
+shader_param/outline_color = Color( 0, 0, 0, 1 )
+
+[resource]
+next_pass = SubResource( 3 )
+flags_vertex_lighting = true
+flags_do_not_receive_shadows = true
+vertex_color_use_as_albedo = true
+albedo_color = Color( 0.709804, 0.709804, 0.709804, 1 )

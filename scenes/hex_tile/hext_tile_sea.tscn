@@ -22,8 +22,7 @@ double_sided = false
 texture = ExtResource( 3 )
 
 [node name="label" type="Label3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0.144686 )
-visible = false
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.079911, 0.144686 )
 billboard = 1
 double_sided = false
 modulate = Color( 0, 0, 0, 1 )

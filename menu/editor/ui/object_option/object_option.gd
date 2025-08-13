@@ -7,28 +7,15 @@ signal on_tile_card_cancel()
 
 const tile_card_scene = preload("res://assets/tile_card/tile_card.tscn")
 
+export var tile_name :String
 export var tile_model :Resource
 export var type :int = 0
+var objects :Array = []
 
 onready var label = $HBoxContainer/TextureRect/Label
 onready var prev_object = $VBoxContainer/HBoxContainer2/prev_object
 onready var next_object = $VBoxContainer/HBoxContainer2/next_object
 onready var tile_options = $VBoxContainer/HBoxContainer2/tile_options
-onready var objects :Array = [
-	[
-		null,
-	],
-	[
-		preload("res://scenes/object_tile/models/tree_1.png"),
-		preload("res://scenes/object_tile/models/tree_2.png"),
-		preload("res://scenes/object_tile/models/tree_3.png")
-	],
-	[
-		preload("res://scenes/object_tile/models/rock_1.png"),
-		preload("res://scenes/object_tile/models/rock_2.png"),
-		preload("res://scenes/object_tile/models/rock_3.png")
-	]
-]
 
 var _grabbed_card
 var index :int = 0
@@ -36,32 +23,15 @@ var index :int = 0
 func show_options():
 	_clean()
 	
-	if type == HexMapData.TileMapDataTypeWater:
-		prev_object.visible = false
-		next_object.visible = false
+	prev_object.visible = not objects.empty()
+	next_object.visible = not objects.empty()
+	
+	for i in objects[index]:
+		_create_tile_card(tile_model, i, type)
 		
-		_create_tile_card(tile_model, null, type)
-		
-	else:
-		prev_object.visible = true
-		next_object.visible = true
-		
-		for i in objects[index]:
-			_create_tile_card(tile_model, i, type)
-			
 	prev_object.modulate.a = 1 if index > 0 else 0
 	next_object.modulate.a = 1 if index < objects.size() - 1 else 0
-	_set_label()
-	
-func _set_label():
-	match (type):
-		HexMapData.TileMapDataTypeLand:
-			label.text = "Land\n"
-		HexMapData.TileMapDataTypeWater:
-			label.text = "Water\n"
-		HexMapData.TileMapDataTypeHill:
-			label.text = "Hill\n"
-	
+	label.text = tile_name
 	
 func _clean():
 	for i in tile_options.get_children():

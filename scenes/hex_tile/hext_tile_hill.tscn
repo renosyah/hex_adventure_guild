@@ -4,20 +4,14 @@
 [ext_resource path="res://scenes/hex_tile/hext_tile.gd" type="Script" id=2]
 [ext_resource path="res://scenes/hex_tile/models/hex_3d.obj" type="ArrayMesh" id=3]
 [ext_resource path="res://scenes/hex_tile/models/hex.png" type="Texture" id=4]
-
-[sub_resource type="SpatialMaterial" id=1]
-flags_vertex_lighting = true
-flags_do_not_receive_shadows = true
-vertex_color_use_as_albedo = true
-albedo_color = Color( 0.709804, 0.709804, 0.709804, 1 )
+[ext_resource path="res://scenes/hex_tile/models/hext_tile_mesh_material.tres" type="Material" id=5]
 
 [node name="hext_tile_hill" type="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 script = ExtResource( 2 )
 
 [node name="label" type="Label3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0.144686 )
-visible = false
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.145 )
 billboard = 1
 double_sided = false
 modulate = Color( 0, 0, 0, 1 )
@@ -36,4 +30,4 @@ transform = Transform( 1, 0, 0, 0, 1.5, 0, 0, 0, 1, 0, -1.01, 0 )
 cast_shadow = 0
 mesh = ExtResource( 3 )
 software_skinning_transform_normals = false
-material/0 = SubResource( 1 )
+material/0 = ExtResource( 5 )

@@ -96,6 +96,10 @@ config/name="hex_adventure_guild"
 run/main_scene="res://menu/main/main.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Global="*res://global/global.gd"
+
 [display]
 
 window/size/width=600

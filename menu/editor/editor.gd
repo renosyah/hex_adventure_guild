@@ -10,20 +10,8 @@ var _tile_highlights = []
 var _ranges = 2
 
 func _ready():
-	_load_or_generate_map()
-
-func _load_or_generate_map():
 	ui.movable_camera_ui.target = movable_camera
-#	var data:HexMapData.HexMapFileData = HexMapData.HexMapFileData.new()
-#	var d = SaveLoad.load_save("random.map")
-#	if d:
-#		data.from_dictionary(d)
-#		map.generate_from_data(data)
-#
-#	else:
-#		map.generate_from_data(HexMapUtil.generate_empty_map())
-
-	map.generate_from_data(HexMapUtil.generate_empty_map())
+	map.generate_from_data(Global.selected_map_data)
 	tile_highlight.visible = false
 	
 func _add_tile_highlights(pos :Vector3, type :int):
@@ -115,7 +103,7 @@ func _on_ui_on_randomize_map():
 	
 func _on_ui_on_save_map():
 	var data:Dictionary = map.export_data().to_dictionary()
-	SaveLoad.save("%s.map" % data.map_name, data)
+	SaveLoad.save("%s.json" % data.map_name, to_json(data))
 
 
 
