@@ -2,6 +2,8 @@ extends Node
 
 signal on_tile_click(tile)
 
+const camera_foward_offset = Vector3.FORWARD * 6
+const procedural_tile_limit = 6
 const tile_scene :PackedScene = preload("res://scenes/hex_tile/hext_tile.tscn")
 const tile_sea_scene :PackedScene = preload("res://scenes/hex_tile/hext_tile_sea.tscn")
 const tile_hill_scene :PackedScene = preload("res://scenes/hex_tile/hext_tile_hill.tscn")
@@ -14,12 +16,15 @@ onready var _input_detection = $input_detection
 onready var _collision_shape = $Area/CollisionShape
 onready var _collision_shape_2 = $StaticBody/CollisionShape2
 onready var _tile_holder = $tile_holder
+onready var _chunk_management = $chunk_management
 
 onready var _navigation :AStar2D = AStar2D.new()
 
 var _spawned_tiles :Dictionary = {} # { Vector2 : HexTile }
 var _hex_map_data :HexMapFileData
 var _show_label :bool = false
+var _cam_pos :Vector3
+var _chunks :Dictionary = {} # {Vector2 : [HexTile] }
 
 func generate_from_data(data: HexMapFileData):
 	_clean()
@@ -29,6 +34,7 @@ func generate_from_data(data: HexMapFileData):
 	_collision_shape_2.scale = Vector3(1,0,1) * _hex_map_data.map_size
 	
 	_spawn_tiles()
+	_setup_chunk_management()
 	_update_navigations()
 	
 func export_data() -> HexMapFileData:
@@ -127,6 +133,17 @@ func show_tile_label(v :bool):
 		var x :HexTile = i
 		x.show_label(_show_label)
 	
+func update_camera_position(pos :Vector3):
+	_cam_pos = pos + camera_foward_offset
+	_update_camera_location(Vector2(_cam_pos.x, _cam_pos.z) / procedural_tile_limit)
+	
+func _setup_chunk_management():
+	_chunk_management.start_position = Vector2(_cam_pos.x, _cam_pos.z) / procedural_tile_limit
+	_chunk_management.init_starter_chunk()
+	
+func _update_camera_location(character_location :Vector2):
+	_chunk_management.update_camera_location(character_location)
+	
 func _spawn_tiles():
 	for i in _hex_map_data.tiles:
 		var data :TileMapData = i
@@ -154,6 +171,8 @@ func _spawn_tile(data :TileMapData):
 	_tile_holder.add_child(tile_node)
 	tile_node.translation = data.pos
 	tile_node.rotation = data.rotation
+	tile_node.visible = false
+	
 	_spawned_tiles[data.id] = tile_node
 	
 	tile_node.show_label(_show_label)
@@ -166,7 +185,18 @@ func _spawn_tile(data :TileMapData):
 		object_node.translation = tile_node.get_object_position()
 		object_node.rotation = Vector3.ZERO
 		
-
+	var pos :Vector3 = data.pos
+	var key = _get_tile_chunk(Vector2(pos.x, pos.z), Vector2.ONE * 6)
+	if not _chunks.has(key):
+		_chunks[key] = []
+		
+	_chunks[key].append(tile_node)
+	
+func _get_tile_chunk(pos: Vector2, cell_size: Vector2) -> Vector2:
+	var col = int(floor((pos.x + cell_size.x / 2) / cell_size.x))
+	var row = int(floor((pos.y + cell_size.y / 2) / cell_size.y))
+	return Vector2(col, row)
+	
 func _update_navigations():
 	_add_point(_navigation, _hex_map_data.navigation_map)
 	_connect_point(_navigation, _hex_map_data.navigation_map)
@@ -196,6 +226,7 @@ func _ids_to_tile_nodes(ids :Array) -> Array:
 	return datas
 	
 func _clean():
+	_chunks.clear()
 	_navigation.clear()
 	_spawned_tiles.clear()
 	_remove_child(_tile_holder)
@@ -214,3 +245,41 @@ func _on_input_detection_any_gesture(_sig ,event):
 func _on_Area_input_event(camera, event, position, normal, shape_idx):
 	_click_position = position
 	_input_detection.check_input(event)
+
+func _on_chunk_management_update_map(_chunks_to_remove :Array, _chunks_to_add:Array):
+	for i in _chunks_to_remove:
+		var data :ChunkManagement.ChunkData = i
+		if _chunks.has(data.position):
+			for c in _chunks[data.position]:
+				var x :HexTile = c
+				x.visible = false
+		
+	for i in _chunks_to_add:
+		var data :ChunkManagement.ChunkData = i
+		if _chunks.has(data.position):
+			for c in _chunks[data.position]:
+				var x :HexTile = c
+				x.visible = true
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

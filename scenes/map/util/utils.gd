@@ -1,7 +1,7 @@
 extends Node
 class_name HexMapUtil
 
-static func generate_randomize_map(_seed :int, radius: int = 22) -> HexMapFileData:
+static func generate_randomize_map(_seed :int, radius: int = 12) -> HexMapFileData:
 	var blocked = []
 	var data = generate_empty_map(radius)
 	var noise = OpenSimplexNoise.new()
@@ -52,7 +52,7 @@ static func generate_randomize_map(_seed :int, radius: int = 22) -> HexMapFileDa
 		
 	return data
 	
-static func generate_empty_map(radius: int = 3) -> HexMapFileData:
+static func generate_empty_map(radius: int = 12) -> HexMapFileData:
 	var generated_tiles :Array = create_adjacent_tiles(Vector2.ZERO, radius)
 	var tile_ids :Dictionary = {}
 	var index = 1

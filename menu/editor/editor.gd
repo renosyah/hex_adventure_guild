@@ -22,6 +22,9 @@ func _ready():
 		
 	tile_highlight.visible = false
 	
+func _process(delta):
+	map.update_camera_position(movable_camera.global_position)
+	
 func _add_tile_highlights(pos :Vector3, type :int):
 	var x = tile_highlight.duplicate()
 	add_child(x)
