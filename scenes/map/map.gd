@@ -144,6 +144,11 @@ func update_camera_position(pos :Vector3):
 	_cam_pos = pos + camera_foward_offset
 	_update_camera_location(Vector2(_cam_pos.x, _cam_pos.z) / procedural_tile_limit)
 	
+func enable_nav_tile(id : Vector2, enable :bool = true):
+	var navigation_id: int = _hex_map_data.tile_ids[id]
+	if _navigation.has_point(navigation_id):
+		_navigation.set_point_disabled(navigation_id, !enable)
+		
 func _setup_chunk_management():
 	_chunk_management.start_position = Vector2(_cam_pos.x, _cam_pos.z) / procedural_tile_limit
 	_chunk_management.init_starter_chunk()
@@ -207,27 +212,27 @@ func _get_tile_chunk(pos: Vector2, cell_size: Vector2) -> Vector2:
 	return Vector2(col, row)
 	
 func _update_navigations():
-	_add_point(_navigation, _hex_map_data.navigation_map)
-	_connect_point(_navigation, _hex_map_data.navigation_map)
-	_set_obstacle(_navigation, _hex_map_data.navigation_map)
+	var navigation_map :Array = _hex_map_data.navigation_map
+	_add_point(navigation_map)
+	_connect_point(navigation_map)
+	_set_obstacle(navigation_map)
 	
-func _add_point(aStar2D :AStar2D, data :Array):
+func _add_point(data :Array):
 	for i in data:
 		var x :NavigationData = i
-		aStar2D.add_point(x.navigation_id, x.id)
+		_navigation.add_point(x.navigation_id, x.id)
 		
-func _connect_point(aStar2D :AStar2D, data :Array):
+func _connect_point(data :Array):
 	for i in data:
 		var x :NavigationData = i
 		for next_id in x.neighbors:
-			aStar2D.connect_points(x.navigation_id, next_id, false)
+			_navigation.connect_points(x.navigation_id, next_id, false)
 		
-func _set_obstacle(aStar2D :AStar2D, data :Array):
+func _set_obstacle(data :Array):
 	for i in data:
 		var x :NavigationData = i
-		if aStar2D.has_point(x.navigation_id):
-			aStar2D.set_point_disabled(x.navigation_id, !x.enable)
-			
+		enable_nav_tile(x.id, x.enable)
+		
 func _ids_to_tile_nodes(ids :Array) -> Array:
 	var datas = []
 	for i in ids:

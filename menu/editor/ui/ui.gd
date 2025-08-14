@@ -11,8 +11,8 @@ signal on_save_map
 
 const checkbox_off = preload("res://assets/icons/checkbox_off.png")
 const checkbox_on = preload("res://assets/icons/checkbox_on.png")
-
-onready var object_models = [
+const tile_model = preload("res://scenes/hex_tile/models/hex.png")
+const object_models = [
 	[ null ],
 	[ preload("res://scenes/object_tile/models/tree_1.png"), preload("res://scenes/object_tile/models/tree_2.png"), preload("res://scenes/object_tile/models/tree_3.png") ],
 	[ preload("res://scenes/object_tile/models/rock_1.png"), preload("res://scenes/object_tile/models/rock_2.png"), preload("res://scenes/object_tile/models/rock_3.png") ]
@@ -22,6 +22,7 @@ onready var movable_camera_ui = $SafeArea/VBoxContainer/movable_camera_ui
 onready var object_option = $SafeArea/VBoxContainer/object_option
 onready var nav_option = $SafeArea/nav_option
 onready var checkbox_tile_label = $SafeArea/VBoxContainer/HBoxContainer2/checkbox_tile_label
+onready var loading = $loading
 
 var _checkbox :bool = false
 
@@ -51,7 +52,7 @@ func _on_object_option_on_tile_card_release(pos, data):
 func _on_tile_option_on_land_tile():
 	object_option.index = 0
 	object_option.tile_name = "Land"
-	object_option.tile_model = preload("res://scenes/hex_tile/models/hex.png")
+	object_option.tile_model = tile_model
 	object_option.type = HexMapData.TileMapDataTypeLand
 	object_option.objects = object_models
 	object_option.show_options()
@@ -59,7 +60,7 @@ func _on_tile_option_on_land_tile():
 func _on_tile_option_on_hill_tile():
 	object_option.index = 0
 	object_option.tile_name = "Hill"
-	object_option.tile_model = preload("res://scenes/hex_tile/models/hex.png")
+	object_option.tile_model = tile_model
 	object_option.type = HexMapData.TileMapDataTypeHill
 	object_option.objects = object_models
 	object_option.show_options()
@@ -67,7 +68,7 @@ func _on_tile_option_on_hill_tile():
 func _on_tile_option_on_water_tile():
 	object_option.index = 0
 	object_option.tile_name = "Water"
-	object_option.tile_model = preload("res://scenes/hex_tile/models/hex.png")
+	object_option.tile_model = tile_model
 	object_option.type = HexMapData.TileMapDataTypeWater
 	object_option.objects = [ [ null ] ] # cannot put anything on water :(
 	object_option.show_options()

@@ -5,18 +5,20 @@ onready var movable_camera = $movable_camera
 onready var map = $map
 onready var tile_highlight = $tile_highlight
 onready var timer = $Timer
+onready var save_load = $save_load
 
 var _tile_highlights = []
 var _ranges = 2
 
 func _ready():
+	ui.loading.visible = true
+	
 	ui.movable_camera_ui.target = movable_camera
 	
-	var d = SaveLoad.load_save("random.map")
-	if d:
-		var x = HexMapFileData.new()
-		x.from_dictionary(d)
-		map.generate_from_data(x)
+	var filename = "random.map"
+	if save_load.file_exists(filename):
+		save_load.load_data_async(filename)
+	
 	else:
 		map.generate_from_data(Global.selected_map_data)
 		
@@ -118,13 +120,15 @@ func _on_ui_on_show_tile_label(v):
 	
 func _on_ui_on_save_map():
 	var data = map.export_data()
-	SaveLoad.save("%s.map" % data.map_name, data.to_dictionary())
+	save_load.save_data_async("%s.map" % data.map_name, data.to_dictionary())
+	ui.loading.visible = true
+	
+func _on_save_load_save_done(success):
+	ui.loading.visible = false
 
-
-
-
-
-
-
-
+func _on_save_load_load_done(success, data):
+	var x = HexMapFileData.new()
+	x.from_dictionary(data)
+	map.generate_from_data(x)
+	ui.loading.visible = false
 
