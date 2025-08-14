@@ -25,11 +25,14 @@ var _hex_map_data :HexMapFileData
 var _show_label :bool = false
 var _cam_pos :Vector3
 var _chunks :Dictionary = {} # {Vector2 : [HexTile] }
+var _enable_proceduran_view:bool = false
 
 func generate_from_data(data: HexMapFileData):
 	_clean()
+	
 	_hex_map_data = data
 	
+	_enable_proceduran_view = _hex_map_data.map_size > 6
 	_collision_shape.scale = Vector3(1,0,1) * _hex_map_data.map_size
 	_collision_shape_2.scale = Vector3(1,0,1) * _hex_map_data.map_size
 	
@@ -141,6 +144,9 @@ func show_tile_label(v :bool):
 		x.show_label(_show_label)
 	
 func update_camera_position(pos :Vector3):
+	if not _enable_proceduran_view:
+		return
+		
 	_cam_pos = pos + camera_foward_offset
 	_update_camera_location(Vector2(_cam_pos.x, _cam_pos.z) / procedural_tile_limit)
 	
@@ -183,7 +189,9 @@ func _spawn_tile(data :TileMapData) -> HexTile:
 	_tile_holder.add_child(tile_node)
 	tile_node.translation = data.pos
 	tile_node.rotation = data.rotation
-	tile_node.visible = false
+	
+	if _enable_proceduran_view:
+		tile_node.visible = false
 	
 	_spawned_tiles[data.id] = tile_node
 	

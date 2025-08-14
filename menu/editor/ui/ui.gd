@@ -27,6 +27,7 @@ onready var loading = $loading
 var _checkbox :bool = false
 
 func _ready():
+	loading.visible = false
 	checkbox_tile_label.button_icon = checkbox_on if _checkbox else checkbox_off
 	checkbox_tile_label.update_icon()
 	_on_tile_option_on_land_tile()

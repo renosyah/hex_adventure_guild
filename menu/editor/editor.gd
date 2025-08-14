@@ -11,14 +11,13 @@ var _tile_highlights = []
 var _ranges = 2
 
 func _ready():
-	ui.loading.visible = true
-	
 	ui.movable_camera_ui.target = movable_camera
 	
 	var filename = "random.map"
 	if save_load.file_exists(filename):
 		save_load.load_data_async(filename)
-	
+		ui.loading.visible = true
+		
 	else:
 		map.generate_from_data(Global.selected_map_data)
 		

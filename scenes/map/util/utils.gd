@@ -1,7 +1,7 @@
 extends Node
 class_name HexMapUtil
 
-static func generate_randomize_map(_seed :int, radius: int = 12) -> HexMapFileData:
+static func generate_randomize_map(_seed :int, radius: int = 6) -> HexMapFileData:
 	var blocked = []
 	var data = generate_empty_map(radius)
 	var noise = OpenSimplexNoise.new()
@@ -23,11 +23,18 @@ static func generate_randomize_map(_seed :int, radius: int = 12) -> HexMapFileDa
 		preload("res://scenes/object_tile/models/rock_3.png")
 	]
 	
+	var spawn_points = get_tile_spawn_point(data.tile_ids, Vector2.ZERO, data.map_size)
+	
 	for i in data.tiles:
 		var x :TileMapData = i
-		var value = 2 * abs(noise.get_noise_2dv(x.id))
 		x.model = preload("res://scenes/hex_tile/models/hex.png")
 		
+		# reserve for spawn point
+		if spawn_points.has(x.id):
+			x.type = HexMapData.TileMapDataTypeLand
+			continue
+			
+		var value = 2 * abs(noise.get_noise_2dv(x.id))
 		if value > 0.8:
 			x.type = HexMapData.TileMapDataTypeHill
 			blocked.append(x.id)
@@ -52,7 +59,7 @@ static func generate_randomize_map(_seed :int, radius: int = 12) -> HexMapFileDa
 		
 	return data
 	
-static func generate_empty_map(radius: int = 12) -> HexMapFileData:
+static func generate_empty_map(radius: int = 6) -> HexMapFileData:
 	var generated_tiles :Array = create_adjacent_tiles(Vector2.ZERO, radius)
 	var tile_ids :Dictionary = {}
 	var index = 1
@@ -150,6 +157,32 @@ static func get_adjacent_tile(tiles :Dictionary, from: Vector2, radius: int = 1)
 	frontier.clear()
 	
 	return datas # [Vector2]
+	
+static func get_tile_spawn_point(tiles: Dictionary, from: Vector2, radius: int = 1) -> Array:
+	var results: Array = []
+
+	for base_dir in get_directions(from):
+		var current = from
+		for step in range(radius):
+			var dir = base_dir
+			if step > 0:
+				dir = get_directions(current)[get_directions(from).find(base_dir)]
+			current += dir
+			
+			if not tiles.has(current):
+				break
+				
+			if current != from and step == (radius - 1):
+				results.append(current)
+			
+	var res = []
+	for i in results:
+		var id :Vector2 = i
+		res.append_array(get_adjacent_tile(tiles, id))
+		
+	results.append_array(res)
+	
+	return results
 	
 static func get_adjacent_tile_view(tiles: Dictionary, from: Vector2, blocked: Array, radius: int = 1) -> Array:
 	var results: Array = []
