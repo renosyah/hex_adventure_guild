@@ -85,6 +85,11 @@ _global_script_classes=[ {
 "path": "res://scenes/object_tile/object_tile.gd"
 }, {
 "base": "Node",
+"class": "PotraitGenerator",
+"language": "GDScript",
+"path": "res://assets/potrait/potrait_generator.gd"
+}, {
+"base": "Node",
 "class": "SaveLoad",
 "language": "GDScript",
 "path": "res://addons/save_load/save_load.gd"
@@ -130,6 +135,7 @@ _global_script_class_icons={
 "NavigationData": "",
 "ObjectMapData": "",
 "ObjectTile": "",
+"PotraitGenerator": "",
 "SaveLoad": "",
 "SaveLoadImproved": "",
 "TileCard": "",

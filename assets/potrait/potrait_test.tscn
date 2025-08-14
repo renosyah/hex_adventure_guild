@@ -1,0 +1,125 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/potrait/potrait_test.gd" type="Script" id=1]
+[ext_resource path="res://assets/potrait/frame.png" type="Texture" id=2]
+
+[node name="potrait" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -259.5
+margin_top = -75.0
+margin_right = 259.5
+margin_bottom = 75.0
+alignment = 1
+
+[node name="soldiers" type="Button" parent="HBoxContainer"]
+margin_left = 30.0
+margin_right = 180.0
+margin_bottom = 150.0
+rect_min_size = Vector2( 150, 150 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+flat = true
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="soldier_icon" type="TextureRect" parent="HBoxContainer/soldiers"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -64.0
+margin_top = -64.0
+margin_right = 64.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 128, 128 )
+expand = true
+
+[node name="TextureRect4" type="TextureRect" parent="HBoxContainer/soldiers"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 2 )
+expand = true
+
+[node name="monster" type="Button" parent="HBoxContainer"]
+margin_left = 184.0
+margin_right = 334.0
+margin_bottom = 150.0
+rect_min_size = Vector2( 150, 150 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+flat = true
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="monster_icon" type="TextureRect" parent="HBoxContainer/monster"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -64.0
+margin_top = -64.0
+margin_right = 64.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 128, 128 )
+expand = true
+
+[node name="TextureRect4" type="TextureRect" parent="HBoxContainer/monster"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 2 )
+expand = true
+
+[node name="banners" type="Button" parent="HBoxContainer"]
+margin_left = 338.0
+margin_right = 488.0
+margin_bottom = 150.0
+rect_min_size = Vector2( 150, 150 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+flat = true
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="banner_color" type="ColorRect" parent="HBoxContainer/banners"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -58.5
+margin_top = -58.5
+margin_right = 58.5
+margin_bottom = 58.5
+color = Color( 0, 0, 0, 1 )
+
+[node name="banner_icon" type="TextureRect" parent="HBoxContainer/banners"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -64.0
+margin_top = -64.0
+margin_right = 64.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 128, 128 )
+expand = true
+
+[node name="TextureRect4" type="TextureRect" parent="HBoxContainer/banners"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 2 )
+expand = true
+
+[connection signal="pressed" from="HBoxContainer/soldiers" to="." method="_on_soldiers_pressed"]
+[connection signal="pressed" from="HBoxContainer/monster" to="." method="_on_monster_pressed"]
+[connection signal="pressed" from="HBoxContainer/banners" to="." method="_on_banners_pressed"]
