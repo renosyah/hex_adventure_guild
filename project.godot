@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Spatial",
+"class": "BaseUnit",
+"language": "GDScript",
+"path": "res://scenes/unit/base_unit.gd"
+}, {
 "base": "Node",
 "class": "ChunkManagement",
 "language": "GDScript",
@@ -118,8 +123,14 @@ _global_script_classes=[ {
 "class": "Utils",
 "language": "GDScript",
 "path": "res://utils/utils.gd"
+}, {
+"base": "BaseUnit",
+"class": "Vanguard",
+"language": "GDScript",
+"path": "res://scenes/unit/vanguard/vanguard.gd"
 } ]
 _global_script_class_icons={
+"BaseUnit": "",
 "ChunkManagement": "",
 "ChunkManagement3D": "",
 "HexMapData": "",
@@ -141,7 +152,8 @@ _global_script_class_icons={
 "TileCard": "",
 "TileMapData": "",
 "ToggleButton": "",
-"Utils": ""
+"Utils": "",
+"Vanguard": ""
 }
 
 [application]

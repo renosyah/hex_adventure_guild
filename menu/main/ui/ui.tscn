@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://assets/fonts/montserrat_eb_14.tres" type="DynamicFont" id=1]
 [ext_resource path="res://menu/main/ui/ui.gd" type="Script" id=2]
 [ext_resource path="res://addons/SafeArea/SafeArea.gd" type="Script" id=3]
+[ext_resource path="res://assets/loading/loading_overlay_screen.tscn" type="PackedScene" id=4]
 
 [node name="ui" type="Control"]
 anchor_right = 1.0
@@ -26,7 +27,7 @@ margin_right = 468.0
 margin_bottom = 940.0
 size_flags_horizontal = 4
 
-[node name="new" type="Button" parent="SafeArea/VBoxContainer/VBoxContainer"]
+[node name="adventure" type="Button" parent="SafeArea/VBoxContainer/VBoxContainer"]
 margin_right = 336.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 160, 80 )
@@ -47,14 +48,13 @@ margin_right = 336.0
 margin_bottom = 176.0
 alignment = 1
 
-[node name="load" type="Button" parent="SafeArea/VBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="battle" type="Button" parent="SafeArea/VBoxContainer/VBoxContainer/HBoxContainer"]
 margin_right = 160.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 160, 80 )
 size_flags_horizontal = 4
 custom_fonts/font = ExtResource( 1 )
-disabled = true
-text = "Load"
+text = "Battle"
 
 [node name="MarginContainer" type="MarginContainer" parent="SafeArea/VBoxContainer/VBoxContainer/HBoxContainer"]
 margin_left = 164.0
@@ -77,4 +77,8 @@ margin_right = 600.0
 margin_bottom = 1024.0
 rect_min_size = Vector2( 0, 80 )
 
+[node name="loading" parent="." instance=ExtResource( 4 )]
+visible = false
+
+[connection signal="pressed" from="SafeArea/VBoxContainer/VBoxContainer/HBoxContainer/battle" to="." method="_on_battle_pressed"]
 [connection signal="pressed" from="SafeArea/VBoxContainer/VBoxContainer/HBoxContainer/editor" to="." method="_on_editor_pressed"]

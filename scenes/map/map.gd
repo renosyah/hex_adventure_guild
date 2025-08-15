@@ -1,6 +1,8 @@
 extends Node
 
+signal on_map_ready
 signal on_tile_click(tile)
+
 
 const camera_foward_offset = Vector3.FORWARD * 8
 const procedural_tile_limit = Vector2(6, 7)
@@ -25,10 +27,12 @@ var _hex_map_data :HexMapFileData
 var _show_label :bool = false
 var _cam_pos :Vector3
 var _chunks :Dictionary = {} # {Vector2 : [HexTile] }
-var _enable_proceduran_view:bool = false
+var _enable_proceduran_view :bool = false
+var _is_editor :bool = false
 
-func generate_from_data(data: HexMapFileData):
+func generate_from_data(data: HexMapFileData, is_editor:bool = false):
 	_clean()
+	_is_editor = is_editor
 	
 	_hex_map_data = data
 	
@@ -39,6 +43,8 @@ func generate_from_data(data: HexMapFileData):
 	_spawn_tiles()
 	_setup_chunk_management()
 	_update_navigations()
+	
+	emit_signal("on_map_ready")
 	
 func export_data() -> HexMapFileData:
 	return _hex_map_data
@@ -101,25 +107,26 @@ func get_closes_tile(from :Vector3) -> HexTile:
 	return current # HexTile
 	
 func update_navigation_tile(at :Vector2, enable :bool):
-	var data :NavigationData
-	for i in _hex_map_data.navigation_map:
-		if i.id == at:
-			data = i
-			
-	if data == null:
-		return
+	enable_nav_tile(at, enable)
+	
+	if _is_editor:
+		var data :NavigationData
+		for i in _hex_map_data.navigation_map:
+			if i.id == at:
+				data = i
+				
+		if data != null:
+			data.enable = enable
 		
-	data.enable = enable
-	
-	if _navigation.has_point(data.navigation_id):
-		_navigation.set_point_disabled(data.navigation_id, !data.enable)
-	
 func update_spawn_tile(data :TileMapData):
 	var _spawned_tile :HexTile = _spawned_tiles[data.id]
-	var key = _get_tile_chunk(Vector2(data.pos.x, data.pos.z),procedural_tile_limit)
-	if _chunks.has(key):
-		_chunks[key].erase(_spawned_tile)
-		
+	if _enable_proceduran_view:
+		for key in _chunks:
+			var list :Array = _chunks[key]
+			if list.has(_spawned_tile):
+				list.erase(_spawned_tile)
+				break
+				
 	_tile_holder.remove_child(_spawned_tile)
 	_spawned_tile.queue_free()
 	
@@ -128,14 +135,15 @@ func update_spawn_tile(data :TileMapData):
 	tile.visible = true
 	
 	# update to _hex_map_data
-	var pos = 0
-	for i in _hex_map_data.tiles:
-		var x :TileMapData = i
-		if x.id == data.id:
-			_hex_map_data.tiles[pos] = data
-			return
-			
-		pos += 1
+	if _is_editor:
+		var pos = 0
+		for i in _hex_map_data.tiles:
+			var x :TileMapData = i
+			if x.id == data.id:
+				_hex_map_data.tiles[pos] = data
+				return
+				
+			pos += 1
 	
 func show_tile_label(v :bool):
 	_show_label = v
@@ -154,7 +162,40 @@ func enable_nav_tile(id : Vector2, enable :bool = true):
 	var navigation_id: int = _hex_map_data.tile_ids[id]
 	if _navigation.has_point(navigation_id):
 		_navigation.set_point_disabled(navigation_id, !enable)
+	
+# param blocked_ids is usefull for 
+# seting temporary blocked tile
+# like ally unit in the way
+func get_navigation(start :Vector2, end :Vector2, blocked_ids :Array = []) -> PoolVector2Array:
+	var _blocked_nav_ids :Array = []
+	for id in blocked_ids:
+		_blocked_nav_ids.append(_hex_map_data.tile_ids[id])
 		
+	return _get_navigation(_hex_map_data.tile_ids[start],_hex_map_data.tile_ids[end], _blocked_nav_ids) # [ Vector2 ]
+	
+func _get_navigation(start :int, end :int, _blocked_nav_ids :Array) -> PoolVector2Array:
+	var paths :PoolVector2Array = PoolVector2Array([])
+	if not _navigation.has_point(start):
+		return paths
+		
+	if not _navigation.has_point(end):
+		return paths
+		
+	# blocked tile
+	for navigation_id in _blocked_nav_ids:
+		if _navigation.has_point(navigation_id):
+			_navigation.set_point_disabled(navigation_id, true)
+		
+	# get path with blocked tiles
+	paths = _navigation.get_point_path(start, end)
+	
+	# open blocked tile
+	for navigation_id in _blocked_nav_ids:
+		if _navigation.has_point(navigation_id):
+			_navigation.set_point_disabled(navigation_id, false)
+		
+	return paths
+	
 func _setup_chunk_management():
 	_chunk_management.start_position = Vector2(_cam_pos.x, _cam_pos.z) / procedural_tile_limit
 	_chunk_management.init_starter_chunk()
@@ -201,16 +242,20 @@ func _spawn_tile(data :TileMapData) -> HexTile:
 		var object_node :ObjectTile = object_scene.instance()
 		object_node.texture = data.object.model
 		tile_node.add_child(object_node)
+		tile_node.object = object_node
 		object_node.set_as_toplevel(true)
 		object_node.translation = tile_node.get_object_position()
 		object_node.rotation = Vector3.ZERO
 		
-	var pos :Vector3 = data.pos
-	var key = _get_tile_chunk(Vector2(pos.x, pos.z), procedural_tile_limit)
-	if not _chunks.has(key):
-		_chunks[key] = []
-		
-	_chunks[key].append(tile_node)
+	if _enable_proceduran_view:
+		var pos :Vector3 = data.pos
+		var key = _get_tile_chunk(Vector2(pos.x, pos.z), procedural_tile_limit)
+		if not _chunks.has(key):
+			_chunks[key] = []
+			
+		_chunks[key].append(tile_node)
+	
+	tile_node.set_discovered(_is_editor)
 	
 	return tile_node
 	

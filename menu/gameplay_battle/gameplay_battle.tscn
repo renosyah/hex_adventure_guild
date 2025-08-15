@@ -1,0 +1,35 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://camera/movable_camera.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/tile_higlight/tile_highlight.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/map/map.tscn" type="PackedScene" id=3]
+[ext_resource path="res://map_env.tres" type="Environment" id=4]
+[ext_resource path="res://menu/gameplay_battle/gameplay_battle.gd" type="Script" id=5]
+[ext_resource path="res://menu/gameplay_battle/ui/ui.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/unit/vanguard/vanguard.tscn" type="PackedScene" id=7]
+
+[node name="gameplay_battle" type="Node"]
+script = ExtResource( 5 )
+
+[node name="ui" parent="." instance=ExtResource( 6 )]
+
+[node name="movable_camera" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 5 )
+
+[node name="map" parent="." instance=ExtResource( 3 )]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource( 4 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 0, 0 )
+shadow_enabled = true
+directional_shadow_mode = 0
+
+[node name="tile_highlight" parent="." instance=ExtResource( 2 )]
+
+[node name="vanguard" parent="." instance=ExtResource( 7 )]
+
+[connection signal="on_map_ready" from="map" to="." method="_on_map_on_map_ready"]
+[connection signal="on_tile_click" from="map" to="." method="_on_map_on_tile_click"]
+[connection signal="unit_enter_tile" from="vanguard" to="." method="_on_vanguard_unit_enter_tile"]

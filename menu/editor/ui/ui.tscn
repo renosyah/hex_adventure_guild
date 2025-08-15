@@ -7,7 +7,7 @@
 [ext_resource path="res://menu/editor/ui/tile_option/tile_option.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/button/toggle_button.tscn" type="PackedScene" id=6]
 [ext_resource path="res://menu/editor/ui/object_option/object_option.tscn" type="PackedScene" id=7]
-[ext_resource path="res://assets/loading/loading.tscn" type="PackedScene" id=8]
+[ext_resource path="res://assets/loading/loading_overlay_screen.tscn" type="PackedScene" id=8]
 [ext_resource path="res://assets/icons/menu_button.png" type="Texture" id=12]
 [ext_resource path="res://assets/fonts/montserrat_eb_14.tres" type="DynamicFont" id=13]
 [ext_resource path="res://menu/editor/ui/assets/board.png" type="Texture" id=15]
@@ -53,7 +53,7 @@ rect_min_size = Vector2( 200, 0 )
 texture = ExtResource( 15 )
 expand = true
 
-[node name="Label" type="Label" parent="SafeArea/VBoxContainer/HBoxContainer/MarginContainer"]
+[node name="map_name" type="Label" parent="SafeArea/VBoxContainer/HBoxContainer/MarginContainer"]
 margin_top = 29.0
 margin_right = 400.0
 margin_bottom = 50.0
@@ -82,6 +82,7 @@ expand_icon = true
 margin_top = 84.0
 margin_right = 600.0
 margin_bottom = 164.0
+mouse_filter = 2
 
 [node name="MarginContainer3" type="MarginContainer" parent="SafeArea/VBoxContainer/HBoxContainer2"]
 margin_right = 4.0
@@ -95,25 +96,21 @@ margin_right = 88.0
 [node name="TextureRect2" type="TextureRect" parent="SafeArea/VBoxContainer/HBoxContainer2"]
 margin_left = 92.0
 margin_top = 20.0
-margin_right = 292.0
+margin_right = 212.0
 margin_bottom = 60.0
-rect_min_size = Vector2( 200, 40 )
+rect_min_size = Vector2( 120, 40 )
 size_flags_vertical = 4
 texture = ExtResource( 15 )
 expand = true
 
 [node name="Label" type="Label" parent="SafeArea/VBoxContainer/HBoxContainer2/TextureRect2"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -66.5
-margin_top = -10.5
-margin_right = 66.5
-margin_bottom = 10.5
+anchor_right = 1.0
+anchor_bottom = 1.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = ExtResource( 13 )
-text = "Show Tile Label"
+text = "Show ID"
+align = 1
+valign = 1
 
 [node name="movable_camera_ui" parent="SafeArea/VBoxContainer" instance=ExtResource( 1 )]
 anchor_right = 0.0
@@ -144,18 +141,8 @@ margin_top = 312.0
 margin_right = 600.0
 margin_bottom = 712.0
 
-[node name="loading" type="MarginContainer" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="ColorRect" type="ColorRect" parent="loading"]
-margin_right = 600.0
-margin_bottom = 1024.0
-color = Color( 0, 0, 0, 0.741176 )
-
-[node name="loading" parent="loading" instance=ExtResource( 8 )]
-margin_right = 600.0
-margin_bottom = 1024.0
+[node name="loading" parent="." instance=ExtResource( 8 )]
+visible = false
 
 [connection signal="pressed" from="SafeArea/VBoxContainer/HBoxContainer/save" to="." method="_on_save_pressed"]
 [connection signal="pressed" from="SafeArea/VBoxContainer/HBoxContainer2/checkbox_tile_label" to="." method="_on_checkbox_tile_label_pressed"]

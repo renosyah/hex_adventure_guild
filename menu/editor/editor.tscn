@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/map/map.tscn" type="PackedScene" id=1]
 [ext_resource path="res://camera/movable_camera.tscn" type="PackedScene" id=2]
@@ -6,7 +6,6 @@
 [ext_resource path="res://menu/editor/editor.gd" type="Script" id=4]
 [ext_resource path="res://menu/editor/ui/ui.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/tile_higlight/tile_highlight.tscn" type="PackedScene" id=6]
-[ext_resource path="res://addons/save_load/save_load_improve.gd" type="Script" id=7]
 
 [node name="editor" type="Node"]
 script = ExtResource( 4 )
@@ -32,9 +31,6 @@ directional_shadow_mode = 0
 wait_time = 3.0
 one_shot = true
 
-[node name="save_load" type="Node" parent="."]
-script = ExtResource( 7 )
-
 [connection signal="on_change_range" from="ui" to="." method="_on_ui_on_change_range"]
 [connection signal="on_randomize_map" from="ui" to="." method="_on_ui_on_randomize_map"]
 [connection signal="on_save_map" from="ui" to="." method="_on_ui_on_save_map"]
@@ -43,7 +39,6 @@ script = ExtResource( 7 )
 [connection signal="on_tile_card_draging" from="ui" to="." method="_on_ui_on_tile_card_draging"]
 [connection signal="on_tile_card_grab" from="ui" to="." method="_on_ui_on_tile_card_grab"]
 [connection signal="on_tile_card_release" from="ui" to="." method="_on_ui_on_tile_card_release"]
+[connection signal="on_map_ready" from="map" to="." method="_on_map_on_map_ready"]
 [connection signal="on_tile_click" from="map" to="." method="_on_map_on_tile_click"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
-[connection signal="load_done" from="save_load" to="." method="_on_save_load_load_done"]
-[connection signal="save_done" from="save_load" to="." method="_on_save_load_save_done"]

@@ -58,6 +58,8 @@ func _spawn_tile():
 		object_node.translation = tile_node.get_object_position()
 		object_node.rotation = Vector3.ZERO
 		
+	tile_node.set_discovered(true)
+	
 func get_card_image() -> TextureRect:
 	return texture_rect.duplicate()
 

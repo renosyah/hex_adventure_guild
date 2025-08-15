@@ -5,24 +5,23 @@ onready var movable_camera = $movable_camera
 onready var map = $map
 onready var tile_highlight = $tile_highlight
 onready var timer = $Timer
-onready var save_load = $save_load
 
 var _tile_highlights = []
 var _ranges = 2
 
 func _ready():
 	ui.movable_camera_ui.target = movable_camera
-	
-	var filename = "random.map"
-	if save_load.file_exists(filename):
-		save_load.load_data_async(filename)
-		ui.loading.visible = true
-		
-	else:
-		map.generate_from_data(Global.selected_map_data)
-		
+	map.generate_from_data(Global.selected_map_data, true)
 	tile_highlight.visible = false
+	Global.connect("map_saved", self, "_on_save_map_done")
 	
+func _on_map_on_map_ready():
+	var data = Global.selected_map_data
+	var spawn_points = HexMapUtil.get_tile_spawn_point(data.tile_ids, Vector2.ZERO, data.map_size)
+	for id in spawn_points:
+		var x :HexTile = map.get_tile(id)
+		x.set_discovered(true)
+		
 func _process(delta):
 	map.update_camera_position(movable_camera.global_position)
 	
@@ -112,22 +111,19 @@ func _on_ui_on_change_range(v):
 func _on_ui_on_randomize_map():
 	_on_Timer_timeout()
 	var seeding = rand_range(-1000, 1000)
-	map.generate_from_data(HexMapUtil.generate_randomize_map(seeding))
+	map.generate_from_data(HexMapUtil.generate_randomize_map(seeding), true)
 
 func _on_ui_on_show_tile_label(v):
 	map.show_tile_label(v)
 	
 func _on_ui_on_save_map():
 	var data = map.export_data()
-	save_load.save_data_async("%s.map" % data.map_name, data.to_dictionary())
+	Global.save_map("%s.map" % data.map_name, data.to_dictionary())
 	ui.loading.visible = true
 	
-func _on_save_load_save_done(success):
+func _on_save_map_done():
 	ui.loading.visible = false
+	get_tree().change_scene("res://menu/main/main.tscn")
 
-func _on_save_load_load_done(success, data):
-	var x = HexMapFileData.new()
-	x.from_dictionary(data)
-	map.generate_from_data(x)
-	ui.loading.visible = false
+
 

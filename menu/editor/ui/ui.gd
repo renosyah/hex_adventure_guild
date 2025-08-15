@@ -23,10 +23,12 @@ onready var object_option = $SafeArea/VBoxContainer/object_option
 onready var nav_option = $SafeArea/nav_option
 onready var checkbox_tile_label = $SafeArea/VBoxContainer/HBoxContainer2/checkbox_tile_label
 onready var loading = $loading
+onready var map_name = $SafeArea/VBoxContainer/HBoxContainer/MarginContainer/map_name
 
 var _checkbox :bool = false
 
 func _ready():
+	map_name.text = "Name : %s\nSize : %s" % [Global.selected_map_data.map_name, Global.selected_map_data.map_size]
 	loading.visible = false
 	checkbox_tile_label.button_icon = checkbox_on if _checkbox else checkbox_off
 	checkbox_tile_label.update_icon()
