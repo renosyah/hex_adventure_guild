@@ -95,6 +95,11 @@ _global_script_classes=[ {
 "path": "res://assets/potrait/potrait_generator.gd"
 }, {
 "base": "Node",
+"class": "RandomNameGenerator",
+"language": "GDScript",
+"path": "res://addons/random-name/random_names.gd"
+}, {
+"base": "Node",
 "class": "SaveLoad",
 "language": "GDScript",
 "path": "res://addons/save_load/save_load.gd"
@@ -118,6 +123,11 @@ _global_script_classes=[ {
 "class": "ToggleButton",
 "language": "GDScript",
 "path": "res://assets/button/toggle_button.gd"
+}, {
+"base": "Resource",
+"class": "UnitData",
+"language": "GDScript",
+"path": "res://scenes/unit/data/unit_data.gd"
 }, {
 "base": "Node",
 "class": "Utils",
@@ -147,11 +157,13 @@ _global_script_class_icons={
 "ObjectMapData": "",
 "ObjectTile": "",
 "PotraitGenerator": "",
+"RandomNameGenerator": "",
 "SaveLoad": "",
 "SaveLoadImproved": "",
 "TileCard": "",
 "TileMapData": "",
 "ToggleButton": "",
+"UnitData": "",
 "Utils": "",
 "Vanguard": ""
 }

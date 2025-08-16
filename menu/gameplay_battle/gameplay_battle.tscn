@@ -28,5 +28,6 @@ directional_shadow_mode = 0
 [node name="tile_highlight" parent="." instance=ExtResource( 2 )]
 
 [connection signal="end_turn" from="ui" to="." method="_on_ui_end_turn"]
+[connection signal="on_activate_ability" from="ui" to="." method="_on_ui_on_activate_ability"]
 [connection signal="on_map_ready" from="map" to="." method="_on_map_on_map_ready"]
 [connection signal="on_tile_click" from="map" to="." method="_on_map_on_tile_click"]

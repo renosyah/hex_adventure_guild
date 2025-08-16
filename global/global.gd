@@ -3,12 +3,19 @@ extends Node
 signal map_loaded
 signal map_saved
 
-var selected_map_data : HexMapFileData
-var _save_load_map :SaveLoadImproved
-
 func _ready():
 	_init_save_load_map()
 	
+#---------------------------------------------------------------------------------------
+	
+var player_id = 1
+var team = 1
+var player_units :Array = [] # [ UnitData ]
+	
+#---------------------------------------------------------------------------------------
+var selected_map_data : HexMapFileData
+var _save_load_map :SaveLoadImproved
+
 func _init_save_load_map():
 	_save_load_map = preload("res://addons/save_load/save_load_improve.tscn").instance()
 	add_child(_save_load_map)
@@ -34,4 +41,7 @@ func _load_map_done(success :bool, data):
 		selected_map_data = HexMapFileData.new()
 		selected_map_data.from_dictionary(data)
 		emit_signal("map_loaded")
-	
+#---------------------------------------------------------------------------------------
+
+
+

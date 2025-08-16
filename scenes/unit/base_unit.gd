@@ -8,6 +8,10 @@ signal unit_take_damage(_unit, _damage, _from_unit)
 signal unit_dead(_unit)
 signal unit_reach(_unit, _tile_id)
 
+# owner
+export var player_id :int
+export var team :int
+
 export var action :int = 1
 export var max_action :int = 1
 

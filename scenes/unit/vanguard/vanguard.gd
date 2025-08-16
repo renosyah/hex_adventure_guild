@@ -4,14 +4,17 @@ class_name Vanguard
 onready var body = $body
 onready var animation_player = $AnimationPlayer
 
-var _is_spear_defence_activated :bool = true
+var _is_spear_defence_activated :bool = false
+var _spear_defence_area :Array = []
 
 # special ability only for this unit
 func perfom_action_activate_spear_defence():
-	if not _is_spear_defence_activated or not .has_action():
+	if not .has_action():
 		return
 		
+	_spear_defence_area = HexMapUtil.get_adjacent_tile_common(current_tile)
 	_is_spear_defence_activated = true
+	
 	.consume_action()
 	
 	animation_player.play("spear_defence")
@@ -21,14 +24,19 @@ func is_enemy_enter_area(target :BaseUnit) -> bool:
 	if not _is_spear_defence_activated:
 		return false
 	
-	var nearby_tiles = HexMapUtil.get_adjacent_tile_common(current_tile)
-	if not nearby_tiles.has(target.current_tile):
+	if not _spear_defence_area.has(target.current_tile):
 		return false
 		
 	attack_target(target)
 	
 	_is_spear_defence_activated = false
 	return true
+	
+func on_turn():
+	.on_turn()
+	
+	animation_player.play("iddle")
+	_is_spear_defence_activated = false
 	
 func unit_taken_damage(dmg :int, from :BaseUnit):
 	
