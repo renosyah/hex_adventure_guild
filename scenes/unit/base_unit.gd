@@ -9,13 +9,18 @@ signal unit_dead(_unit)
 signal unit_reach(_unit, _tile_id)
 
 export var action :int = 1
+export var max_action :int = 1
+
 export var move :int = 1
+export var move_range :int = 1
+
 export var hp :int = 25
 export var max_hp :int = 25
 export var armor :int = 2
+
 export var attack_damage :int = 14
-export var move_range :int = 1
 export var attack_range :int = 1
+
 export var view_range :int = 2
 export var move_speed :float = 0.4
 
@@ -32,16 +37,16 @@ func _ready():
 	_tween_move.connect("tween_completed", self, "_on_move_completed")
 	add_child(_tween_move)
 	
-	_set_attack_damage()
+	_prepare_attack_damage()
 
-func _set_attack_damage():
+func _prepare_attack_damage():
 	var partial = int(attack_damage * 0.25)
 	var min_dmg = clamp(attack_damage - partial, 1, attack_damage)
 	var max_dmg = attack_damage + partial
 	_current_attack_damage = int(rand_range(min_dmg, max_dmg))
 
 #  overidable func
-func can_attack() -> bool:
+func has_action() -> bool:
 	return action > 0
 	
 func can_move() -> bool:
@@ -85,19 +90,23 @@ func unit_taken_damage(dmg :int, from :BaseUnit):
 	emit_signal("unit_take_damage", dmg, from)
 	
 func on_turn():
-	action = 1
+	action = max_action
 	move = move_range
-	_set_attack_damage()
+	_prepare_attack_damage()
 	
-func attack_target(target :BaseUnit) -> void:
-	if not can_attack():
+func perfom_action_attack(target :BaseUnit) -> void:
+	if not has_action():
 		return
 		
-	if is_instance_valid(target):
-		target.take_damage(get_attack_damage(), self)
-		perform_action()
+	attack_target(target)
+	consume_action()
+	
+func attack_target(target :BaseUnit) -> void:
+	if not is_instance_valid(target):
+		return
 		
-		emit_signal("unit_attack_target", self, target)
+	target.take_damage(get_attack_damage(), self)
+	emit_signal("unit_attack_target", self, target)
 	
 func facing_pos(pos :Vector3):
 	if pos.x < global_position.x and _current_facing == 1:
@@ -105,8 +114,11 @@ func facing_pos(pos :Vector3):
 	elif pos.x > global_position.x and _current_facing == -1:
 		face_right()
 		
-func perform_action() -> void:
-	action = 0
+func consume_action() -> void:
+	action = clamp(action - 1, 0, max_action)
+	
+func consume_movement() -> void:
+	move = clamp(move - 1, 0, move_range)
 	
 # move will be called externaly
 # it because on unit move and enter
@@ -130,7 +142,7 @@ func move_unit() -> void:
 	on_unit_move()
 	
 func _on_move_completed(object: Object, key: NodePath):
-	move = clamp(move - 1, 0, move_range)
+	consume_movement()
 	
 	paths.pop_front()
 	
