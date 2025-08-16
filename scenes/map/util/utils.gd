@@ -202,6 +202,7 @@ static func get_adjacent_tile_view(tiles: Dictionary, from: Vector2, blocked: Ar
 				break
 				
 			if current in blocked:
+				results.append(current)
 				break
 				
 			results.append(current)

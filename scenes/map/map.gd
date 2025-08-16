@@ -170,6 +170,15 @@ func enable_nav_tile(id : Vector2, enable :bool = true):
 	var navigation_id: int = _hex_map_data.tile_ids[id]
 	if _navigation.has_point(navigation_id):
 		_navigation.set_point_disabled(navigation_id, !enable)
+		
+func is_blocked_nav_tile(id : Vector2):
+	var nav_id :int =  _hex_map_data.tile_ids[id]
+	if _navigation.has_point(nav_id):
+		return _navigation.is_point_disabled(nav_id)
+		
+	# point not found
+	# return is as is it disabled
+	return true
 	
 # param blocked_ids is usefull for 
 # seting temporary blocked tile

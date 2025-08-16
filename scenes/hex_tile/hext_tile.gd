@@ -9,6 +9,7 @@ export var tile :NodePath
 export var label :NodePath
 export var fog :NodePath
 export var tile_body :NodePath
+export var is_discovered :bool
 
 onready var _tile = get_node_or_null(tile)
 onready var _label = get_node_or_null(label)
@@ -29,6 +30,7 @@ func show_label(v :bool):
 	_label.translation = global_position + Vector3(0, _label.translation.y, 0)
 	
 func set_discovered(v :bool):
+	is_discovered = v
 	_fog.visible = ! v
 	_tile_body.visible = v
 	
