@@ -63,7 +63,7 @@ func get_adjacent(from: Vector2, radius: int = 1) -> Array:
 # use this for view
 # if a tile got block, remaining tile in view will not included
 # note : view will only cast to adjacent to one direction in straigh
-func get_adjacent_view(from: Vector2, radius: int = 1) -> Array:
+func get_adjacent_view(from: Vector2, radius: int = 1, blocked_ids :Array = []) -> Array:
 	var blocked = []
 	var allow_see = [
 		HexMapData.TileMapDataTypeLand,
@@ -71,27 +71,35 @@ func get_adjacent_view(from: Vector2, radius: int = 1) -> Array:
 	]
 	for i in _hex_map_data.tiles:
 		var x :TileMapData = i
-		
+		if blocked_ids.has(x.id):
+			continue
+			
 		if not allow_see.has(x.type) or x.object != null:
 			blocked.append(x.id)
 			
+	blocked_ids.append_array(blocked_ids)
+	
 	var list :Array = HexMapUtil.get_adjacent_tile_view(_hex_map_data.tile_ids, from, blocked, radius)
 	return [from] + list # [ Vector2 ]
 	
 # use this for navigation
 # return a walkable path
-func get_astar_adjacent(from: Vector2, radius: int = 1) -> Array:
-	var list :Array = HexMapUtil.get_astar_adjacent_tile(_hex_map_data.tile_ids[from], _navigation, radius)
+func get_astar_adjacent(from: Vector2, radius: int = 1, blocked_ids :Array = []) -> Array:
+	var blocked_nav_ids :Array = [] # [ int ]
+	for id in blocked_ids:
+		blocked_nav_ids.append(_hex_map_data.tile_ids[id])
+		
+	var list :Array = HexMapUtil.get_astar_adjacent_tile(_hex_map_data.tile_ids[from], _navigation, radius, blocked_nav_ids)
 	return [from] + list # [ Vector2 ]
 	
 func get_adjacent_tile(from: Vector2, radius: int = 1) -> Array:
 	return _ids_to_tile_nodes(get_adjacent(from, radius)) # [ HexTile ]
 	
-func get_adjacent_view_tile(from: Vector2, radius: int = 1) -> Array:
-	return _ids_to_tile_nodes(get_adjacent_view(from, radius)) # [ HexTile ]
+func get_adjacent_view_tile(from: Vector2, radius: int = 1, blocked_ids :Array = []) -> Array:
+	return _ids_to_tile_nodes(get_adjacent_view(from, radius, blocked_ids)) # [ HexTile ]
 	
-func get_astar_adjacent_tile(from: Vector2, radius: int = 1) -> Array:
-	return _ids_to_tile_nodes(get_astar_adjacent(from, radius)) # [ HexTile ]
+func get_astar_adjacent_tile(from: Vector2, radius: int = 1, blocked_ids :Array = []) -> Array:
+	return _ids_to_tile_nodes(get_astar_adjacent(from, radius, blocked_ids)) # [ HexTile ]
 	
 func get_closes_tile(from :Vector3) -> HexTile:
 	var current = _tile_holder.get_child(0)
@@ -193,7 +201,7 @@ func _get_navigation(start :int, end :int, _blocked_nav_ids :Array) -> PoolVecto
 	for navigation_id in _blocked_nav_ids:
 		if _navigation.has_point(navigation_id):
 			_navigation.set_point_disabled(navigation_id, false)
-		
+			
 	return paths
 	
 func _setup_chunk_management():

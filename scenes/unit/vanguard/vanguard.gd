@@ -13,7 +13,6 @@ func activate_spear_defence():
 	yield(animation_player,"animation_finished")
 	.perform_action()
 	
-	
 func face_left():
 	.face_left()
 	

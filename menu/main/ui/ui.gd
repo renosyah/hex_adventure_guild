@@ -27,7 +27,7 @@ func _on_battle_pressed():
 	loading.visible = true
 	var can_load = Global.load_map("random.map")
 	if not can_load:
-		Global.selected_map_data = HexMapUtil.generate_empty_map()
+		Global.selected_map_data = HexMapUtil.generate_randomize_map(rand_range(-1000, 1000))
 		to_battle()
 		return
 		

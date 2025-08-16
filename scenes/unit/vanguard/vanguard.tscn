@@ -385,6 +385,8 @@ tracks/1/keys = {
 
 [node name="vanguard" type="Spatial"]
 script = ExtResource( 1 )
+move = 4
+move_range = 4
 
 [node name="body" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.819152, 0.573577, 0, -0.573577, 0.819152, 0, 0.8, 0 )

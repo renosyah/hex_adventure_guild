@@ -18,9 +18,10 @@ func _ready():
 func _on_map_on_map_ready():
 	var data = Global.selected_map_data
 	var spawn_points = HexMapUtil.get_tile_spawn_point(data.tile_ids, Vector2.ZERO, data.map_size)
-	for id in spawn_points:
-		var x :HexTile = map.get_tile(id)
-		x.set_discovered(true)
+	for ids in spawn_points:
+		for id in ids:
+			var x :HexTile = map.get_tile(id)
+			x.set_discovered(true)
 		
 func _process(delta):
 	map.update_camera_position(movable_camera.global_position)

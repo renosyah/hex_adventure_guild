@@ -1,7 +1,8 @@
 extends Control
 
-onready var movable_camera_ui = $SafeArea/VBoxContainer/movable_camera_ui
-onready var soldier_icon = $SafeArea/VBoxContainer/HBoxContainer/soldiers/soldier_icon
+signal end_turn
 
-func _ready():
-	soldier_icon.texture =  PotraitGenerator.get_soldier_potrait(4,3)
+onready var movable_camera_ui = $SafeArea/VBoxContainer/movable_camera_ui
+
+func _on_end_turn_pressed():
+	emit_signal("end_turn")

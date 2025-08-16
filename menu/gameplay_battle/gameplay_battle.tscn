@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://camera/movable_camera.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/tile_higlight/tile_highlight.tscn" type="PackedScene" id=2]
@@ -6,7 +6,6 @@
 [ext_resource path="res://map_env.tres" type="Environment" id=4]
 [ext_resource path="res://menu/gameplay_battle/gameplay_battle.gd" type="Script" id=5]
 [ext_resource path="res://menu/gameplay_battle/ui/ui.tscn" type="PackedScene" id=6]
-[ext_resource path="res://scenes/unit/vanguard/vanguard.tscn" type="PackedScene" id=7]
 
 [node name="gameplay_battle" type="Node"]
 script = ExtResource( 5 )
@@ -28,8 +27,6 @@ directional_shadow_mode = 0
 
 [node name="tile_highlight" parent="." instance=ExtResource( 2 )]
 
-[node name="vanguard" parent="." instance=ExtResource( 7 )]
-
+[connection signal="end_turn" from="ui" to="." method="_on_ui_end_turn"]
 [connection signal="on_map_ready" from="map" to="." method="_on_map_on_map_ready"]
 [connection signal="on_tile_click" from="map" to="." method="_on_map_on_tile_click"]
-[connection signal="unit_enter_tile" from="vanguard" to="." method="_on_vanguard_unit_enter_tile"]

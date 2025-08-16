@@ -23,8 +23,12 @@ static func generate_randomize_map(_seed :int, radius: int = 6) -> HexMapFileDat
 		preload("res://scenes/object_tile/models/rock_3.png")
 	]
 	
-	var spawn_points = get_tile_spawn_point(data.tile_ids, Vector2.ZERO, data.map_size)
-	
+	var points = get_tile_spawn_point(data.tile_ids, Vector2.ZERO, data.map_size)
+	var spawn_points = []
+	for i in points:
+		var ids :Array = i
+		spawn_points.append_array(ids)
+		
 	for i in data.tiles:
 		var x :TileMapData = i
 		x.model = preload("res://scenes/hex_tile/models/hex.png")
@@ -160,6 +164,7 @@ static func get_adjacent_tile(tiles :Dictionary, from: Vector2, radius: int = 1)
 	
 static func get_tile_spawn_point(tiles: Dictionary, from: Vector2, radius: int = 1) -> Array:
 	var results: Array = []
+	var resDir :Dictionary = {} # { Vector2 : Vector2 }
 
 	for base_dir in get_directions(from):
 		var current = from
@@ -173,16 +178,14 @@ static func get_tile_spawn_point(tiles: Dictionary, from: Vector2, radius: int =
 				break
 				
 			if current != from and step == (radius - 1):
-				results.append(current)
+				resDir[base_dir] = current
+				
 			
-	var res = []
-	for i in results:
-		var id :Vector2 = i
-		res.append_array(get_adjacent_tile(tiles, id))
+	for key in resDir.keys():
+		var id :Vector2 = resDir[key] # Vector2
+		results.append(get_adjacent_tile(tiles, id) + [id])
 		
-	results.append_array(res)
-	
-	return results
+	return results # [ [ Vector2 ],[ ... ] ]
 	
 static func get_adjacent_tile_view(tiles: Dictionary, from: Vector2, blocked: Array, radius: int = 1) -> Array:
 	var results: Array = []
@@ -205,7 +208,7 @@ static func get_adjacent_tile_view(tiles: Dictionary, from: Vector2, blocked: Ar
 			
 	return results
 
-static func get_astar_adjacent_tile(navigation_id: int, navigation :AStar2D, radius: int = 1) -> Array:
+static func get_astar_adjacent_tile(navigation_id: int, navigation :AStar2D, radius: int = 1, blocked_nav_ids :Array = []) -> Array:
 	var visited := {}
 	var result := []
 	var queue := [navigation_id]
@@ -225,6 +228,9 @@ static func get_astar_adjacent_tile(navigation_id: int, navigation :AStar2D, rad
 			if navigation.is_point_disabled(neighbor_id):
 				continue
 				
+			if blocked_nav_ids.has(neighbor_id):
+				continue
+				
 			visited[neighbor_id] = current_depth + 1
 			queue.append(neighbor_id)
 			result.append(navigation.get_point_position(neighbor_id))
@@ -234,7 +240,6 @@ static func get_astar_adjacent_tile(navigation_id: int, navigation :AStar2D, rad
 	
 	return result # [Vector2]
 	
-
 	
 static func create_adjacent_tiles(from: Vector2, radius: int = 1) -> Array:
 	var visited := {}

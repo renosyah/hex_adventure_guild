@@ -1,6 +1,7 @@
 extends Spatial
 class_name BaseUnit
 
+signal unit_leave_tile(_unit, _tile_id)
 signal unit_enter_tile(_unit, _tile_id)
 signal unit_take_damage(_unit, _damage, _from_unit)
 signal unit_dead(_unit)
@@ -79,7 +80,7 @@ func take_damage(dmg :int, from :BaseUnit) -> void:
 	
 func on_turn():
 	action = 1
-	move = 1
+	move = move_range
 	_set_attack_damage()
 	
 func attack_target(unit :BaseUnit) -> void:
@@ -94,15 +95,15 @@ func perform_action() -> void:
 # it because on unit move and enter
 # new tile, must be validate by game master
 # like unit enter a trap or something
-func move() -> void:
-	move = 0
-	
+func move_unit() -> void:
 	if paths.empty():
 		return
 		
+	emit_signal("unit_leave_tile", self, current_tile)
+	
 	var path = paths.front()
-	current_tile = path[0]
 	var _move_to = path[1]
+	current_tile = path[0]
 	
 	if _move_to.x < global_position.x and _current_facing == 1:
 		face_left()
@@ -112,17 +113,20 @@ func move() -> void:
 	_tween_move.interpolate_property(self, "global_position", global_position, _move_to, move_speed)
 	_tween_move.start()
 	
-
-func _on_move_completed(object: Object, key: NodePath):
 	on_unit_move()
 	
+func _on_move_completed(object: Object, key: NodePath):
+	move = clamp(move - 1, 0, move_range)
+	
 	paths.pop_front()
+	
+	emit_signal("unit_enter_tile", self, current_tile)
 	
 	if paths.empty():
 		on_unit_stop()
 		return
 		
-	emit_signal("unit_enter_tile", self, current_tile)
+	
 
 
 
