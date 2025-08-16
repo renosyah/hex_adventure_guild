@@ -3,19 +3,21 @@ class_name BaseUnit
 
 signal unit_leave_tile(_unit, _tile_id)
 signal unit_enter_tile(_unit, _tile_id)
+signal unit_attack_target(_unit, _target)
 signal unit_take_damage(_unit, _damage, _from_unit)
 signal unit_dead(_unit)
-signal on_reach(_unit, _tile_id)
+signal unit_reach(_unit, _tile_id)
 
 export var action :int = 1
 export var move :int = 1
 export var hp :int = 25
 export var max_hp :int = 25
-export var attack_damage :int = 4
+export var armor :int = 2
+export var attack_damage :int = 14
 export var move_range :int = 1
 export var attack_range :int = 1
 export var view_range :int = 2
-export var move_speed :float = 0.7
+export var move_speed :float = 0.4
 
 var _tween_move :Tween
 var _current_attack_damage :int
@@ -64,18 +66,22 @@ func on_unit_move() -> void:
 	pass
 	
 func on_unit_stop():
-	emit_signal("on_reach", self, current_tile)
+	emit_signal("unit_reach", self, current_tile)
 	
 func take_damage(dmg :int, from :BaseUnit) -> void:
 	if is_dead():
 		return
 		
-	hp = clamp(hp - dmg, 0, max_hp)
+	var damage_receive :int = clamp(dmg - armor, 1, dmg)
+	hp = clamp(hp - damage_receive, 0, max_hp)
 	
 	if is_dead():
 		emit_signal("unit_dead", self)
 		return
 		
+	unit_taken_damage(damage_receive, from)
+	
+func unit_taken_damage(dmg :int, from :BaseUnit):
 	emit_signal("unit_take_damage", dmg, from)
 	
 func on_turn():
@@ -83,11 +89,22 @@ func on_turn():
 	move = move_range
 	_set_attack_damage()
 	
-func attack_target(unit :BaseUnit) -> void:
-	if is_instance_valid(unit):
-		unit.take_damage(get_attack_damage(), self)
+func attack_target(target :BaseUnit) -> void:
+	if not can_attack():
+		return
+		
+	if is_instance_valid(target):
+		target.take_damage(get_attack_damage(), self)
 		perform_action()
+		
+		emit_signal("unit_attack_target", self, target)
 	
+func facing_pos(pos :Vector3):
+	if pos.x < global_position.x and _current_facing == 1:
+		face_left()
+	elif pos.x > global_position.x and _current_facing == -1:
+		face_right()
+		
 func perform_action() -> void:
 	action = 0
 	
@@ -105,11 +122,8 @@ func move_unit() -> void:
 	var _move_to = path[1]
 	current_tile = path[0]
 	
-	if _move_to.x < global_position.x and _current_facing == 1:
-		face_left()
-	elif _move_to.x > global_position.x and _current_facing == -1:
-		face_right()
-		
+	facing_pos(_move_to)
+	
 	_tween_move.interpolate_property(self, "global_position", global_position, _move_to, move_speed)
 	_tween_move.start()
 	

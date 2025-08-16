@@ -162,6 +162,31 @@ static func get_adjacent_tile(tiles :Dictionary, from: Vector2, radius: int = 1)
 	
 	return datas # [Vector2]
 	
+# tiles :Dictionary = {Vector2: any }
+static func get_adjacent_tile_common(from: Vector2, radius: int = 1) -> Array:
+	var visited := {}
+	var frontier := [from]
+	visited[from] = true
+
+	for step in range(radius):
+		var next_frontier := []
+		for current in frontier:
+			var directions = get_directions(current)
+			for dir in directions:
+				var neighbor = current + dir
+				if not visited.has(neighbor):
+					visited[neighbor] = true
+					next_frontier.append(neighbor)
+		frontier = next_frontier
+		
+	visited.erase(from)
+	var datas :Array = visited.keys().duplicate()
+	
+	visited.clear()
+	frontier.clear()
+	
+	return datas # [Vector2]
+	
 static func get_tile_spawn_point(tiles: Dictionary, from: Vector2, radius: int = 1) -> Array:
 	var results: Array = []
 	var resDir :Dictionary = {} # { Vector2 : Vector2 }

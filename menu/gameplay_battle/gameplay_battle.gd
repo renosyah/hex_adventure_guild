@@ -34,7 +34,7 @@ func _spawn_unit():
 		unit.translation = x.global_position
 		unit.connect("unit_enter_tile", self, "_on_unit_enter_tile")
 		unit.connect("unit_leave_tile", self, "_on_unit_leave_tile")
-		unit.connect("on_reach", self, "_on_unit_reach")
+		unit.connect("unit_reach", self, "_on_unit_reach")
 		_units[x.id] = unit
 		
 		_unit_blocked_tiles.append(unit.current_tile)
@@ -140,11 +140,15 @@ func _on_unit_enter_tile(_unit, _tile_id):
 		_unit_blocked_tiles.append(_tile_id)
 		print("enter : %s" % _tile_id)
 		
-		
 	# check if unit enter tile
 	# trigger something
 	# after finish
-	
+	for i in _units.values():
+		if i is Vanguard:
+			var x :Vanguard = i
+			if x.is_enemy_enter_area(_unit):
+				yield(x, "unit_attack_target")
+		
 	_reveal_tile_in_unit_view(_unit)
 	_unit.move_unit()
 	
