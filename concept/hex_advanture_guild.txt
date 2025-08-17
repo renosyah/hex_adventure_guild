@@ -1,0 +1,168 @@
+hex adventure guild
+- cutout style, black and white color (ok)
+- hex turn base squad base rpg
+- grand map & battle map
+- single player adventure :
+	- create squad (party) start with 1 basic squad
+	- accept quest to battle enemy
+	- loot , trade, rest and recruit member
+	- create other squad and repeat
+
+- multiplayer battle
+	- use member from (single player adventure) and assemble squad
+	- battle 4 player pvp or pve LAN
+
+- map editor (ok)
+	- create/edit/use map for grand map
+	- create/edit/use map for battle map (ok)
+
+- hex navigation
+	- can check tile adjacent (for range attack & view range) (ok)
+	- can check range movement (for movement range) (ok)
+	- can travel using pathfinding (ok)
+
+- grand map (sp) : 
+	- move turnbase
+	- squad (party) of unit (4 - 6)
+	- unit normal move 1 range, march move 2 tile
+	- unit can attack (on offence), can make camp (on defence), can ambush (on offence)
+	- city, village & tavern (trade, rest & recruit)
+	- dungeon, bandit camp & fort (battle quest)
+
+- battle map (sp & mp) : 
+	- max 4 player with each have 6 unit
+	- spawn all unit
+	- battle turnbase
+	- all unit can only use melee attack at 1 tile adjacent
+	- on turn unit : +1 action, +1 move 
+	- activated active ability cost action point
+	- spoting mechanic, spotted unit can only disapear on enter undiscover tile
+
+- units : 
+	- vanguard (frontline) (4-6 dmg, 30 hp, 1 armor)
+		- stats : 
+			- 1 action
+			- 1 move
+			- 1 attack range
+			- 1 move range
+			- 2 view range
+			- ability (spear defence) (active) : enemy enter neaby tile, they get damaged
+
+		- weapons : 
+			- spear
+			- pike
+			- halberd
+
+	- knight (tank) (3-8 dmg, 45 hp, 2 (+2) armor)
+		- stats : 
+			- 1 action
+			- 1 move
+			- 1 attack range
+			- 1 move range
+			- +2 armor
+			- 1 view range
+			- ability (shield wall) (active) : have up to 50% damage reduction
+
+		- weapons : 
+			- sword
+			- mace
+			- axe
+			- war hammer
+
+	- hunter (scout) (3-5 dmg, 25 hp, 1 armor)
+		- stats : 
+			- 1 action
+			- 1 move
+			- 2 attack range
+			- 1 move range
+			- 2 view range
+			- ability (scouting) (active) : +2 view range
+
+		- weapons : 
+			- bow
+			- longbow
+			- composite bow
+
+	- gunner (heavy range support) (8-12 dmg, 25 hp, 1 armor)
+		- stats : 
+			- 1 action
+			- 1 move
+			- 2 attack range
+			- 1 move range
+			- 2 view range
+			- ability (reload) (active) : reload current weapon
+			- ability (pierce) (pasive) : range attack ignore armor (need reload)
+
+		- weapons : 
+			- crossbow
+			- hand cannon
+
+	- priest (heal support) (2-4 dmg, 25 hp, 1 armor)
+		- stats : 
+			- 1 action
+			- 1 move
+			- 1 attack range
+			- 1 move range
+			- 2 view range
+			- ability (healing) (active) : (+8 to +15) hp heal
+
+		- weapons : 
+			- healing staff
+			- holy staff
+
+	- mage (spell caster support) (6-8 dmg, 25 hp, 1 armor)
+		- stats : 
+			- 1 action
+			- 1 move
+			- 2 attack range
+			- 1 move range
+			- 2 view range
+			- ability (chanting) (active) : prepare spell caster
+			- ability (spell caster) (pasive) : spell attack deal AOE damage (need chanting)
+
+		- weapons : 
+			- fire staff
+			- ice staff
+			- lightning staff
+
+- item and inventory
+	- gold is global can be use by every squad
+	- each squad have inventory
+	- item in invetory can be trade & use in battle
+	- equipment can only be interact to equipt in grand map
+	- consumable can only be interact to consume in battle map
+	- equipment & consumable can be trade in grand map
+
+- item (consumable)
+	- heal potion (restore up to 45% hp)
+	- stamina potion (+1 move range)
+	- rage potion (+25% melee attack for melee unit)
+	- marksman potion (+2 range for range unit)
+	- scroll spell (+1 action for mage)
+	- scroll of healing (+1 action for priest)
+
+- item (equipment)
+	- armor plate +2 armor
+	- cape +1 armor
+	- helm +1 armor
+	- glove +1 armor
+	- ring/amulet of agility +1 move
+	- ring/amulet of cunning +1 attack
+	- ring/amulet of marksman +1 attack range
+	- ring/amulet of healing +5 healing bonus
+	- bag +25 inventory
+	- dagger, sword & knive (allow unit to retailiate 2 dmg when getting attacked by melee)
+
+
+
+
+
+
+
+
+
+
+
+
+
+

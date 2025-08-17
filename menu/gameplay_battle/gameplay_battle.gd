@@ -8,11 +8,10 @@ onready var map = $map
 var _tile_highlights = []
 var _undiscovered_tiles :Array = [] # [ Vector2 ]
 var _unit_blocked_tiles :Array = [] # [ Vector2 ]
-var _units :Dictionary = {} # { Vector2 : BaseUnit }
+var _unit_in_tile :Dictionary = {} # { Vector2 : BaseUnit }
 var _spawn_points :Array
 
 var _unit_datas :Dictionary = {} # { BaseUnit : UnitData }
-var _selected_tile :HexTile
 var _selected_unit :BaseUnit
 var _move_tiles :Array = []
 var _unit_moving_path :Dictionary = {} # { Vector2 : tile_highlight_template }
@@ -46,7 +45,7 @@ func _spawn_unit():
 		unit.connect("unit_enter_tile", self, "_on_unit_enter_tile")
 		unit.connect("unit_leave_tile", self, "_on_unit_leave_tile")
 		unit.connect("unit_reach", self, "_on_unit_reach")
-		_units[tile_id] = unit
+		_unit_in_tile[tile_id] = unit
 		_unit_datas[unit] = data
 		
 		_unit_blocked_tiles.append(unit.current_tile)
@@ -63,7 +62,7 @@ func _setup_undiscovered_tiles():
 			
 			# unit ocupied tile
 			# dont include it
-			 _units.has(tile.id),
+			 _unit_in_tile.has(tile.id),
 			
 			# this is very important
 			# because tile already blocked by nav
@@ -93,39 +92,43 @@ func _on_map_on_tile_click(tile :HexTile):
 	_clear_tile_highlights()
 	ui.show_unit_detail(false)
 	
+	var tile_has_unit :bool = _unit_in_tile.has(tile.id)
 	if _selected_unit == null:
-		if not _units.has(tile.id):
-			return
+		if tile_has_unit:
+			_selected_unit = _unit_in_tile[tile.id]
+			_display_detail_selected_unit()
 			
-		_selected_unit = _units[tile.id]
-		
-		tile_highlight_template.translation = _selected_unit.global_position
-		tile_highlight_template.visible = true
-		ui.show_unit_detail(true, _unit_datas[_selected_unit])
-		
-		if not _selected_unit.can_move():
-			return
-			
-		_selected_tile = tile
-		_higlight_unit_movement(tile.id)
-		return
+	else:
+		if tile_has_unit:
+			if _selected_unit != _unit_in_tile[tile.id]:
+				_selected_unit = _unit_in_tile[tile.id]
+				_display_detail_selected_unit()
+				
+			else:
+				_selected_unit = null
+				
+		else:
+			_move_unit(tile.id)
+			_selected_unit = null
 	
-	if _selected_unit.current_tile == tile.id:
-		_selected_unit = null
-		_selected_tile = null
+func _display_detail_selected_unit():
+	if not _selected_unit:
 		return
 		
-	_move_unit(tile.id)
+	tile_highlight_template.translation = _selected_unit.global_position
+	tile_highlight_template.visible = true
+	ui.show_unit_detail(true, _unit_datas[_selected_unit])
+	
+	if _selected_unit.can_move():
+		_higlight_unit_movement(_selected_unit.current_tile)
 	
 func _move_unit(to :Vector2):
 	if not _selected_unit.can_move():
-		_selected_unit = null
-		_selected_tile = null
 		return
 		
 	if _move_tiles.has(to):
 		var _blocked_path = _undiscovered_tiles + _unit_blocked_tiles
-		var paths :Array = map.get_navigation(_selected_tile.id, to, _blocked_path)
+		var paths :Array = map.get_navigation(_selected_unit.current_tile, to, _blocked_path)
 		
 		# dont include current tile id
 		paths.pop_front()
@@ -133,17 +136,17 @@ func _move_unit(to :Vector2):
 		var unit_paths = []
 		for i in paths:
 			unit_paths.append([i, map.get_tile(i).global_position])
+			
+		_unit_in_tile.erase(_selected_unit.current_tile)
 		
 		_selected_unit.paths = unit_paths
 		_selected_unit.move_unit()
-		_units.erase(_selected_tile.id)
 		
 		for id in paths:
 			var x :HexTile = map.get_tile(id)
 			var h = _add_tile_highlights(x.global_position, 3)
 			_unit_moving_path[id] = h
-			
-	_selected_unit = null
+		
 	
 func _higlight_unit_movement(id :Vector2):
 	if _selected_unit == null:
@@ -174,7 +177,7 @@ func _on_unit_enter_tile(_unit, _tile_id):
 	# check if unit enter tile
 	# trigger something
 	# after finish
-	for i in _units.values():
+	for i in _unit_in_tile.values():
 		if i is Vanguard:
 			var x :Vanguard = i
 			if x.is_enemy_enter_area(_unit):
@@ -189,7 +192,7 @@ func _on_unit_leave_tile(_unit, _tile_id):
 		print("leave : %s" % _tile_id)
 		
 func _on_unit_reach(_unit, _tile_id):
-	_units[_tile_id] = _unit
+	_unit_in_tile[_tile_id] = _unit
 	
 func _add_tile_highlights(pos :Vector3, type :int = 0) -> Spatial:
 	var x = tile_highlight_template.duplicate()
@@ -220,7 +223,7 @@ func _on_ui_end_turn():
 	# end their turn
 	# then call on_turn() on your unit
 	
-	for i in _units.values():
+	for i in _unit_in_tile.values():
 		var x :BaseUnit = i
 		x.on_turn()
 
@@ -230,7 +233,6 @@ func _on_ui_on_activate_ability():
 		ui.show_unit_detail(false)
 		(_selected_unit as Vanguard).perfom_action_activate_spear_defence()
 		_selected_unit = null
-		_selected_tile = null
 
 
 
