@@ -1,6 +1,5 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://menu/gameplay_battle/ui/unit_detail/unit_detail.gd" type="Script" id=1]
 [ext_resource path="res://menu/gameplay_battle/ui/unit_detail/unit_detail.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/icons/spear_defence.png" type="Texture" id=3]
 [ext_resource path="res://assets/icons/next_turn.png" type="Texture" id=4]
@@ -97,14 +96,9 @@ mouse_filter = 2
 size_flags_vertical = 0
 alignment = 1
 
-[node name="unit_detail" type="MarginContainer" parent="HBoxContainer2/CenterContainer2/unit_info_panel" instance=ExtResource( 2 )]
-margin_right = 300.0
-margin_bottom = 200.0
-rect_min_size = Vector2( 300, 200 )
-mouse_filter = 2
+[node name="unit_detail" parent="HBoxContainer2/CenterContainer2/unit_info_panel" instance=ExtResource( 2 )]
 size_flags_horizontal = 3
 size_flags_vertical = 0
-script = ExtResource( 1 )
 
 [node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer2"]
 margin_left = 454.0

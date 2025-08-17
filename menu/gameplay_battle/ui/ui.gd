@@ -6,8 +6,12 @@ signal end_turn
 onready var unit_control = $SafeArea/VBoxContainer/unit_control
 onready var movable_camera_ui = $SafeArea/VBoxContainer/movable_camera_ui
 onready var floating = $floating
+onready var loading_turn = $loading
 
 var floating_infos :Dictionary = {} # {unit :floating info}
+
+func _ready():
+	loading_turn.visible = false
 
 func show_unit_detail(v :bool, unit :BaseUnit = null, data :UnitData = null):
 	unit_control.show_unit_detail(v, unit, data)
@@ -36,11 +40,16 @@ func update_cam_position(camera :Camera):
 		info.visible = unit.visible
 		var v2 = camera.unproject_position(pos)
 		info.rect_position = v2 - info.rect_pivot_offset
-		
+
+func show_player_control(v :bool):
+	unit_control.visible = v
+	loading_turn.visible = not v
+
 func _on_exit_pressed():
 	get_tree().change_scene("res://menu/main/main.tscn")
 
 func _on_unit_control_end_turn():
+	show_player_control(false)
 	emit_signal("end_turn")
 	
 func _on_unit_control_on_activate_ability():

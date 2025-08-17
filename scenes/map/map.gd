@@ -1,4 +1,5 @@
 extends Node
+class_name HexMap
 
 signal on_map_ready
 signal on_tile_click(tile)
@@ -52,7 +53,7 @@ func export_data() -> HexMapFileData:
 func get_tiles() -> Array:
 	return _spawned_tiles.values() # [ Vector2 ]
 	
-func get_tile(id :Vector2) -> Array:
+func get_tile(id :Vector2) -> HexTile:
 	return _spawned_tiles[id] # HexTile
 	
 # use this for general purpose
@@ -198,18 +199,22 @@ func _get_navigation(start :int, end :int, _blocked_nav_ids :Array) -> PoolVecto
 	if not _navigation.has_point(end):
 		return paths
 		
+	var _restored_disabled_point :Array = []
+	
 	# blocked tile
 	for navigation_id in _blocked_nav_ids:
-		if _navigation.has_point(navigation_id):
+		var has_point :bool = _navigation.has_point(navigation_id)
+		var is_already_disabled :bool = _navigation.is_point_disabled(navigation_id)
+		if has_point and not is_already_disabled:
+			_restored_disabled_point.append(navigation_id)
 			_navigation.set_point_disabled(navigation_id, true)
 		
 	# get path with blocked tiles
 	paths = _navigation.get_point_path(start, end)
 	
 	# open blocked tile
-	for navigation_id in _blocked_nav_ids:
-		if _navigation.has_point(navigation_id):
-			_navigation.set_point_disabled(navigation_id, false)
+	for navigation_id in _restored_disabled_point:
+		_navigation.set_point_disabled(navigation_id, false)
 			
 	return paths
 	

@@ -15,6 +15,11 @@ _global_script_classes=[ {
 "path": "res://scenes/unit/base_unit.gd"
 }, {
 "base": "Node",
+"class": "BattleBot",
+"language": "GDScript",
+"path": "res://bot/battle_bot.gd"
+}, {
+"base": "Node",
 "class": "ChunkManagement",
 "language": "GDScript",
 "path": "res://addons/chunk_manajement/chunk_management.gd"
@@ -23,6 +28,11 @@ _global_script_classes=[ {
 "class": "ChunkManagement3D",
 "language": "GDScript",
 "path": "res://addons/chunk_manajement/chunk_management_3d.gd"
+}, {
+"base": "Node",
+"class": "HexMap",
+"language": "GDScript",
+"path": "res://scenes/map/map.gd"
 }, {
 "base": "Resource",
 "class": "HexMapData",
@@ -146,8 +156,10 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "BaseUnit": "",
+"BattleBot": "",
 "ChunkManagement": "",
 "ChunkManagement3D": "",
+"HexMap": "",
 "HexMapData": "",
 "HexMapFileData": "",
 "HexMapUtil": "",

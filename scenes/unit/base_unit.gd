@@ -147,16 +147,12 @@ func move_unit() -> void:
 	var _move_to = path[1]
 	current_tile = path[0]
 	
-	if not is_hidden:
-		facing_pos(_move_to)
-		
-		_tween_move.interpolate_property(self, "global_position", global_position, _move_to, move_speed)
-		_tween_move.start()
-		
-		on_unit_move()
-		
-	else:
-		_on_move_completed(self, "global_position")
+	facing_pos(_move_to)
+	
+	_tween_move.interpolate_property(self, "global_position", global_position, _move_to, move_speed)
+	_tween_move.start()
+	
+	on_unit_move()
 	
 func _on_move_completed(object: Object, key: NodePath):
 	consume_movement()

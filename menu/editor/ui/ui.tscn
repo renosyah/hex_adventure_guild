@@ -117,16 +117,24 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 168.0
 margin_right = 600.0
-margin_bottom = 876.0
+margin_bottom = 751.0
 size_flags_vertical = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="SafeArea/VBoxContainer"]
-margin_top = 880.0
+margin_top = 755.0
 margin_right = 600.0
-margin_bottom = 920.0
+margin_bottom = 795.0
 rect_min_size = Vector2( 0, 40 )
 
 [node name="object_option" parent="SafeArea/VBoxContainer" instance=ExtResource( 7 )]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 0.0
+margin_top = 799.0
+margin_right = 600.0
+margin_bottom = 1024.0
 
 [node name="tile_option" parent="SafeArea" instance=ExtResource( 5 )]
 margin_top = 312.0
