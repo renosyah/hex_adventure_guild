@@ -27,6 +27,9 @@ func is_enemy_enter_area(target :BaseUnit, id :Vector2) -> bool:
 	if not _spear_defence_area.has(id):
 		return false
 		
+	if target.team == team:
+		return false
+		
 	attack_target(target)
 	
 	_is_spear_defence_activated = false

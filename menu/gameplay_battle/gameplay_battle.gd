@@ -39,7 +39,7 @@ func _display_detail_selected_unit():
 	
 	var conditions :Array = [
 		not _selected_unit.can_move(),
-		_selected_unit.player_id != Global.player_id
+		_selected_unit.player_id != Global.current_player_id
 	]
 	
 	if conditions.has(true):
@@ -48,8 +48,10 @@ func _display_detail_selected_unit():
 	_higlight_unit_movement(_selected_unit.current_tile)
 	
 func _on_ui_end_turn():
+	_clear_tile_highlights()
+	_unit_moving_path.clear()
 	
-	# waiit until all player
+	# wait until all player
 	# end their turn
 	# then call on_turn() on your unit
 	
@@ -131,34 +133,51 @@ func _setup_undiscovered_tiles():
 	
 #------------------------------------ UNITS ---------------------------------------------------
 func _spawn_unit():
-	var tile_ids = _spawn_points[Global.team]
-	var index :int = 0
-	for tile_id in tile_ids:
-		var x :HexTile = map.get_tile(tile_id)
-		x.set_discovered(true)
+	var cam_pos :Vector3
+	
+	for i in Global.player_battle_data:
+		var player :PlayerBattleData = i
+		var tile_ids = _spawn_points[player.team]
 		
-		var data :UnitData = Global.player_units[index]
-		data.pos = x.global_position
-		var unit :BaseUnit = data.spawn(self)
-		unit.current_tile = tile_id
-		unit.connect("unit_enter_tile", self, "_on_unit_enter_tile")
-		unit.connect("unit_leave_tile", self, "_on_unit_leave_tile")
-		unit.connect("unit_reach", self, "_on_unit_reach")
-		unit.connect("unit_dead", self, "_on_unit_dead", [data])
-		_unit_in_tile[tile_id] = unit
-		_unit_datas[unit] = data
+		var index :int = 0
+		for unit_data in player.player_units:
+			var data :UnitData = unit_data
+			var tile_id :Vector2 = tile_ids[index]
+			var is_player_unit = data.player_id == Global.current_player_id
+			var hextile :HexTile = map.get_tile(tile_id)
+			hextile.set_discovered(is_player_unit)
+			data.pos = hextile.global_position
+			
+			var unit :BaseUnit = data.spawn(self)
+			unit.current_tile = tile_id
+			unit.is_hidden = not is_player_unit
+			unit.visible = not unit.is_hidden
+			unit.connect("unit_enter_tile", self, "_on_unit_enter_tile")
+			unit.connect("unit_leave_tile", self, "_on_unit_leave_tile")
+			unit.connect("unit_reach", self, "_on_unit_reach")
+			unit.connect("unit_dead", self, "_on_unit_dead", [data])
+			_unit_in_tile[tile_id] = unit
+			_unit_datas[unit] = data
+			
+			_unit_blocked_tiles.append(unit.current_tile)
+			ui.add_unit_floating_info(unit)
+			
+			if is_player_unit:
+				_reveal_tile_in_unit_view(unit)
+				cam_pos = hextile.global_position
+				
+			index += 1
 		
-		_unit_blocked_tiles.append(unit.current_tile)
-		_reveal_tile_in_unit_view(unit)
-		ui.add_unit_floating_info(unit)
-		index += 1
-		
-	movable_camera.translation = map.get_tile(tile_ids[0]).global_position
+	movable_camera.translation = cam_pos
 	movable_camera.translation += Vector3.BACK * 8
 	movable_camera.translation.y = 10
 	
 func _move_unit(to :Vector2):
-	if not _selected_unit.can_move():
+	var conditions :Array = [
+		_selected_unit.player_id != Global.current_player_id,
+		not _selected_unit.can_move()
+	]
+	if conditions.has(true):
 		return
 		
 	if _move_tiles.has(to):
@@ -183,6 +202,13 @@ func _move_unit(to :Vector2):
 			_unit_moving_path[id] = h
 		
 func _on_unit_enter_tile(_unit :BaseUnit, _tile_id :Vector2):
+	
+	# unit enter undiscovered tile
+	# this is fo enemy unit
+	if _undiscovered_tiles.has(_tile_id):
+		_unit.is_hidden = true
+		_unit.visible = false
+		
 	if not _unit_blocked_tiles.has(_tile_id):
 		_unit_blocked_tiles.append(_tile_id)
 		print("enter : %s" % _tile_id)
@@ -209,7 +235,10 @@ func _on_unit_leave_tile(_unit :BaseUnit, _tile_id :Vector2):
 		print("leave : %s" % _tile_id)
 		
 func _on_unit_reach(_unit :BaseUnit, _tile_id :Vector2):
+	_on_unit_enter_tile(_unit, _tile_id)
+	
 	_unit_in_tile[_tile_id] = _unit
+	print("reach : %s" % _tile_id)
 	
 func _on_unit_dead(_unit :BaseUnit, _tile_id :Vector2, data :UnitData):
 	if _unit_in_tile.has(_tile_id):
@@ -232,6 +261,9 @@ func _reveal_tile_in_unit_view(_unit :BaseUnit):
 		var tile :HexTile = i
 		if not tile.is_discovered:
 			tile.set_discovered(true)
+			
+		if _unit_in_tile.has(tile.id):
+			_unit_in_tile[tile.id].unit_spotted()
 			
 		if _undiscovered_tiles.has(tile.id):
 			_undiscovered_tiles.erase(tile.id)

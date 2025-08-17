@@ -28,6 +28,8 @@ export var attack_range :int = 1
 export var view_range :int = 2
 export var move_speed :float = 0.4
 
+export var is_hidden :bool
+
 var _tween_move :Tween
 var _current_attack_damage :int
 var _current_facing :int = 1
@@ -40,7 +42,6 @@ func _ready():
 	_tween_move = Tween.new()
 	_tween_move.connect("tween_completed", self, "_on_move_completed")
 	add_child(_tween_move)
-	
 	_prepare_attack_damage()
 
 func _prepare_attack_damage():
@@ -70,6 +71,13 @@ func face_left():
 	
 func face_right():
 	_current_facing = 1
+	
+func unit_spotted():
+	if is_dead():
+		return
+		
+	is_hidden = false
+	visible = not is_hidden
 	
 func on_unit_move() -> void:
 	pass
@@ -139,26 +147,27 @@ func move_unit() -> void:
 	var _move_to = path[1]
 	current_tile = path[0]
 	
-	facing_pos(_move_to)
-	
-	_tween_move.interpolate_property(self, "global_position", global_position, _move_to, move_speed)
-	_tween_move.start()
-	
-	on_unit_move()
+	if not is_hidden:
+		facing_pos(_move_to)
+		
+		_tween_move.interpolate_property(self, "global_position", global_position, _move_to, move_speed)
+		_tween_move.start()
+		
+		on_unit_move()
+		
+	else:
+		_on_move_completed(self, "global_position")
 	
 func _on_move_completed(object: Object, key: NodePath):
 	consume_movement()
 	
 	paths.pop_front()
 	
-	emit_signal("unit_enter_tile", self, current_tile)
-	
 	if paths.empty():
 		on_unit_stop()
-		return
 		
-	
-
+	else:
+		emit_signal("unit_enter_tile", self, current_tile)
 
 
 

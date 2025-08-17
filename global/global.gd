@@ -8,10 +8,11 @@ func _ready():
 	
 #---------------------------------------------------------------------------------------
 	
-var player_id = 1
-var team = 2
-var player_units :Array = [] # [ UnitData ]
-	
+var current_player_id = 1
+var current_player_team = 1
+
+var player_battle_data :Array = [] # [ PlayerBattleData ]
+
 #---------------------------------------------------------------------------------------
 var selected_map_data : HexMapFileData
 var _save_load_map :SaveLoadImproved
