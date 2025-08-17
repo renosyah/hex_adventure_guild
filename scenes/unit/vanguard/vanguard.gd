@@ -8,7 +8,7 @@ var _is_spear_defence_activated :bool = false
 var _spear_defence_area :Array = []
 
 # special ability only for this unit
-func perfom_action_activate_spear_defence():
+func activate_spear_defence():
 	if not .has_action():
 		return
 		
@@ -20,11 +20,11 @@ func perfom_action_activate_spear_defence():
 	animation_player.play("spear_defence")
 	yield(animation_player,"animation_finished")
 	
-func is_enemy_enter_area(target :BaseUnit) -> bool:
+func is_enemy_enter_area(target :BaseUnit, id :Vector2) -> bool:
 	if not _is_spear_defence_activated:
 		return false
 	
-	if not _spear_defence_area.has(target.current_tile):
+	if not _spear_defence_area.has(id):
 		return false
 		
 	attack_target(target)
@@ -55,14 +55,14 @@ func face_right():
 	
 	body.scale.x = 1
 	
-func attack_target(unit :BaseUnit):
+func attack_target(target :BaseUnit):
+	if not target.is_dead():
+		.facing_pos(target.global_position)
+		animation_player.play("attack")
+		yield(animation_player,"animation_finished")
+		animation_player.play("iddle")
 	
-	.facing_pos(unit.global_position)
-	animation_player.play("attack")
-	yield(animation_player,"animation_finished")
-	animation_player.play("iddle")
-	
-	.attack_target(unit)
+	.attack_target(target)
 	
 func on_unit_move() -> void:
 	.on_unit_move()

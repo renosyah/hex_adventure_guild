@@ -25,12 +25,18 @@ func _on_editor_pressed():
 
 func _on_battle_pressed():
 	Global.player_units.clear()
+	
+	var names = ["Galeno", "GuFa", "Miav", "melvin"]
+	var potraits = [[2,3],[2,1],[2,2],[2,4]]
+	
 	for i in 4:
 		var vanguard = preload("res://scenes/unit/data/units/vanguard.tres").duplicate()
 		vanguard.player_id = Global.player_id
 		vanguard.team = Global.team
-		vanguard.unit_name = RandomNameGenerator.generate()
-		vanguard.unit_potrait = [int(rand_range(0, 8)),int(rand_range(0, 11))]
+		vanguard.unit_name = names[i]
+		vanguard.unit_potrait = potraits[i]
+		vanguard.hp = 25
+		vanguard.max_hp = 25
 		Global.player_units.append(vanguard)
 	
 	loading.visible = true

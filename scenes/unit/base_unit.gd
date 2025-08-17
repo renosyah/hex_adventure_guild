@@ -5,7 +5,7 @@ signal unit_leave_tile(_unit, _tile_id)
 signal unit_enter_tile(_unit, _tile_id)
 signal unit_attack_target(_unit, _target)
 signal unit_take_damage(_unit, _damage, _from_unit)
-signal unit_dead(_unit)
+signal unit_dead(_unit, _tile_id)
 signal unit_reach(_unit, _tile_id)
 
 # owner
@@ -85,13 +85,13 @@ func take_damage(dmg :int, from :BaseUnit) -> void:
 	hp = clamp(hp - damage_receive, 0, max_hp)
 	
 	if is_dead():
-		emit_signal("unit_dead", self)
+		emit_signal("unit_dead", self, current_tile)
 		return
 		
 	unit_taken_damage(damage_receive, from)
 	
 func unit_taken_damage(dmg :int, from :BaseUnit):
-	emit_signal("unit_take_damage", dmg, from)
+	emit_signal("unit_take_damage", self, dmg, from)
 	
 func on_turn():
 	action = max_action
@@ -109,8 +109,9 @@ func attack_target(target :BaseUnit) -> void:
 	if not is_instance_valid(target):
 		return
 		
-	target.take_damage(get_attack_damage(), self)
-	emit_signal("unit_attack_target", self, target)
+	if not target.is_dead():
+		target.take_damage(get_attack_damage(), self)
+		emit_signal("unit_attack_target", self, target)
 	
 func facing_pos(pos :Vector3):
 	if pos.x < global_position.x and _current_facing == 1:
@@ -129,7 +130,7 @@ func consume_movement() -> void:
 # new tile, must be validate by game master
 # like unit enter a trap or something
 func move_unit() -> void:
-	if paths.empty():
+	if paths.empty() or is_dead():
 		return
 		
 	emit_signal("unit_leave_tile", self, current_tile)

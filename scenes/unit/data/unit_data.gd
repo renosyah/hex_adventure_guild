@@ -30,6 +30,8 @@ export var move_speed :float = 0.4
 
 func spawn(parent :Node) -> BaseUnit:
 	var unit :BaseUnit = unit_scene.instance()
+	unit.player_id = player_id
+	unit.team = team
 	unit.action = action
 	unit.max_action = max_action
 	unit.move = move
