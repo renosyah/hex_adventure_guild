@@ -3,6 +3,8 @@ class_name BattleBot
 
 signal bot_end_turn
 
+var chance_bot_attack :float = 0.5
+
 #------------------------------------ GLOBAL VAR ---------------------------------------------------
 # ALL THIS VAR WILL SHARED POINTER WITH BATTLE SCENE
 var bot_id = 1
@@ -18,6 +20,7 @@ var _selected_unit :BaseUnit
 var _move_tiles :Array = []
 var _rng = RandomNumberGenerator.new()
 var _unit_to_command :Array = []
+var _option_to_attack :Array = []
 
 onready var bot_decide_timeout = $bot_decide_timeout
 
@@ -52,14 +55,65 @@ func _on_bot_decide_timeout_timeout():
 		emit_signal("bot_end_turn")
 		return
 		
-	var unit :BaseUnit = _unit_to_command.front()
-	if _move_unit(unit):
-		yield(unit, "unit_reach")
+	_selected_unit = _unit_to_command.front()
+	_add_unit_in_attack_range()
+	
+	if not _attack_unit():
+		if _move_unit():
+			return
 	
 	_unit_to_command.pop_front()
 	bot_decide_timeout.start()
 
-func _move_unit(_selected_unit :BaseUnit) -> bool:
+# this function will be call by battle scnene
+# to inform bot if their current unit progress
+# if unit dead or reach destination
+func check_unit(unit :BaseUnit):
+	if unit != _selected_unit:
+		return
+		
+	if _unit_to_command.empty():
+		emit_signal("bot_end_turn")
+		return
+		
+	_unit_to_command.pop_front()
+	bot_decide_timeout.start()
+	
+func _add_unit_in_attack_range():
+	_option_to_attack.clear()
+	
+	var tiles = map.get_adjacent_tile(_selected_unit.current_tile, _selected_unit.attack_range)
+	if tiles.empty() or tiles.size() == 1:
+		return
+		
+	for tile in tiles:
+		var x :HexTile = tile
+		if not unit_in_tile.has(tile.id):
+			continue
+			
+		var _target :BaseUnit = unit_in_tile[tile.id]
+		if _target.team == bot_team:
+			continue
+			
+		_option_to_attack.append(_target)
+		
+		
+	tiles.pop_front()
+	
+func _attack_unit() -> bool:
+	if _option_to_attack.empty():
+		return false
+		
+	# have chance to attack or not
+	if _rng.randf() > chance_bot_attack:
+		return false
+		
+	var target :BaseUnit = _option_to_attack[_rng.randi_range(0, _option_to_attack.size() - 1)]
+	_selected_unit.perfom_action_attack(target)
+	
+	return true
+	
+func _move_unit() -> bool:
 	_reveal_tile_in_unit_view(_selected_unit.current_tile, _selected_unit.view_range)
 	
 	var _blocked_path = _undiscovered_tiles + unit_blocked_tiles

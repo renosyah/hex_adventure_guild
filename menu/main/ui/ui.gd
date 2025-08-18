@@ -32,7 +32,7 @@ func _on_battle_pressed():
 	for player_id in [1, 2, 3]:
 		var player_data = PlayerBattleData.new()
 		player_data.player_id = player_id
-		player_data.team = player_id + 1
+		player_data.team = player_id
 		player_data.player_units = []
 		for i in 4:
 			var vanguard = preload("res://scenes/unit/data/units/vanguard.tres").duplicate()

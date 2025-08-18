@@ -17,6 +17,7 @@ var _unit_datas :Dictionary = {} # { BaseUnit : UnitData }
 #------------------------------------ PLAYER VAR ---------------------------------------------------
 var _selected_unit :BaseUnit
 var _move_tiles :Array = []
+var _attack_tiles :Array = []
 var _unit_moving_path :Dictionary = {} # { Vector2 : tile_highlight_template }
 
 #------------------------------------ BOTS ---------------------------------------------------
@@ -52,6 +53,7 @@ func _display_detail_selected_unit():
 		return
 		
 	_higlight_unit_movement(_selected_unit.current_tile)
+	_higlight_unit_attack(_selected_unit.current_tile)
 	
 func _on_ui_end_turn():
 	_clear_tile_highlights()
@@ -107,6 +109,12 @@ func _on_map_on_tile_click(tile :HexTile):
 	if is_instance_valid(_selected_unit):
 		if tile_has_unit:
 			if _selected_unit != _unit_in_tile[tile.id]:
+				
+				if _attack_tiles.has(tile.id):
+					_attack_unit(_selected_unit, tile.id)
+					_selected_unit = null
+					return
+					
 				_selected_unit = _unit_in_tile[tile.id]
 				_display_detail_selected_unit()
 				
@@ -179,6 +187,20 @@ func _spawn_unit():
 	movable_camera.translation += Vector3.BACK * 8
 	movable_camera.translation.y = 10
 	
+func _attack_unit(unit :BaseUnit, to :Vector2):
+	var conditions :Array = [
+		not _selected_unit.has_action(),
+		not _unit_in_tile.has(to)
+	]
+	if conditions.has(true):
+		return
+		
+	if _attack_tiles.has(to):
+		var target :BaseUnit = _unit_in_tile[to]
+		unit.perfom_action_attack(target)
+		
+	_attack_tiles.clear()
+	
 func _move_unit(to :Vector2):
 	var conditions :Array = [
 		_selected_unit.player_id != Global.current_player_id,
@@ -210,9 +232,8 @@ func _on_unit_enter_tile(_unit :BaseUnit, _tile_id :Vector2):
 	# unit will hidden
 	# unit enter undiscovered tile
 	# this is fo enemy unit
-	if _undiscovered_tiles.has(_tile_id):
-		_unit.is_hidden = true
-		_unit.visible = not _unit.is_hidden
+	_unit.is_hidden = _undiscovered_tiles.has(_tile_id)
+	_unit.visible = not _unit.is_hidden
 		
 	if not _unit_blocked_tiles.has(_tile_id):
 		_unit_blocked_tiles.append(_tile_id)
@@ -248,6 +269,11 @@ func _on_unit_reach(_unit :BaseUnit, _tile_id :Vector2):
 	_on_unit_enter_tile(_unit, _tile_id)
 	
 	_unit_in_tile[_tile_id] = _unit
+	
+	for i in _bots:
+		var bot :BattleBot = i
+		bot.check_unit(_unit)
+		
 	print("reach : %s" % _tile_id)
 	
 func _on_unit_dead(_unit :BaseUnit, _tile_id :Vector2, data :UnitData):
@@ -265,6 +291,10 @@ func _on_unit_dead(_unit :BaseUnit, _tile_id :Vector2, data :UnitData):
 		
 	_unit_moving_path.clear()
 	
+	for i in _bots:
+		var bot :BattleBot = i
+		bot.check_unit(_unit)
+		
 func _reveal_tile_in_unit_view(_unit :BaseUnit):
 	var tiles = map.get_adjacent_view_tile(_unit.current_tile, _unit.view_range)
 	for i in tiles:
@@ -278,6 +308,28 @@ func _reveal_tile_in_unit_view(_unit :BaseUnit):
 			_unit_in_tile[tile.id].unit_spotted()
 			
 #------------------------------------ UTILS ---------------------------------------------------
+func _higlight_unit_attack(id :Vector2):
+	if not is_instance_valid(_selected_unit):
+		return
+		
+	_attack_tiles.clear()
+	
+	var tiles = map.get_adjacent_tile(id, _selected_unit.attack_range)
+	tiles.pop_front()
+	
+	for tile in tiles:
+		var x :HexTile = tile
+		if not _unit_in_tile.has(tile.id):
+			continue
+			
+		var _unit :BaseUnit = _unit_in_tile[tile.id]
+		if _unit.team == Global.current_player_team:
+			continue
+			
+		_attack_tiles.append(x.id)
+		var h = _add_tile_highlights(x.global_position, 2)
+		_tile_highlights.append(h)
+	
 func _higlight_unit_movement(id :Vector2):
 	if not is_instance_valid(_selected_unit):
 		return
@@ -304,7 +356,7 @@ func _add_tile_highlights(pos :Vector3, type :int = 0) -> Spatial:
 		1:
 			x.show()
 		2:
-			x.show_view()
+			x.show_attack()
 		3:
 			x.show_move()
 			
