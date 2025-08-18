@@ -2,6 +2,7 @@ extends Node
 class_name BattleBot
 
 signal bot_end_turn
+signal bot_command_unit(_unit)
 
 var chance_bot_attack :float = 0.5
 
@@ -108,6 +109,8 @@ func _attack_unit() -> bool:
 	var target :BaseUnit = _option_to_attack[_rng.randi_range(0, _option_to_attack.size() - 1)]
 	_selected_unit.perfom_action_attack(target)
 	
+	emit_signal("bot_command_unit", _selected_unit)
+	
 	return true
 	
 func _move_unit() -> bool:
@@ -147,6 +150,8 @@ func _move_unit() -> bool:
 	_selected_unit.move_unit()
 	
 	print("bot move unit : %s" % _selected_unit)
+	
+	emit_signal("bot_command_unit", _selected_unit)
 	
 	return true
 	

@@ -20,6 +20,7 @@ func show_damage():
 	
 func show_dead():
 	sprite_3d.texture = dead_icon
+	label.text = ""
 	visible = true
 	label.visible = false
 	animation_player.play("boom")
