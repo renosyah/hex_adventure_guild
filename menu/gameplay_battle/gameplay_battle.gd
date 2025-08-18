@@ -113,7 +113,7 @@ func _on_map_on_tile_click(tile :HexTile):
 		
 	if _undiscovered_tiles.has(tile.id):
 		return
-		
+			
 	_clear_tile_highlights()
 	ui.show_unit_detail(false)
 	
@@ -172,7 +172,6 @@ func _spawn_unit():
 			var tile_id :Vector2 = tile_ids[index]
 			var is_player_unit = data.player_id == Global.current_player_id
 			var hextile :HexTile = map.get_tile(tile_id)
-			hextile.set_discovered(is_player_unit)
 			data.pos = hextile.global_position
 			
 			var unit :BaseUnit = data.spawn(self)

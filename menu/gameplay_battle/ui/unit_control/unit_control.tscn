@@ -15,6 +15,7 @@ margin_left = -300.0
 margin_top = -225.0
 margin_right = 300.0
 rect_min_size = Vector2( 0, 225 )
+mouse_filter = 2
 script = ExtResource( 6 )
 
 [node name="Control" type="Control" parent="."]

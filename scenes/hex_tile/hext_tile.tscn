@@ -23,7 +23,7 @@ text = "aa"
 font = ExtResource( 2 )
 
 [node name="cloud" type="Sprite3D" parent="."]
-transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0 )
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.3, 0 )
 cast_shadow = 0
 billboard = 1
 double_sided = false

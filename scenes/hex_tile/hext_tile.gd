@@ -31,11 +31,17 @@ func show_label(v :bool):
 	
 func set_discovered(v :bool):
 	is_discovered = v
-	_fog.visible = ! v
-	_tile_body.visible = v
+	_tile_body.visible = is_discovered
 	
 	if object:
-		object.visible = v
+		object.visible = is_discovered
+		
+	if is_discovered and _fog.visible:
+		var tween = get_tree().create_tween()
+		tween.tween_property(_fog, "scale", Vector3(0, 0, 0), 0.2).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+		yield(tween,"finished")
+		
+	_fog.visible = ! is_discovered
 	
 func update():
 	_tile.texture = texture

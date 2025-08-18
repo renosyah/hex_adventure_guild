@@ -54,6 +54,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/hex_tile/hext_tile.gd"
 }, {
+"base": "BaseUnit",
+"class": "Hunter",
+"language": "GDScript",
+"path": "res://scenes/unit/hunter/hunter.gd"
+}, {
 "base": "InputEventAction",
 "class": "InputEventMultiScreenDrag",
 "language": "GDScript",
@@ -108,6 +113,11 @@ _global_script_classes=[ {
 "class": "PotraitGenerator",
 "language": "GDScript",
 "path": "res://assets/potrait/potrait_generator.gd"
+}, {
+"base": "Spatial",
+"class": "Projectile",
+"language": "GDScript",
+"path": "res://scenes/projectile/projectile.gd"
 }, {
 "base": "Node",
 "class": "RandomNameGenerator",
@@ -164,6 +174,7 @@ _global_script_class_icons={
 "HexMapFileData": "",
 "HexMapUtil": "",
 "HexTile": "",
+"Hunter": "",
 "InputEventMultiScreenDrag": "",
 "InputEventScreenPinch": "",
 "InputEventScreenTwist": "",
@@ -175,6 +186,7 @@ _global_script_class_icons={
 "ObjectTile": "",
 "PlayerBattleData": "",
 "PotraitGenerator": "",
+"Projectile": "",
 "RandomNameGenerator": "",
 "SaveLoad": "",
 "SaveLoadImproved": "",

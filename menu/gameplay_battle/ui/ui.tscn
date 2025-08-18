@@ -71,6 +71,7 @@ margin_right = 600.0
 margin_bottom = 1024.0
 
 [node name="battle_result" type="Control" parent="SafeArea"]
+visible = false
 margin_right = 600.0
 margin_bottom = 1024.0
 

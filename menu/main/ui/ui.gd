@@ -38,18 +38,24 @@ func _on_battle_pressed():
 		player_data.player_id = player_id
 		player_data.team = teams[player_id]
 		player_data.player_units = []
-		for i in 6:
+		for i in 2:
 			var weapon = weapons.keys()[rand_range(0, 3)]
 			var vanguard = preload("res://scenes/unit/data/units/vanguard.tres").duplicate()
 			vanguard.player_id = player_data.player_id
 			vanguard.team = player_data.team
-			vanguard.unit_name = RandomNameGenerator.generate()
+			vanguard.unit_name = "%s (%s)" %[RandomNameGenerator.generate(), "Vanguard"]
 			vanguard.unit_potrait = [int(rand_range(0,8)), int(rand_range(0,10))]
-			vanguard.hp = 25
-			vanguard.max_hp = 25
 			vanguard.attack_damage = weapons[weapon]
 			vanguard.weapon_model = weapon
 			player_data.player_units.append(vanguard)
+			
+		for i in 2:
+			var hunter = preload("res://scenes/unit/data/units/hunter.tres").duplicate()
+			hunter.player_id = player_data.player_id
+			hunter.team = player_data.team
+			hunter.unit_name = "%s (%s)" %[RandomNameGenerator.generate(), "Hunter"]
+			hunter.unit_potrait = [int(rand_range(0,8)), int(rand_range(0,10))]
+			player_data.player_units.append(hunter)
 			
 		Global.player_battle_data.append(player_data)
 		
