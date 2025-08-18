@@ -23,7 +23,6 @@ var _move_tiles :Array = []
 var _rng = RandomNumberGenerator.new()
 var _unit_to_command :Array = []
 var _option_to_attack :Array = []
-var _direction_suggest :Vector2
 
 onready var bot_decide_timeout = $bot_decide_timeout
 
@@ -34,18 +33,47 @@ func on_turn():
 	_get_all_units()
 	bot_decide_timeout.start()
 	
-func _setup_direction_suggest():
-	for key in unit_datas.keys():
-		var unit :BaseUnit = key
-		if not is_instance_valid(unit):
+func _create_paths_suggest() -> Array:
+	var units :Array = unit_datas.keys().duplicate()
+	units.shuffle()
+	
+	var _direction_suggest :Vector2 = units[0].current_tile
+	
+	for i in units:
+		var target :BaseUnit = i
+		if not is_instance_valid(target):
 			continue
 			
-		if unit.is_dead():
+		if target.is_dead():
 			continue
 			
-		if unit.team != bot_team:
-			_direction_suggest = unit.current_tile
-			return
+		if target.team == bot_team:
+			continue
+			
+		var dis_1 = _direction_suggest.distance_squared_to(_selected_unit.current_tile)
+		var dis_2 = target.current_tile.distance_squared_to(_selected_unit.current_tile)
+		if dis_2 < dis_1:
+			_direction_suggest = target.current_tile
+			
+	var cop = unit_blocked_tiles.duplicate()
+	cop.erase(_direction_suggest)
+	
+	var results = map.get_navigation(_selected_unit.current_tile, _direction_suggest, cop)
+	if results.empty() or results.size() == 1:
+		return []
+		
+	var paths :Array = []
+	for i in results:
+		paths.append(i)
+		
+	paths.erase(_direction_suggest)
+	if paths.size() == 1:
+		return []
+
+	while paths.size() > _selected_unit.move:
+		paths.pop_back()
+
+	return paths
 	
 func _setup_undiscovered_tiles():
 	for i in map.get_tiles():
@@ -130,39 +158,39 @@ func _attack_unit() -> bool:
 	
 func _move_unit() -> bool:
 	_reveal_tile_in_unit_view(_selected_unit.current_tile, _selected_unit.view_range)
+	var _paths :Array = []
 	
-	var _blocked_path = _undiscovered_tiles + unit_blocked_tiles
-	var movement_list = []
+	if _rng.randf() < agresive_bot_attack:
+		_paths = _create_paths_suggest()
 	
-	var tiles = map.get_astar_adjacent_tile(_selected_unit.current_tile, _selected_unit.move, _blocked_path)
-	if tiles.empty() or tiles.size() == 1:
-		return false
+	else:
+		var movement_list = []
+		var _blocked_path = _undiscovered_tiles + unit_blocked_tiles
+		var tiles = map.get_astar_adjacent_tile(_selected_unit.current_tile, _selected_unit.move, _blocked_path)
+		if tiles.empty() or tiles.size() == 1:
+			return false
 		
-	_reveal_tile_in_unit_view(tiles.front().id, _selected_unit.view_range)
-	tiles.pop_front()
+		_reveal_tile_in_unit_view(tiles.front().id, _selected_unit.view_range)
+		tiles.pop_front()
 	
-	for tile in tiles:
-		var x :HexTile = tile
-		movement_list.append(x.id)
-		
-	if movement_list.empty():
-		return false
-		
-		
-	# use random or use closes to enemy
-	var to = movement_list[_rng.randi_range(0, movement_list.size() - 1)]
-	if _rng.randf() > agresive_bot_attack:
-		to = _get_closes_to_direction_suggest(movement_list)
-		
-	var paths :Array = map.get_navigation(_selected_unit.current_tile, to, _blocked_path)
-	if paths.empty() or paths.size() == 1:
+		for tile in tiles:
+			var x :HexTile = tile
+			movement_list.append(x.id)
+	
+		if movement_list.empty():
+			return false
+	
+		var to = movement_list[_rng.randi_range(0, movement_list.size() - 1)]
+		_paths = map.get_navigation(_selected_unit.current_tile, to, _blocked_path)
+	
+	if _paths.empty() or _paths.size() == 1:
 		return false
 	
 	# dont include current tile id
-	paths.pop_front()
+	_paths.pop_front()
 	
 	var unit_paths = []
-	for i in paths:
+	for i in _paths:
 		unit_paths.append([i, map.get_tile(i).global_position])
 		_reveal_tile_in_unit_view(i, _selected_unit.view_range)
 		
@@ -174,15 +202,6 @@ func _move_unit() -> bool:
 	emit_signal("bot_command_unit", _selected_unit)
 	
 	return true
-	
-func _get_closes_to_direction_suggest(list :Array) -> Vector2:
-	var _close :Vector2 = list[0]
-	for i in list:
-		var v :Vector2 = i
-		if v.distance_squared_to(_direction_suggest):
-			_close = v
-			
-	return _close
 	
 func _reveal_tile_in_unit_view(id :Vector2, view_range :int):
 	var tiles = map.get_adjacent_view_tile(id, view_range)

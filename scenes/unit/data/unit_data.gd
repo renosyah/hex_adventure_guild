@@ -28,6 +28,9 @@ export var attack_range :int = 1
 export var view_range :int = 2
 export var move_speed :float = 0.4
 
+# equipment
+export var weapon_model :Resource
+
 func spawn(parent :Node) -> BaseUnit:
 	var unit :BaseUnit = unit_scene.instance()
 	unit.player_id = player_id
@@ -43,6 +46,7 @@ func spawn(parent :Node) -> BaseUnit:
 	unit.attack_range = attack_range
 	unit.view_range = view_range
 	unit.move_speed = move_speed
+	unit.weapon_model = weapon_model
 	parent.add_child(unit)
 	unit.translation = pos
 	return unit

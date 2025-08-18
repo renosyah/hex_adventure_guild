@@ -15,6 +15,9 @@ var _unit_in_tile :Dictionary = {} # { Vector2 : BaseUnit }
 var _spawn_points :Array
 var _unit_datas :Dictionary = {} # { BaseUnit : UnitData }
 
+#------------------------------------ SPECIAL CLASS ---------------------------------------------------
+var _vanguard_units :Array = []
+
 #------------------------------------ PLAYER VAR ---------------------------------------------------
 var _selected_unit :BaseUnit
 var _move_tiles :Array = []
@@ -100,7 +103,7 @@ func _process(delta):
 	
 func _on_map_on_map_ready():
 	var data = Global.selected_map_data
-	_spawn_points = HexMapUtil.get_tile_spawn_point(data.tile_ids, Vector2.ZERO, data.map_size)
+	_spawn_points = HexMapUtil.get_tile_spawn_point(data.tile_ids, Vector2.ZERO, data.map_size, 2)
 	_setup_undiscovered_tiles()
 	_spawn_unit()
 	
@@ -183,6 +186,9 @@ func _spawn_unit():
 			unit.connect("unit_dead", self, "_on_unit_dead", [data])
 			_unit_in_tile[tile_id] = unit
 			_unit_datas[unit] = data
+			
+			if unit is Vanguard:
+				_vanguard_units.append(unit)
 			
 			_unit_blocked_tiles.append(unit.current_tile)
 			ui.add_unit_floating_info(unit)
@@ -281,13 +287,11 @@ func _on_unit_enter_tile(_unit :BaseUnit, _tile_id :Vector2):
 		_unit_moving_path.erase(_tile_id)
 		
 	# check if unit enter tile
-	# trigger something
-	# after finish
-	for i in _unit_in_tile.values():
-		if i is Vanguard:
-			var x :Vanguard = i
-			if x.is_enemy_enter_area(_unit, _tile_id):
-				yield(_unit, "unit_take_damage")
+	# of vanguard unit with unit
+	# ability activated
+	for x in _vanguard_units:
+		if x.is_enemy_enter_area(_unit, _tile_id):
+			yield(_unit, "unit_take_damage")
 		
 	if _unit.team == Global.current_player_team:
 		_reveal_tile_in_unit_view(_unit)

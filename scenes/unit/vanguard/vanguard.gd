@@ -3,9 +3,13 @@ class_name Vanguard
 
 onready var body = $body
 onready var animation_player = $AnimationPlayer
+onready var weapon = $body/weapon
 
 var _is_spear_defence_activated :bool = false
 var _spear_defence_area :Array = []
+
+func _ready():
+	weapon.texture = weapon_model
 
 # special ability only for this unit
 func activate_spear_defence():

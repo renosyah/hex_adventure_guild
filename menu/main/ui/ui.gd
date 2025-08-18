@@ -26,23 +26,29 @@ func _on_editor_pressed():
 func _on_battle_pressed():
 	Global.player_battle_data.clear()
 	
-	var names = ["Galeno", "Gufa", "Miav", "melvin"]
-	var potraits = [[2,3],[2,1],[2,2],[2,4]]
 	var teams = {1:1,2:1,3:2,4:2}
+	var weapons = {
+		preload("res://scenes/unit/vanguard/glaive.png") : 24,
+		preload("res://scenes/unit/vanguard/pike.png") : 18,
+		preload("res://scenes/unit/vanguard/spear.png") : 14
+	}
 	
 	for player_id in [1, 2, 3, 4]:
 		var player_data = PlayerBattleData.new()
 		player_data.player_id = player_id
 		player_data.team = teams[player_id]
 		player_data.player_units = []
-		for i in 4:
+		for i in 6:
+			var weapon = weapons.keys()[rand_range(0, 3)]
 			var vanguard = preload("res://scenes/unit/data/units/vanguard.tres").duplicate()
 			vanguard.player_id = player_data.player_id
 			vanguard.team = player_data.team
-			vanguard.unit_name = names[i]
-			vanguard.unit_potrait = potraits[i]
+			vanguard.unit_name = RandomNameGenerator.generate()
+			vanguard.unit_potrait = [int(rand_range(0,8)), int(rand_range(0,10))]
 			vanguard.hp = 25
 			vanguard.max_hp = 25
+			vanguard.attack_damage = weapons[weapon]
+			vanguard.weapon_model = weapon
 			player_data.player_units.append(vanguard)
 			
 		Global.player_battle_data.append(player_data)

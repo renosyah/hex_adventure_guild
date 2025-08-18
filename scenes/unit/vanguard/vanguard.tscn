@@ -487,6 +487,7 @@ tracks/1/keys = {
 script = ExtResource( 1 )
 move = 4
 move_range = 4
+weapon_model = ExtResource( 3 )
 
 [node name="body" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.819152, 0.573577, 0, -0.573577, 0.819152, 0, 0.8, 0 )

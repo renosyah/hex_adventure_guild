@@ -29,6 +29,7 @@ export var view_range :int = 2
 export var move_speed :float = 0.4
 
 export var is_hidden :bool
+export var weapon_model :Resource
 
 var _tween_move :Tween
 var _current_attack_damage :int
