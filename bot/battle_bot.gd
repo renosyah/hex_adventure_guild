@@ -5,6 +5,7 @@ signal bot_end_turn
 signal bot_command_unit(_unit)
 
 var chance_bot_attack :float = 0.5
+var agresive_bot_attack :float = 0.7
 
 #------------------------------------ GLOBAL VAR ---------------------------------------------------
 # ALL THIS VAR WILL SHARED POINTER WITH BATTLE SCENE
@@ -22,6 +23,7 @@ var _move_tiles :Array = []
 var _rng = RandomNumberGenerator.new()
 var _unit_to_command :Array = []
 var _option_to_attack :Array = []
+var _direction_suggest :Vector2
 
 onready var bot_decide_timeout = $bot_decide_timeout
 
@@ -31,6 +33,19 @@ func _ready():
 func on_turn():
 	_get_all_units()
 	bot_decide_timeout.start()
+	
+func _setup_direction_suggest():
+	for key in unit_datas.keys():
+		var unit :BaseUnit = key
+		if not is_instance_valid(unit):
+			continue
+			
+		if unit.is_dead():
+			continue
+			
+		if unit.team != bot_team:
+			_direction_suggest = unit.current_tile
+			return
 	
 func _setup_undiscovered_tiles():
 	for i in map.get_tiles():
@@ -133,7 +148,12 @@ func _move_unit() -> bool:
 	if movement_list.empty():
 		return false
 		
+		
+	# use random or use closes to enemy
 	var to = movement_list[_rng.randi_range(0, movement_list.size() - 1)]
+	if _rng.randf() > agresive_bot_attack:
+		to = _get_closes_to_direction_suggest(movement_list)
+		
 	var paths :Array = map.get_navigation(_selected_unit.current_tile, to, _blocked_path)
 	if paths.empty() or paths.size() == 1:
 		return false
@@ -154,6 +174,15 @@ func _move_unit() -> bool:
 	emit_signal("bot_command_unit", _selected_unit)
 	
 	return true
+	
+func _get_closes_to_direction_suggest(list :Array) -> Vector2:
+	var _close :Vector2 = list[0]
+	for i in list:
+		var v :Vector2 = i
+		if v.distance_squared_to(_direction_suggest):
+			_close = v
+			
+	return _close
 	
 func _reveal_tile_in_unit_view(id :Vector2, view_range :int):
 	var tiles = map.get_adjacent_view_tile(id, view_range)

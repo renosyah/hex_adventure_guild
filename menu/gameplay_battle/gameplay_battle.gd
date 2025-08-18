@@ -23,6 +23,7 @@ var _unit_moving_path :Dictionary = {} # { Vector2 : tile_highlight_template }
 var _total_enemy_unit :int = 0
 var _total_ally_unit :int = 0
 var _last_cam_pos :Vector3
+var _lock_control :bool = false
 
 #------------------------------------ BOTS ---------------------------------------------------
 const bot_scene = preload("res://bot/battle_bot.tscn")
@@ -104,6 +105,9 @@ func _on_map_on_map_ready():
 	_spawn_unit()
 	
 func _on_map_on_tile_click(tile :HexTile):
+	if _lock_control:
+		return
+		
 	if _undiscovered_tiles.has(tile.id):
 		return
 		
@@ -116,7 +120,7 @@ func _on_map_on_tile_click(tile :HexTile):
 			if _selected_unit != _unit_in_tile[tile.id]:
 				
 				if _attack_tiles.has(tile.id):
-					_attack_unit(_selected_unit, tile.id)
+					_attack_target(_unit_in_tile[tile.id], tile.id)
 					_selected_unit = null
 					return
 					
@@ -200,7 +204,7 @@ func _spawn_unit():
 	movable_camera.translation += Vector3.BACK * 8
 	movable_camera.translation.y = 10
 	
-func _attack_unit(unit :BaseUnit, to :Vector2):
+func _attack_target(target :BaseUnit, to :Vector2):
 	var conditions :Array = [
 		not _attack_tiles.has(to),
 		not _selected_unit.has_action(),
@@ -209,10 +213,17 @@ func _attack_unit(unit :BaseUnit, to :Vector2):
 	if conditions.has(true):
 		return
 		
-	var target :BaseUnit = _unit_in_tile[to]
-	unit.perfom_action_attack(target)
-	
+	_selected_unit.perfom_action_attack(target)
 	_attack_tiles.clear()
+	
+	ui.unit_control.visible = false
+	_lock_control = true
+	
+	yield(_selected_unit, "unit_attack_target")
+	
+	_lock_control = false
+	ui.unit_control.visible = true
+	
 	
 func _move_unit(to :Vector2):
 	var conditions :Array = [
@@ -242,7 +253,11 @@ func _move_unit(to :Vector2):
 		_unit_moving_path[id] = h
 		
 	ui.unit_control.visible = false
+	_lock_control = true
+	
 	yield(_selected_unit,"unit_reach")
+	
+	_lock_control = false
 	ui.unit_control.visible = true
 	
 func _on_unit_take_damage(_unit :BaseUnit, _damage :int, _from_unit :BaseUnit):
@@ -272,7 +287,7 @@ func _on_unit_enter_tile(_unit :BaseUnit, _tile_id :Vector2):
 		if i is Vanguard:
 			var x :Vanguard = i
 			if x.is_enemy_enter_area(_unit, _tile_id):
-				yield(x, "unit_attack_target")
+				yield(_unit, "unit_take_damage")
 		
 	if _unit.team == Global.current_player_team:
 		_reveal_tile_in_unit_view(_unit)
