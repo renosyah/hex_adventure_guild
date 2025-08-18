@@ -28,11 +28,12 @@ func _on_battle_pressed():
 	
 	var names = ["Galeno", "Gufa", "Miav", "melvin"]
 	var potraits = [[2,3],[2,1],[2,2],[2,4]]
+	var teams = {1:1,2:1,3:2,4:2}
 	
-	for player_id in [1, 2, 3]:
+	for player_id in [1, 2, 3, 4]:
 		var player_data = PlayerBattleData.new()
 		player_data.player_id = player_id
-		player_data.team = player_id
+		player_data.team = teams[player_id]
 		player_data.player_units = []
 		for i in 4:
 			var vanguard = preload("res://scenes/unit/data/units/vanguard.tres").duplicate()

@@ -492,27 +492,33 @@ move_range = 4
 transform = Transform( 1, 0, 0, 0, 0.819152, 0.573577, 0, -0.573577, 0.819152, 0, 0.8, 0 )
 
 [node name="Sprite3D" type="Sprite3D" parent="body"]
+double_sided = false
 alpha_cut = 2
 texture = ExtResource( 2 )
 
 [node name="weapon" type="Sprite3D" parent="body"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.291818, -0.0691149, 0.0763504 )
+double_sided = false
 texture = ExtResource( 3 )
 
 [node name="arm_1" type="Sprite3D" parent="body"]
 transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.0588756, -0.0691149, 0.0912802 )
+double_sided = false
 texture = ExtResource( 4 )
 
 [node name="arm_2" type="Sprite3D" parent="body"]
 transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.0588756, -0.0691149, -0.0951849 )
+double_sided = false
 texture = ExtResource( 4 )
 
 [node name="leg_1" type="Sprite3D" parent="body"]
 transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.0358373, -0.652751, 0 )
+double_sided = false
 texture = ExtResource( 5 )
 
 [node name="leg_2" type="Sprite3D" parent="body"]
 transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.13055, -0.634832, 0 )
+double_sided = false
 texture = ExtResource( 5 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

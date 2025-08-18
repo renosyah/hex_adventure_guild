@@ -83,7 +83,7 @@ func _add_unit_in_attack_range():
 	_option_to_attack.clear()
 	
 	var tiles = map.get_adjacent_tile(_selected_unit.current_tile, _selected_unit.attack_range)
-	if tiles.empty() or tiles.size() == 1:
+	if tiles.empty():
 		return
 		
 	for tile in tiles:
@@ -97,9 +97,6 @@ func _add_unit_in_attack_range():
 			
 		_option_to_attack.append(_target)
 		
-		
-	tiles.pop_front()
-	
 func _attack_unit() -> bool:
 	if _option_to_attack.empty():
 		return false

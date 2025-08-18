@@ -5,6 +5,7 @@ onready var movable_camera = $movable_camera
 onready var tile_highlight_template = $tile_highlight
 onready var map = $map
 onready var cam :Camera = get_viewport().get_camera()
+onready var damage_indicator = $damage_indicator
 
 #------------------------------------ GLOBAL VAR ---------------------------------------------------
 var _tile_highlights = []
@@ -19,6 +20,8 @@ var _selected_unit :BaseUnit
 var _move_tiles :Array = []
 var _attack_tiles :Array = []
 var _unit_moving_path :Dictionary = {} # { Vector2 : tile_highlight_template }
+var _total_enemy_unit :int = 0
+var _total_ally_unit :int = 0
 
 #------------------------------------ BOTS ---------------------------------------------------
 const bot_scene = preload("res://bot/battle_bot.tscn")
@@ -44,16 +47,14 @@ func _display_detail_selected_unit():
 	tile_highlight_template.visible = true
 	ui.show_unit_detail(true, _selected_unit, _unit_datas[_selected_unit])
 	
-	var conditions :Array = [
-		not _selected_unit.can_move(),
-		_selected_unit.player_id != Global.current_player_id
-	]
-	
-	if conditions.has(true):
+	if _selected_unit.player_id != Global.current_player_id:
 		return
 		
-	_higlight_unit_movement(_selected_unit.current_tile)
-	_higlight_unit_attack(_selected_unit.current_tile)
+	if _selected_unit.can_move():
+		_higlight_unit_movement(_selected_unit.current_tile)
+	
+	if _selected_unit.has_action():
+		_higlight_unit_attack(_selected_unit.current_tile)
 	
 func _on_ui_end_turn():
 	_clear_tile_highlights()
@@ -72,7 +73,7 @@ func _on_ui_end_turn():
 		var x :BaseUnit = i
 		x.on_turn()
 		
-	ui.show_player_control(true)
+	ui.set_on_player_turn(true)
 
 func _on_ui_on_activate_ability():
 	if is_instance_valid(_selected_unit):
@@ -139,9 +140,10 @@ func _setup_undiscovered_tiles():
 func _spawn_unit():
 	var cam_pos :Vector3
 	
+	var player_index = 0
 	for i in Global.player_battle_data:
 		var player :PlayerBattleData = i
-		var tile_ids = _spawn_points[player.team]
+		var tile_ids = _spawn_points[player_index]
 		
 		if player.player_id != Global.current_player_id:
 			var bot = bot_scene.instance()
@@ -167,6 +169,7 @@ func _spawn_unit():
 			unit.current_tile = tile_id
 			unit.is_hidden = not is_player_unit
 			unit.visible = not unit.is_hidden
+			unit.connect("unit_take_damage", self, "_on_unit_take_damage")
 			unit.connect("unit_enter_tile", self, "_on_unit_enter_tile")
 			unit.connect("unit_leave_tile", self, "_on_unit_leave_tile")
 			unit.connect("unit_reach", self, "_on_unit_reach")
@@ -178,10 +181,17 @@ func _spawn_unit():
 			ui.add_unit_floating_info(unit)
 			
 			if is_player_unit:
-				_reveal_tile_in_unit_view(unit)
 				cam_pos = hextile.global_position
 				
+			if unit_data.team == Global.current_player_team:
+				_reveal_tile_in_unit_view(unit)
+				_total_ally_unit += 1
+			else:
+				_total_enemy_unit += 1
+				
 			index += 1
+			
+		player_index+= 1
 		
 	movable_camera.translation = cam_pos
 	movable_camera.translation += Vector3.BACK * 8
@@ -189,45 +199,54 @@ func _spawn_unit():
 	
 func _attack_unit(unit :BaseUnit, to :Vector2):
 	var conditions :Array = [
+		not _attack_tiles.has(to),
 		not _selected_unit.has_action(),
 		not _unit_in_tile.has(to)
 	]
 	if conditions.has(true):
 		return
 		
-	if _attack_tiles.has(to):
-		var target :BaseUnit = _unit_in_tile[to]
-		unit.perfom_action_attack(target)
-		
+	var target :BaseUnit = _unit_in_tile[to]
+	unit.perfom_action_attack(target)
+	
 	_attack_tiles.clear()
 	
 func _move_unit(to :Vector2):
 	var conditions :Array = [
 		_selected_unit.player_id != Global.current_player_id,
-		not _selected_unit.can_move()
+		not _selected_unit.can_move(),
+		not _move_tiles.has(to)
 	]
 	if conditions.has(true):
 		return
 		
-	if _move_tiles.has(to):
-		var _blocked_path = _undiscovered_tiles + _unit_blocked_tiles
-		var paths :Array = map.get_navigation(_selected_unit.current_tile, to, _blocked_path)
+	var _blocked_path = _undiscovered_tiles + _unit_blocked_tiles
+	var paths :Array = map.get_navigation(_selected_unit.current_tile, to, _blocked_path)
+	
+	# dont include current tile id
+	paths.pop_front()
+	
+	var unit_paths = []
+	for i in paths:
+		unit_paths.append([i, map.get_tile(i).global_position])
+	
+	_selected_unit.paths = unit_paths
+	_selected_unit.move_unit()
+	
+	for id in paths:
+		var x :HexTile = map.get_tile(id)
+		var h = _add_tile_highlights(x.global_position, 3)
+		_unit_moving_path[id] = h
 		
-		# dont include current tile id
-		paths.pop_front()
-		
-		var unit_paths = []
-		for i in paths:
-			unit_paths.append([i, map.get_tile(i).global_position])
-		
-		_selected_unit.paths = unit_paths
-		_selected_unit.move_unit()
-		
-		for id in paths:
-			var x :HexTile = map.get_tile(id)
-			var h = _add_tile_highlights(x.global_position, 3)
-			_unit_moving_path[id] = h
-		
+	ui.unit_control.visible = false
+	yield(_selected_unit,"unit_reach")
+	ui.unit_control.visible = true
+	
+func _on_unit_take_damage(_unit :BaseUnit, _damage :int, _from_unit :BaseUnit):
+	damage_indicator.translation = _unit.global_position
+	damage_indicator.damage = _damage
+	damage_indicator.show_damage()
+	
 func _on_unit_enter_tile(_unit :BaseUnit, _tile_id :Vector2):
 	# unit will hidden
 	# unit enter undiscovered tile
@@ -252,7 +271,7 @@ func _on_unit_enter_tile(_unit :BaseUnit, _tile_id :Vector2):
 			if x.is_enemy_enter_area(_unit, _tile_id):
 				yield(x, "unit_attack_target")
 		
-	if _unit.player_id == Global.current_player_id:
+	if _unit.team == Global.current_player_team:
 		_reveal_tile_in_unit_view(_unit)
 		
 	_unit.move_unit()
@@ -295,6 +314,11 @@ func _on_unit_dead(_unit :BaseUnit, _tile_id :Vector2, data :UnitData):
 		var bot :BattleBot = i
 		bot.check_unit(_unit)
 		
+	damage_indicator.translation = _unit.global_position
+	damage_indicator.show_dead()
+	
+	_update_battle_result(_unit.team)
+	
 func _reveal_tile_in_unit_view(_unit :BaseUnit):
 	var tiles = map.get_adjacent_view_tile(_unit.current_tile, _unit.view_range)
 	for i in tiles:
@@ -315,8 +339,6 @@ func _higlight_unit_attack(id :Vector2):
 	_attack_tiles.clear()
 	
 	var tiles = map.get_adjacent_tile(id, _selected_unit.attack_range)
-	tiles.pop_front()
-	
 	for tile in tiles:
 		var x :HexTile = tile
 		if not _unit_in_tile.has(tile.id):
@@ -369,8 +391,17 @@ func _clear_tile_highlights():
 		
 	_tile_highlights.clear()
 	
-
-
+func _update_battle_result(team :int):
+	if team == Global.current_player_team:
+		_total_ally_unit -= 1
+	else:
+		_total_enemy_unit -= 1
+	
+	if _total_ally_unit <= 0:
+		ui.show_lose()
+		
+	elif _total_enemy_unit <= 0:
+		ui.show_win()
 
 
 

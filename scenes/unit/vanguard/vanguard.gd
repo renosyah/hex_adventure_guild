@@ -42,11 +42,9 @@ func on_turn():
 	_is_spear_defence_activated = false
 	
 func unit_taken_damage(dmg :int, from :BaseUnit):
+	.unit_taken_damage(dmg, from)
 	
 	animation_player.play("damage")
-	yield(animation_player,"animation_finished")
-	
-	.unit_taken_damage(dmg, from)
 	
 func face_left():
 	.face_left()
