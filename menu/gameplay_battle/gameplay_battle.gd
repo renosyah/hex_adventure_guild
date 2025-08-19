@@ -81,16 +81,14 @@ func _on_ui_end_turn():
 		yield(bot, "bot_end_turn")
 		
 		
-
+	# scout ability only
+	# efect after a turn
+	yield(_reveal_scout_tile(), "completed")
 	
 	for i in _unit_in_tile.values():
 		var x :BaseUnit = i
 		x.on_turn()
 		
-	# scout ability only
-	# efect after a turn
-	yield(_reveal_scout_tile(), "completed")
-	
 	movable_camera.global_position = _last_cam_pos
 	ui.set_on_player_turn(true)
 

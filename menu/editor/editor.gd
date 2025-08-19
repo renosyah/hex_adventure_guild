@@ -5,6 +5,7 @@ onready var movable_camera = $movable_camera
 onready var map = $map
 onready var tile_highlight = $tile_highlight
 onready var timer = $Timer
+onready var spawn_point = $spawn_point
 
 var _tile_highlights = []
 var _ranges = 2
@@ -23,7 +24,13 @@ func _on_map_on_map_ready():
 		for id in ids:
 			var x :HexTile = map.get_tile(id)
 			x.set_discovered(true)
-			_add_tile_highlights(x.global_position, 4)
+			
+			var close = spawn_point.duplicate()
+			close.visible = true
+			add_child(close)
+			close.translation = x.global_position
+			close.translation.y += 0.14
+			
 			_spawn_point.append(id)
 		
 func _process(delta):
@@ -42,11 +49,8 @@ func _add_tile_highlights(pos :Vector3, type :int):
 			x.show_view()
 		3:
 			x.show_move()
-		4:
-			x.show_closed()
-	
-	if type != 4:
-		_tile_highlights.append(x)
+			
+	_tile_highlights.append(x)
 	
 func _clear_tile_highlights():
 	for i in _tile_highlights:
@@ -77,6 +81,9 @@ func _on_map_on_tile_click(tile :HexTile):
 	
 	for i in tiles:
 		var x :HexTile = i
+		if _spawn_point.has(x.id):
+			continue
+			
 		_add_tile_highlights(x.global_position, type)
 		
 	timer.start()
