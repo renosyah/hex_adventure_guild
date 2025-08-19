@@ -4,7 +4,6 @@ class_name HexMap
 signal on_map_ready
 signal on_tile_click(tile)
 
-
 const camera_foward_offset = Vector3.FORWARD * 8
 const procedural_tile_limit = Vector2(6, 7)
 const tile_scene :PackedScene = preload("res://scenes/hex_tile/hext_tile.tscn")
@@ -51,7 +50,10 @@ func export_data() -> HexMapFileData:
 	return _hex_map_data
 	
 func get_tiles() -> Array:
-	return _spawned_tiles.values() # [ Vector2 ]
+	return _spawned_tiles.values() # [ HexTile ]
+	
+func has_tile(id :Vector2) -> bool:
+	return _spawned_tiles.has(id)
 	
 func get_tile(id :Vector2) -> HexTile:
 	return _spawned_tiles[id] # HexTile

@@ -6,6 +6,7 @@ onready var tile_highlight_template = $tile_highlight
 onready var map = $map
 onready var cam :Camera = get_viewport().get_camera()
 onready var damage_indicator = $damage_indicator
+onready var simple_delay = $simple_delay
 
 #------------------------------------ GLOBAL VAR ---------------------------------------------------
 var _tile_highlights = []
@@ -14,6 +15,8 @@ var _unit_blocked_tiles :Array = [] # [ Vector2 ]
 var _unit_in_tile :Dictionary = {} # { Vector2 : BaseUnit }
 var _spawn_points :Array
 var _unit_datas :Dictionary = {} # { BaseUnit : UnitData }
+var _loots :Dictionary = {} # { Vector2 : Loot }
+var _tile_to_scout :Array = []
 
 #------------------------------------ SPECIAL CLASS ---------------------------------------------------
 
@@ -76,11 +79,18 @@ func _on_ui_end_turn():
 		print("bot %s" % bot.bot_id)
 		bot.on_turn()
 		yield(bot, "bot_end_turn")
+		
+		
+
 	
 	for i in _unit_in_tile.values():
 		var x :BaseUnit = i
 		x.on_turn()
 		
+	# scout ability only
+	# efect after a turn
+	yield(_reveal_scout_tile(), "completed")
+	
 	movable_camera.global_position = _last_cam_pos
 	ui.set_on_player_turn(true)
 
@@ -182,6 +192,10 @@ func _spawn_unit():
 			unit.connect("unit_leave_tile", self, "_on_unit_leave_tile")
 			unit.connect("unit_reach", self, "_on_unit_reach")
 			unit.connect("unit_dead", self, "_on_unit_dead", [data])
+			
+			if unit is Hunter:
+				unit.connect("scouting", self , "_on_hunter_scouting", [unit])
+			
 			_unit_in_tile[tile_id] = unit
 			_unit_datas[unit] = data
 			
@@ -209,6 +223,13 @@ func _spawn_unit():
 	movable_camera.translation += Vector3.BACK * 8
 	movable_camera.translation.y = 10
 	
+func _on_hunter_scouting(_unit :BaseUnit):
+	var view = _unit.view_range + 1
+	var clear_tiles :Array = HexMapUtil.get_adjacent_tile_common(_unit.current_tile, view)
+	for i in clear_tiles:
+		if not _tile_to_scout.has(i):
+			_tile_to_scout.append(i)
+	
 func _attack_target(target :BaseUnit, to :Vector2):
 	var conditions :Array = [
 		not _attack_tiles.has(to),
@@ -228,7 +249,6 @@ func _attack_target(target :BaseUnit, to :Vector2):
 	
 	_lock_control = false
 	ui.unit_control.visible = true
-	
 	
 func _move_unit(to :Vector2):
 	var conditions :Array = [
@@ -291,6 +311,12 @@ func _on_unit_enter_tile(_unit :BaseUnit, _tile_id :Vector2):
 	for x in _vanguard_units:
 		if x.is_enemy_enter_area(_unit, _tile_id):
 			yield(_unit, "unit_take_damage")
+			
+			# must call stop
+			# to notify the bot
+			# its unit are fking dead
+			if _unit.is_dead():
+				_unit.on_unit_stop()
 		
 	if _unit.team == Global.current_player_team:
 		_reveal_tile_in_unit_view(_unit)
@@ -310,6 +336,11 @@ func _on_unit_reach(_unit :BaseUnit, _tile_id :Vector2):
 	
 	_unit_in_tile[_tile_id] = _unit
 	
+	# picked loot
+	# on arrive at tile
+	if _loots.has(_tile_id):
+		_loots[_tile_id].pick()
+		
 	for i in _bots:
 		var bot :BattleBot = i
 		bot.check_unit(_unit)
@@ -324,6 +355,8 @@ func _on_unit_dead(_unit :BaseUnit, _tile_id :Vector2, data :UnitData):
 		_unit_blocked_tiles.erase(_tile_id)
 		
 	_unit.visible = false
+	_spawn_grave(_tile_id, _unit.global_position)
+	
 	print("%s is dead" % data.unit_name)
 	
 	for key in _unit_moving_path.keys():
@@ -353,6 +386,50 @@ func _reveal_tile_in_unit_view(_unit :BaseUnit):
 			_unit_in_tile[tile.id].unit_spotted()
 			
 #------------------------------------ UTILS ---------------------------------------------------
+func _reveal_scout_tile():
+	yield(get_tree(), "idle_frame")
+	
+	if _tile_to_scout.empty():
+		return
+		
+	var mid_pos :Vector3 = _last_cam_pos
+	var tiles :Array = []
+	for id in _tile_to_scout:
+		if not map.has_tile(id):
+			continue
+			
+		var tile :HexTile = map.get_tile(id)
+		tiles.append(tile)
+		mid_pos += tile.global_position
+	
+	movable_camera.global_position = mid_pos / tiles.size()
+	movable_camera.global_position += Vector3.BACK * 8
+	movable_camera.global_position.y = _last_cam_pos.y
+	
+	for tile in tiles:
+		tile.set_discovered(true)
+		
+		if _undiscovered_tiles.has(tile.id):
+			_undiscovered_tiles.erase(tile.id)
+			
+		if _unit_in_tile.has(tile.id):
+			_unit_in_tile[tile.id].unit_spotted()
+			
+		simple_delay.start()
+		yield(simple_delay,"timeout")
+		
+	tiles.clear()
+	_tile_to_scout.clear()
+	
+func _spawn_grave(id :Vector2, pos :Vector3):
+	var grave = preload("res://scenes/loot/grave/grave.tscn").instance()
+	grave.loot_type = grave.loot_type_money
+	grave.value = int(rand_range(25,100))
+	grave.loot_name = "Coin"
+	add_child(grave)
+	grave.translation = pos
+	_loots[id] = grave
+	
 func _on_bot_command_unit(_unit :BaseUnit):
 	if _unit.is_hidden:
 		return

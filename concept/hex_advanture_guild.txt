@@ -76,7 +76,7 @@ hex adventure guild
 			- 2 attack range
 			- 1 move range
 			- 2 view range
-			- ability (scouting) (active) : +2 view range
+			- ability (scouting) (active) : on next turn will reveal all suround tile in view range
 
 		- weapons : 
 			- bow

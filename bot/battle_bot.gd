@@ -102,8 +102,12 @@ func _on_bot_decide_timeout_timeout():
 	_selected_unit = _unit_to_command.front()
 	_add_unit_in_attack_range()
 	
-	if not _attack_unit():
-		if _move_unit():
+	emit_signal("bot_command_unit", _selected_unit)
+	
+	var is_attack :bool = yield(_attack_unit(), "completed")
+	if not is_attack:
+		var is_move :bool = yield(_move_unit(), "completed")
+		if is_move:
 			return
 		
 	if not _is_current_unit_can_stil_move():
@@ -122,6 +126,7 @@ func _is_current_unit_can_stil_move() -> bool:
 		return false
 		
 	return true
+	
 # this function will be call by battle scnene
 # to inform bot if their current unit progress
 # if unit dead or reach destination
@@ -155,6 +160,8 @@ func _add_unit_in_attack_range():
 		_option_to_attack.append(_target)
 		
 func _attack_unit() -> bool:
+	yield(get_tree(), "idle_frame")
+	
 	if _option_to_attack.empty():
 		return false
 		
@@ -165,12 +172,13 @@ func _attack_unit() -> bool:
 	var target :BaseUnit = _option_to_attack[_rng.randi_range(0, _option_to_attack.size() - 1)]
 	_selected_unit.perfom_action_attack(target)
 	
-	emit_signal("bot_command_unit", _selected_unit)
 	yield(_selected_unit, "unit_attack_target")
 	
 	return true
 	
 func _move_unit() -> bool:
+	yield(get_tree(), "idle_frame")
+	
 	_reveal_tile_in_unit_view(_selected_unit.current_tile, _selected_unit.view_range)
 	var _paths :Array = []
 	
@@ -213,7 +221,7 @@ func _move_unit() -> bool:
 	
 	print("bot move unit : %s" % _selected_unit)
 	
-	emit_signal("bot_command_unit", _selected_unit)
+	yield(_selected_unit, "unit_reach")
 	
 	return true
 	

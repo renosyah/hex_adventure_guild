@@ -4,6 +4,7 @@ signal on_activate_ability
 signal end_turn
 
 const vanguard_ability = preload("res://assets/icons/spear_defence.png")
+const hunter_ability = preload("res://assets/icons/scout.png")
 
 onready var unit_detail = $HBoxContainer2/CenterContainer2/unit_info_panel/unit_detail
 onready var ability_holder = $HBoxContainer2/MarginContainer/ability_holder
@@ -35,8 +36,16 @@ func show_unit_detail(v :bool, unit :BaseUnit = null, data :UnitData = null):
 	if unit is Vanguard:
 		ability_button.icon = vanguard_ability
 		
+	elif unit is Hunter:
+		ability_button.icon = hunter_ability
+		
 	# other class
 	# set icon for ability button
+	
+	else:
+		ability_button.icon = null
+		ability_button.visible = false
+		
 		
 	unit_detail.show_unit_detail(unit, data)
 		

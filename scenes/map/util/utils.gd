@@ -23,7 +23,7 @@ static func generate_randomize_map(_seed :int, radius: int = 6) -> HexMapFileDat
 		preload("res://scenes/object_tile/models/rock_3.png")
 	]
 	
-	var points = get_tile_spawn_point(data.tile_ids, Vector2.ZERO, data.map_size, 2)
+	var points = get_tile_spawn_point(data.tile_ids, Vector2.ZERO, data.map_size)
 	var spawn_points = []
 	for i in points:
 		var ids :Array = i
@@ -187,7 +187,7 @@ static func get_adjacent_tile_common(from: Vector2, radius: int = 1) -> Array:
 	
 	return datas # [Vector2]
 	
-static func get_tile_spawn_point(tiles: Dictionary, from: Vector2, size: int = 1, spawn_radius: int = 1) -> Array:
+static func get_tile_spawn_point(tiles: Dictionary, from: Vector2, size: int = 1, spawn_radius: int = 2) -> Array:
 	var results: Array = []
 	var resDir :Dictionary = {} # { Vector2 : Vector2 }
 

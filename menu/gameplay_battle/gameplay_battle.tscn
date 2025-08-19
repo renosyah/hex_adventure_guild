@@ -30,6 +30,10 @@ directional_shadow_mode = 0
 
 [node name="damage_indicator" parent="." instance=ExtResource( 7 )]
 
+[node name="simple_delay" type="Timer" parent="."]
+wait_time = 0.08
+one_shot = true
+
 [connection signal="end_turn" from="ui" to="." method="_on_ui_end_turn"]
 [connection signal="on_activate_ability" from="ui" to="." method="_on_ui_on_activate_ability"]
 [connection signal="on_map_ready" from="map" to="." method="_on_map_on_map_ready"]

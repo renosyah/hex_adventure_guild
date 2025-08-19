@@ -8,6 +8,7 @@ onready var timer = $Timer
 
 var _tile_highlights = []
 var _ranges = 2
+var _spawn_point = []
 
 func _ready():
 	ui.movable_camera_ui.target = movable_camera
@@ -22,6 +23,8 @@ func _on_map_on_map_ready():
 		for id in ids:
 			var x :HexTile = map.get_tile(id)
 			x.set_discovered(true)
+			_add_tile_highlights(x.global_position, 4)
+			_spawn_point.append(id)
 		
 func _process(delta):
 	map.update_camera_position(movable_camera.global_position)
@@ -39,8 +42,11 @@ func _add_tile_highlights(pos :Vector3, type :int):
 			x.show_view()
 		3:
 			x.show_move()
-			
-	_tile_highlights.append(x)
+		4:
+			x.show_closed()
+	
+	if type != 4:
+		_tile_highlights.append(x)
 	
 func _clear_tile_highlights():
 	for i in _tile_highlights:
@@ -88,7 +94,9 @@ func _on_ui_on_tile_card_draging(pos :Vector2):
 func _on_ui_on_tile_card_release(pos :Vector2, data:TileMapData):
 	var pos_v3 = Utils.screen_to_world(get_viewport().get_camera(), pos)
 	var tile = map.get_closes_tile(pos_v3)
-	
+	if _spawn_point.has(tile.id):
+		return
+		
 	data.id = tile.id
 	data.pos = tile.global_position
 	data.rotation = tile.global_rotation

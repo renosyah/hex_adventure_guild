@@ -160,10 +160,16 @@ func move_unit() -> void:
 	
 	facing_pos(_move_to)
 	
-	_tween_move.interpolate_property(self, "global_position", global_position, _move_to, move_speed)
-	_tween_move.start()
+	if not is_hidden:
+		_tween_move.interpolate_property(self, "global_position", global_position, _move_to, move_speed)
+		_tween_move.start()
+		on_unit_move()
 	
-	on_unit_move()
+	else:
+		global_position = _move_to
+		on_unit_move()
+		yield(get_tree(), "idle_frame")
+		_on_move_completed(self, "global_position")
 	
 func _on_move_completed(object: Object, key: NodePath):
 	consume_movement()

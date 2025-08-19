@@ -1,16 +1,35 @@
 extends BaseUnit
 class_name Hunter
 
+signal scouting
+
 var arrow_scene = preload("res://scenes/projectile/arrow/arrow.tscn")
 
 onready var body = $body
 onready var animation_player = $AnimationPlayer
 onready var bow = $body/bow
 
+func use_ability() -> void:
+	.use_ability()
+	
+	if not .has_action():
+		return
+		
+	.consume_action()
+	
+	animation_player.play("scout")
+	
+	emit_signal("scouting")
+	
 func on_turn():
 	.on_turn()
 	
 	animation_player.play("iddle")
+	
+func unit_taken_damage(dmg :int, from :BaseUnit):
+	.unit_taken_damage(dmg, from)
+	
+	animation_player.play("damage")
 	
 func _fire_arrow(at :Vector3):
 	var arrow = arrow_scene.instance()
