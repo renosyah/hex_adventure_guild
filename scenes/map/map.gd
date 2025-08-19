@@ -277,7 +277,7 @@ func _spawn_tile(data :TileMapData) -> HexTile:
 			
 		_chunks[key].append(tile_node)
 	
-	tile_node.set_discovered(_is_editor)
+	tile_node.set_discovered(_is_editor, false)
 	
 	return tile_node
 	

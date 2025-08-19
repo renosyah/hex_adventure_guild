@@ -37,6 +37,7 @@ func add_unit_floating_info(unit :BaseUnit):
 		
 	var info = preload("res://menu/gameplay_battle/ui/unit_floating_info/unit_floating_info.tscn").instance()
 	info.is_for = is_for
+	info.is_player = unit.player_id == Global.current_player_id
 	floating.add_child(info)
 	unit.connect("unit_take_damage", info, "unit_take_damage")
 	unit.connect("unit_dead", info, "unit_dead")

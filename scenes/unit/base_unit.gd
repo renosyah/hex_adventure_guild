@@ -3,6 +3,9 @@ class_name BaseUnit
 
 signal unit_leave_tile(_unit, _tile_id)
 signal unit_enter_tile(_unit, _tile_id)
+signal unit_consume_action(_unit)
+signal unit_consume_move(_unit)
+signal unit_on_turn(_unit)
 signal unit_attack_target(_unit, _target)
 signal unit_take_damage(_unit, _damage, _from_unit)
 signal unit_dead(_unit, _tile_id)
@@ -34,6 +37,7 @@ export var weapon_model :Resource
 var _tween_move :Tween
 var _current_attack_damage :int
 var _current_facing :int = 1
+var _melee_tiles :Array = []
 
 # path is array of tile id & position 3d
 var paths :Array = [] # [ [Vector2, Vector3] ] 
@@ -84,6 +88,7 @@ func on_unit_move() -> void:
 	pass
 	
 func on_unit_stop():
+	_melee_tiles = HexMapUtil.get_adjacent_tile_common(current_tile)
 	emit_signal("unit_reach", self, current_tile)
 	
 func take_damage(dmg :int, from :BaseUnit) -> void:
@@ -105,6 +110,10 @@ func on_turn():
 	action = max_action
 	move = move_range
 	_prepare_attack_damage()
+	emit_signal("unit_on_turn", self)
+	
+func use_ability() -> void:
+	pass
 	
 func perfom_action_attack(target :BaseUnit) -> void:
 	if not has_action():
@@ -129,9 +138,11 @@ func facing_pos(pos :Vector3):
 		
 func consume_action() -> void:
 	action = clamp(action - 1, 0, max_action)
+	emit_signal("unit_consume_action", self)
 	
 func consume_movement() -> void:
 	move = clamp(move - 1, 0, move_range)
+	emit_signal("unit_consume_move", self)
 	
 # move will be called externaly
 # it because on unit move and enter

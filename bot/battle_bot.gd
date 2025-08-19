@@ -105,10 +105,23 @@ func _on_bot_decide_timeout_timeout():
 	if not _attack_unit():
 		if _move_unit():
 			return
-	
-	_unit_to_command.pop_front()
+		
+	if not _is_current_unit_can_stil_move():
+		_unit_to_command.pop_front()
+		
 	bot_decide_timeout.start()
-
+	
+	
+func _is_current_unit_can_stil_move() -> bool:
+	if not _selected_unit.can_move():
+		return false
+		
+	var _blocked_path = _undiscovered_tiles + unit_blocked_tiles
+	var tiles = map.get_astar_adjacent_tile(_selected_unit.current_tile, _selected_unit.move, _blocked_path)
+	if tiles.empty() or tiles.size() == 1:
+		return false
+		
+	return true
 # this function will be call by battle scnene
 # to inform bot if their current unit progress
 # if unit dead or reach destination
@@ -153,6 +166,7 @@ func _attack_unit() -> bool:
 	_selected_unit.perfom_action_attack(target)
 	
 	emit_signal("bot_command_unit", _selected_unit)
+	yield(_selected_unit, "unit_attack_target")
 	
 	return true
 	

@@ -8,7 +8,7 @@ hex adventure guild
 	- loot , trade, rest and recruit member
 	- create other squad and repeat
 
-- multiplayer battle
+- multiplayer battle (pending)
 	- use member from (single player adventure) and assemble squad
 	- battle 4 player pvp or pve LAN
 
@@ -16,7 +16,7 @@ hex adventure guild
 	- create/edit/use map for grand map
 	- create/edit/use map for battle map (ok)
 
-- hex navigation
+- hex navigation (ok)
 	- can check tile adjacent (for range attack & view range) (ok)
 	- can check range movement (for movement range) (ok)
 	- can travel using pathfinding (ok)
@@ -39,7 +39,7 @@ hex adventure guild
 	- spoting mechanic, spotted unit can only disapear on enter undiscover tile
 
 - units : 
-	- vanguard (frontline) (4-6 dmg, 30 hp, 1 armor)
+	- vanguard (frontline) (4-6 dmg, 30 hp, 1 armor) (ok)
 		- stats : 
 			- 1 action
 			- 1 move
@@ -69,7 +69,7 @@ hex adventure guild
 			- axe
 			- war hammer
 
-	- hunter (scout) (3-5 dmg, 25 hp, 1 armor)
+	- hunter (scout) (3-5 dmg, 25 hp, 1 armor) (ok)
 		- stats : 
 			- 1 action
 			- 1 move

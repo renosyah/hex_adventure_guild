@@ -24,8 +24,17 @@ func _fire_arrow(at :Vector3):
 func attack_target(target :BaseUnit):
 	if not target.is_dead():
 		.facing_pos(target.global_position)
-		animation_player.play("attack")
-		_fire_arrow(target.global_position)
+		
+		if _melee_tiles.has(target.current_tile):
+			# because unit use melee
+			# force change attack damage value
+			_current_attack_damage = int(rand_range(1,4))
+			animation_player.play("attack_melee")
+			
+		else:
+			animation_player.play("attack")
+			_fire_arrow(target.global_position)
+			
 		yield(animation_player,"animation_finished")
 		animation_player.play("iddle")
 	

@@ -29,14 +29,14 @@ func show_label(v :bool):
 	_label.visible = v
 	_label.translation = global_position + Vector3(0, _label.translation.y, 0)
 	
-func set_discovered(v :bool):
+func set_discovered(v :bool,anim :bool = true):
 	is_discovered = v
 	_tile_body.visible = is_discovered
 	
 	if object:
 		object.visible = is_discovered
 		
-	if is_discovered and _fog.visible:
+	if is_discovered and _fog.visible and anim:
 		var tween = get_tree().create_tween()
 		tween.tween_property(_fog, "scale", Vector3(0, 0, 0), 0.2).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 		yield(tween,"finished")

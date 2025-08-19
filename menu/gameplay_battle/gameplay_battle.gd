@@ -85,13 +85,11 @@ func _on_ui_end_turn():
 
 func _on_ui_on_activate_ability():
 	if is_instance_valid(_selected_unit):
-		_clear_tile_highlights()
-		ui.show_unit_detail(false)
-		
-		if _selected_unit is Vanguard:
-			(_selected_unit as Vanguard).activate_spear_defence()
-		
-		_selected_unit = null
+		if _selected_unit.has_action():
+			_clear_tile_highlights()
+			ui.show_unit_detail(false)
+			_selected_unit.use_ability()
+			_selected_unit = null
 		
 #------------------------------------ MAP ---------------------------------------------------
 func _setup_map():
