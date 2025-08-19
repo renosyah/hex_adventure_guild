@@ -16,6 +16,7 @@ var _spawn_points :Array
 var _unit_datas :Dictionary = {} # { BaseUnit : UnitData }
 
 #------------------------------------ SPECIAL CLASS ---------------------------------------------------
+
 var _vanguard_units :Array = []
 
 #------------------------------------ PLAYER VAR ---------------------------------------------------
@@ -24,7 +25,7 @@ var _move_tiles :Array = []
 var _attack_tiles :Array = []
 var _unit_moving_path :Dictionary = {} # { Vector2 : tile_highlight_template }
 var _total_enemy_unit :int = 0
-var _total_ally_unit :int = 0
+var _total_player_unit :int = 0
 var _last_cam_pos :Vector3
 var _lock_control :bool = false
 
@@ -193,10 +194,11 @@ func _spawn_unit():
 			if is_player_unit:
 				_last_cam_pos = hextile.global_position
 				
-			if unit_data.team == Global.current_player_team:
+			if unit_data.team == Global.current_player_id:
 				_reveal_tile_in_unit_view(unit)
-				_total_ally_unit += 1
-			else:
+				_total_player_unit += 1
+				
+			if unit_data.team != Global.current_player_team:
 				_total_enemy_unit += 1
 				
 			index += 1
@@ -420,11 +422,11 @@ func _clear_tile_highlights():
 	
 func _update_battle_result(team :int):
 	if team == Global.current_player_team:
-		_total_ally_unit -= 1
+		_total_player_unit -= 1
 	else:
 		_total_enemy_unit -= 1
 	
-	if _total_ally_unit <= 0:
+	if _total_player_unit <= 0:
 		ui.show_lose()
 		
 	elif _total_enemy_unit <= 0:

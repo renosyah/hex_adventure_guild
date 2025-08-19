@@ -18,18 +18,27 @@ func show_unit_detail(v :bool, unit :BaseUnit = null, data :UnitData = null):
 	unit_info_panel.visible = v
 	ability_holder.visible = v
 	
-	if is_instance_valid(unit) and data:
-		if unit.player_id == Global.current_player_id:
-			ability_button.disabled = not unit.has_action()
-			
-			if unit is Vanguard:
-				ability_button.icon = vanguard_ability
-				
-			else:
-				ability_button.disabled = true
-				ability_button.icon = null
-			
-		unit_detail.show_unit_detail(unit, data)
+	var conditions :Array = [
+		not is_instance_valid(unit),
+		data == null
+	]
+	
+	if conditions.has(true):
+		return
+		
+	var no_action :bool = not unit.has_action()
+	var player_own :bool = unit.player_id == Global.current_player_id
+	
+	ability_button.disabled = no_action
+	ability_button.visible = player_own
+	
+	if unit is Vanguard:
+		ability_button.icon = vanguard_ability
+		
+	# other class
+	# set icon for ability button
+		
+	unit_detail.show_unit_detail(unit, data)
 		
 func _on_end_turn_pressed():
 	unit_info_panel.visible = false
