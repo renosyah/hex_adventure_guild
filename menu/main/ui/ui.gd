@@ -41,15 +41,21 @@ func _on_battle_pressed():
 		player_data.team = teams[player_id]
 		player_data.player_units = []
 		
-		for i in 2:
-			var peasant = preload("res://scenes/unit/data/units/peasant.tres").duplicate()
-			peasant.player_id = player_data.player_id
-			peasant.team = player_data.team
-			peasant.unit_name = "%s (%s)" %[RandomNameGenerator.generate_name(), "Peasant"]
-			peasant.unit_potrait = [2, 3]
-			peasant.attack_damage = 8
-			player_data.player_units.append(peasant)
-			
+		var peasant = preload("res://scenes/unit/data/units/peasant.tres").duplicate()
+		peasant.player_id = player_data.player_id
+		peasant.team = player_data.team
+		peasant.unit_name = "%s (%s)" %[RandomNameGenerator.generate_name(), "Peasant"]
+		peasant.unit_potrait = [2, 3]
+		peasant.attack_damage = 8
+		player_data.player_units.append(peasant)
+		
+		var knight = preload("res://scenes/unit/data/units/knight.tres").duplicate()
+		knight.player_id = player_data.player_id
+		knight.team = player_data.team
+		knight.unit_name = "Sir %s (%s)" %[RandomNameGenerator.generate_name(), "Knight"]
+		knight.unit_potrait = [1, 2]
+		player_data.player_units.append(knight)
+		
 		for i in 2:
 			var weapon = vanguard_weapons.keys()[rand_range(0, 3)]
 			var unit_potrait = vanguard_potrait[rand_range(0, 3)]

@@ -61,7 +61,7 @@ hex adventure guild
 			- 1 move range
 			- +2 armor
 			- 1 view range
-			- ability (shield wall) (active) : have up to 50% damage reduction
+			- ability (counter) (active) : automaticaly attack enemy attacking you
 
 		- weapons : 
 			- sword

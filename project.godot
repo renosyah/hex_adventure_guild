@@ -89,6 +89,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/Godot-Touch-Input-Manager/CustomInputEvents/InputEventSingleScreenTouch.gd"
 }, {
+"base": "BaseUnit",
+"class": "Knight",
+"language": "GDScript",
+"path": "res://scenes/unit/knight/knight.gd"
+}, {
 "base": "Spatial",
 "class": "Loot",
 "language": "GDScript",
@@ -191,6 +196,7 @@ _global_script_class_icons={
 "InputEventSingleScreenDrag": "",
 "InputEventSingleScreenTap": "",
 "InputEventSingleScreenTouch": "",
+"Knight": "",
 "Loot": "",
 "NavigationData": "",
 "ObjectMapData": "",

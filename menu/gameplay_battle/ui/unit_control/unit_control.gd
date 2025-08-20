@@ -3,6 +3,7 @@ extends Control
 signal on_activate_ability
 signal end_turn
 
+const knight_ability =  preload("res://assets/icons/counter.png")
 const vanguard_ability = preload("res://assets/icons/spear_defence.png")
 const hunter_ability = preload("res://assets/icons/scout.png")
 
@@ -38,6 +39,9 @@ func show_unit_detail(v :bool, unit :BaseUnit = null, data :UnitData = null):
 		
 	elif unit is Hunter:
 		ability_button.icon = hunter_ability
+		
+	elif unit is Knight:
+		ability_button.icon = knight_ability
 		
 	# other class
 	# set icon for ability button
