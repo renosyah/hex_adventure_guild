@@ -32,6 +32,11 @@ func _on_battle_pressed():
 		preload("res://scenes/unit/vanguard/pike.png") : 18,
 		preload("res://scenes/unit/vanguard/spear.png") : 14
 	}
+	var knight_weapons = {
+		preload("res://scenes/unit/knight/axe.png") : 18,
+		preload("res://scenes/unit/knight/sword.png") : 24,
+		preload("res://scenes/unit/knight/war_hammer.png") : 28
+	}
 	var vanguard_potrait = [
 		[2,0],[3, 0],[2, 1]
 	]
@@ -46,14 +51,17 @@ func _on_battle_pressed():
 		peasant.team = player_data.team
 		peasant.unit_name = "%s (%s)" %[RandomNameGenerator.generate_name(), "Peasant"]
 		peasant.unit_potrait = [2, 3]
-		peasant.attack_damage = 8
 		player_data.player_units.append(peasant)
+		
+		var knight_weapon = knight_weapons.keys()[rand_range(0, 3)]
 		
 		var knight = preload("res://scenes/unit/data/units/knight.tres").duplicate()
 		knight.player_id = player_data.player_id
 		knight.team = player_data.team
 		knight.unit_name = "Sir %s (%s)" %[RandomNameGenerator.generate_name(), "Knight"]
 		knight.unit_potrait = [1, 2]
+		knight.attack_damage = knight_weapons[knight_weapon]
+		knight.weapon_model = knight_weapon
 		player_data.player_units.append(knight)
 		
 		for i in 2:

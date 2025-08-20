@@ -3,9 +3,14 @@ class_name Knight
 
 onready var animation_player = $AnimationPlayer
 onready var body = $body
+onready var weapon = $body/weapon
 
 var _is_counter_activated :bool = false
+var _chance_to_avoid_damage :float = 0.15
 
+func _ready():
+	weapon.texture = weapon_model
+	
 func use_ability() -> void:
 	.use_ability()
 	
@@ -17,6 +22,15 @@ func use_ability() -> void:
 	
 	animation_player.play("armor_defence")
 	yield(animation_player,"animation_finished")
+	
+func take_damage(dmg :int, from :BaseUnit) -> void:
+	var _damage :int = dmg
+	
+	# have chance to receive no damage
+	if _is_counter_activated and randf() < _chance_to_avoid_damage:
+		_damage = 0
+	
+	.take_damage(_damage, from)
 	
 func unit_taken_damage(dmg :int, from :BaseUnit):
 	.unit_taken_damage(dmg, from)
@@ -32,7 +46,7 @@ func unit_taken_damage(dmg :int, from :BaseUnit):
 		# you wait for sword but got arrow in knee instead
 		if _melee_tiles.has(from.current_tile):
 			yield(animation_player,"animation_finished")
-			from.take_damage(get_attack_damage(), self)
+			attack_target(from)
 			
 		_is_counter_activated = false
 	

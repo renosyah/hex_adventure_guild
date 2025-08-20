@@ -95,7 +95,7 @@ func take_damage(dmg :int, from :BaseUnit) -> void:
 	if is_dead():
 		return
 		
-	var damage_receive :int = clamp(dmg - armor, 1, dmg)
+	var damage_receive :int = clamp(dmg - armor, 1, dmg) if (dmg > 0) else 0
 	hp = clamp(hp - damage_receive, 0, max_hp)
 	
 	unit_taken_damage(damage_receive, from)

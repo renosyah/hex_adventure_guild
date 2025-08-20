@@ -61,7 +61,7 @@ hex adventure guild
 			- 1 move range
 			- +2 armor
 			- 1 view range
-			- ability (counter) (active) : automaticaly attack enemy attacking you
+			- ability (counter) (active) : have 15% chance to receive 0 damage & automaticaly attack enemy attacking you
 
 		- weapons : 
 			- sword
