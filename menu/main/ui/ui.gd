@@ -27,12 +27,14 @@ func _on_battle_pressed():
 	Global.player_battle_data.clear()
 	
 	var teams = {1:1,2:1,3:2,4:2}
-	var weapons = {
+	var vanguard_weapons = {
 		preload("res://scenes/unit/vanguard/glaive.png") : 24,
 		preload("res://scenes/unit/vanguard/pike.png") : 18,
 		preload("res://scenes/unit/vanguard/spear.png") : 14
 	}
-	
+	var vanguard_potrait = [
+		[2,0],[3, 0],[2, 1]
+	]
 	for player_id in [1, 2, 3, 4]:
 		var player_data = PlayerBattleData.new()
 		player_data.player_id = player_id
@@ -43,19 +45,20 @@ func _on_battle_pressed():
 			var peasant = preload("res://scenes/unit/data/units/peasant.tres").duplicate()
 			peasant.player_id = player_data.player_id
 			peasant.team = player_data.team
-			peasant.unit_name = "%s (%s)" %[RandomNameGenerator.generate(), "Peasant"]
-			peasant.unit_potrait = [1, 1]
+			peasant.unit_name = "%s (%s)" %[RandomNameGenerator.generate_name(), "Peasant"]
+			peasant.unit_potrait = [2, 3]
 			peasant.attack_damage = 8
 			player_data.player_units.append(peasant)
 			
 		for i in 2:
-			var weapon = weapons.keys()[rand_range(0, 3)]
+			var weapon = vanguard_weapons.keys()[rand_range(0, 3)]
+			var unit_potrait = vanguard_potrait[rand_range(0, 3)]
 			var vanguard = preload("res://scenes/unit/data/units/vanguard.tres").duplicate()
 			vanguard.player_id = player_data.player_id
 			vanguard.team = player_data.team
-			vanguard.unit_name = "%s (%s)" %[RandomNameGenerator.generate(), "Vanguard"]
-			vanguard.unit_potrait = [int(rand_range(0,8)), int(rand_range(0,10))]
-			vanguard.attack_damage = weapons[weapon]
+			vanguard.unit_name = "%s (%s)" %[RandomNameGenerator.generate_name(), "Vanguard"]
+			vanguard.unit_potrait = unit_potrait
+			vanguard.attack_damage = vanguard_weapons[weapon]
 			vanguard.weapon_model = weapon
 			player_data.player_units.append(vanguard)
 			
@@ -63,8 +66,8 @@ func _on_battle_pressed():
 			var hunter = preload("res://scenes/unit/data/units/hunter.tres").duplicate()
 			hunter.player_id = player_data.player_id
 			hunter.team = player_data.team
-			hunter.unit_name = "%s (%s)" %[RandomNameGenerator.generate(), "Hunter"]
-			hunter.unit_potrait = [int(rand_range(0,8)), int(rand_range(0,10))]
+			hunter.unit_name = "%s (%s)" %[RandomNameGenerator.generate_name(), "Hunter"]
+			hunter.unit_potrait = [0, int(rand_range(0,5))]
 			player_data.player_units.append(hunter)
 			
 		Global.player_battle_data.append(player_data)

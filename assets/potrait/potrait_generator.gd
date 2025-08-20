@@ -1,16 +1,16 @@
 extends Node
 class_name PotraitGenerator
 
-const soldiers = preload("res://assets/potrait/soldiers/soldier_1.png")
+const humans = preload("res://assets/potrait/soldiers/human.png")
 const monsters = preload("res://assets/potrait/monsters/monsters.png")
 const banners = preload("res://assets/potrait/banners/symbols.png")
 
 static func get_soldier_potrait(col: int, row: int) -> AtlasTexture:
-	var cell_size: Vector2 = Vector2(128, 135)
+	var cell_size: Vector2 = Vector2(250, 250)
 	var atlas = AtlasTexture.new()
-	atlas.atlas = soldiers
-	var x = (clamp(col, 0, 8) * cell_size.x) + 2
-	var y = (clamp(row, 0, 11) * cell_size.y) + (2 * row)
+	atlas.atlas = humans
+	var x = (clamp(col, 0, 3) * cell_size.x) + 2
+	var y = (clamp(row, 0, 5) * cell_size.y) + (2 * row)
 	atlas.region = Rect2(x, y, cell_size.x, cell_size.y)
 	return atlas
 	

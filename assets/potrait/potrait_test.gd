@@ -6,8 +6,8 @@ onready var banner_color = $HBoxContainer/banners/banner_color
 onready var banner_icon = $HBoxContainer/banners/banner_icon
 
 func _ready():
-	for i in 11:
-		for o in 8:
+	for i in 5:
+		for o in 3:
 			soldier_indexs.append([i, o])
 	
 	for i in 6:

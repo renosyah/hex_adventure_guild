@@ -225,6 +225,9 @@ func _on_hunter_scouting(_unit :BaseUnit):
 	var view = _unit.view_range + 1
 	var clear_tiles :Array = HexMapUtil.get_adjacent_tile_common(_unit.current_tile, view)
 	for i in clear_tiles:
+		if not _undiscovered_tiles.has(i):
+			continue
+			
 		if not _tile_to_scout.has(i):
 			_tile_to_scout.append(i)
 	

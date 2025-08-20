@@ -10,6 +10,7 @@ export var unit_name :String
 export var unit_potrait : Array # [int (column), int (row)]
 export var unit_scene :Resource
 export var pos :Vector3
+export var unit_icon :Resource
 
 # stats
 export var action :int = 1

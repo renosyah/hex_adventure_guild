@@ -57,7 +57,7 @@ margin_right = 150.0
 margin_bottom = 150.0
 rect_min_size = Vector2( 150, 150 )
 mouse_filter = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 4
 size_flags_vertical = 0
 __meta__ = {
 "_editor_description_": ""
@@ -90,6 +90,6 @@ margin_bottom = 175.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_fonts/font = ExtResource( 3 )
-text = "Hill"
+text = "-"
 align = 1
 valign = 1
