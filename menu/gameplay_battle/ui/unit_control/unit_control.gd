@@ -15,11 +15,11 @@ onready var ability_button = $HBoxContainer2/MarginContainer/ability_holder/abil
 func _ready():
 	ability_holder.visible = false
 	unit_info_panel.visible = false
+	
 
 func show_unit_detail(v :bool, unit :BaseUnit = null, data :UnitData = null):
 	unit_info_panel.visible = v
 	ability_holder.visible = v
-	
 	var conditions :Array = [
 		not is_instance_valid(unit),
 		data == null

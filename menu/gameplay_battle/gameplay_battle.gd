@@ -64,10 +64,17 @@ func _display_detail_selected_unit():
 	
 	if _selected_unit.has_action():
 		_higlight_unit_attack(_selected_unit.current_tile)
+		
+func _on_ui_on_unit_select(unit :BaseUnit):
+	_on_map_on_tile_click(map.get_tile(unit.current_tile))
+	_move_cam(unit.global_position, true)
 	
 func _on_ui_end_turn():
-	_last_cam_pos = movable_camera.global_position
+	if is_instance_valid(_selected_unit):
+		_selected_unit.unit_selected(false)
+		_selected_unit = null
 	
+	_last_cam_pos = movable_camera.global_position
 	_clear_tile_highlights()
 	_unit_moving_path.clear()
 	
@@ -98,6 +105,7 @@ func _on_ui_on_activate_ability():
 			_clear_tile_highlights()
 			ui.show_unit_detail(false)
 			_selected_unit.use_ability()
+			_selected_unit.unit_selected(false)
 			_selected_unit = null
 		
 #------------------------------------ MAP ---------------------------------------------------
@@ -111,6 +119,7 @@ func _process(delta):
 func _on_map_on_map_ready():
 	var data = Global.selected_map_data
 	_spawn_points = HexMapUtil.get_tile_spawn_point(data.tile_ids, Vector2.ZERO, data.map_size, 2)
+	_spawn_points.shuffle()
 	_setup_undiscovered_tiles()
 	_spawn_unit()
 	
@@ -131,22 +140,28 @@ func _on_map_on_tile_click(tile :HexTile):
 				
 				if _attack_tiles.has(tile.id):
 					_attack_target(_unit_in_tile[tile.id], tile.id)
+					_selected_unit.unit_selected(false)
 					_selected_unit = null
 					return
 					
+				_selected_unit.unit_selected(false)
 				_selected_unit = _unit_in_tile[tile.id]
+				_selected_unit.unit_selected(true)
 				_display_detail_selected_unit()
 				
 			else:
+				_selected_unit.unit_selected(false)
 				_selected_unit = null
 				
 		else:
 			_move_unit(tile.id)
+			_selected_unit.unit_selected(false)
 			_selected_unit = null
 			
 	else:
 		if tile_has_unit:
 			_selected_unit = _unit_in_tile[tile.id]
+			_selected_unit.unit_selected(true)
 			_display_detail_selected_unit()
 		
 func _setup_undiscovered_tiles():
@@ -161,6 +176,7 @@ func _spawn_unit():
 		var player :PlayerBattleData = i
 		var tile_ids = _spawn_points[player_index]
 		
+		# init bot player
 		if player.player_id != Global.current_player_id:
 			var bot = bot_scene.instance()
 			bot.bot_id = player.player_id
@@ -193,18 +209,19 @@ func _spawn_unit():
 			
 			if unit is Hunter:
 				unit.connect("scouting", self , "_on_hunter_scouting", [unit])
-			
-			_unit_in_tile[tile_id] = unit
-			_unit_datas[unit] = data
-			
+				
 			if unit is Vanguard:
 				_vanguard_units.append(unit)
+				
+			_unit_in_tile[tile_id] = unit
+			_unit_datas[unit] = data
 			
 			_unit_blocked_tiles.append(unit.current_tile)
 			ui.add_unit_floating_info(unit)
 			
 			if is_player_unit:
 				_last_cam_pos = hextile.global_position
+				ui.add_unit_to_selection(unit, unit_data)
 				
 			if unit_data.team == Global.current_player_id:
 				_reveal_tile_in_unit_view(unit)
@@ -217,9 +234,8 @@ func _spawn_unit():
 			
 		player_index+= 1
 		
-	movable_camera.translation = _last_cam_pos
-	movable_camera.translation += Vector3.BACK * 8
 	movable_camera.translation.y = 10
+	_move_cam(_last_cam_pos)
 	
 func _on_hunter_scouting(_unit :BaseUnit):
 	var view = _unit.view_range + 1
@@ -387,6 +403,19 @@ func _reveal_tile_in_unit_view(_unit :BaseUnit):
 			_unit_in_tile[tile.id].unit_spotted()
 			
 #------------------------------------ UTILS ---------------------------------------------------
+func _move_cam(to :Vector3, use_tween :bool = false):
+	var y = movable_camera.translation.y
+	to = to + Vector3.BACK * 5
+	to.y = y
+	
+	if use_tween:
+		
+		var tween = get_tree().create_tween()
+		tween.tween_property(movable_camera, "translation", to, 0.7).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_OUT)
+		
+	else:
+		movable_camera.translation = to
+	
 func _reveal_scout_tile():
 	yield(get_tree(), "idle_frame")
 	
@@ -403,9 +432,7 @@ func _reveal_scout_tile():
 		tiles.append(tile)
 		mid_pos += tile.global_position
 	
-	movable_camera.global_position = mid_pos / tiles.size()
-	movable_camera.global_position += Vector3.BACK * 8
-	movable_camera.global_position.y = _last_cam_pos.y
+	_move_cam(mid_pos / tiles.size())
 	
 	for tile in tiles:
 		tile.set_discovered(true)
@@ -435,9 +462,7 @@ func _on_bot_command_unit(_unit :BaseUnit):
 	if _unit.is_hidden:
 		return
 		
-	movable_camera.translation = _unit.global_position
-	movable_camera.translation += Vector3.BACK * 8
-	movable_camera.translation.y = 10
+	_move_cam(_unit.global_position)
 		
 func _higlight_unit_attack(id :Vector2):
 	if not is_instance_valid(_selected_unit):
@@ -509,6 +534,9 @@ func _update_battle_result(team :int):
 		
 	elif _total_enemy_unit <= 0:
 		ui.show_win()
+
+
+
 
 
 

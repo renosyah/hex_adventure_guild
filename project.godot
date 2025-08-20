@@ -114,11 +114,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/object_tile/object_tile.gd"
 }, {
-"base": "Vanguard",
-"class": "Peasant",
-"language": "GDScript",
-"path": "res://scenes/unit/peasant/peasant.gd"
-}, {
 "base": "Resource",
 "class": "PlayerBattleData",
 "language": "GDScript",
@@ -170,6 +165,11 @@ _global_script_classes=[ {
 "path": "res://scenes/unit/data/unit_data.gd"
 }, {
 "base": "Node",
+"class": "UnitUtils",
+"language": "GDScript",
+"path": "res://utils/unit_utils.gd"
+}, {
+"base": "Node",
 "class": "Utils",
 "language": "GDScript",
 "path": "res://utils/utils.gd"
@@ -201,7 +201,6 @@ _global_script_class_icons={
 "NavigationData": "",
 "ObjectMapData": "",
 "ObjectTile": "",
-"Peasant": "",
 "PlayerBattleData": "",
 "PotraitGenerator": "",
 "Projectile": "",
@@ -212,6 +211,7 @@ _global_script_class_icons={
 "TileMapData": "",
 "ToggleButton": "",
 "UnitData": "",
+"UnitUtils": "",
 "Utils": "",
 "Vanguard": ""
 }

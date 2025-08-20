@@ -1,7 +1,10 @@
 extends Control
 
+signal on_unit_select(unit)
 signal on_activate_ability
 signal end_turn
+
+const unit_selection_scene = preload("res://menu/gameplay_battle/ui/unit_control/unit_selection.tscn")
 
 onready var game_ui = $SafeArea/VBoxContainer
 onready var unit_control = $SafeArea/VBoxContainer/unit_control
@@ -10,13 +13,23 @@ onready var floating = $floating
 onready var loading_turn = $loading
 onready var battle_result = $SafeArea/battle_result
 onready var battle_result_text = $SafeArea/battle_result/MarginContainer/VBoxContainer/battle_result_text
+onready var units = $SafeArea/units
 
 var floating_infos :Dictionary = {} # {unit :floating info}
 
 func _ready():
 	loading_turn.visible = false
 	battle_result.visible = false
-
+	
+func add_unit_to_selection(unit :BaseUnit, data :UnitData):
+	var unit_selection = unit_selection_scene.instance()
+	unit_selection.potrait = data.unit_potrait
+	unit_selection.connect("pressed", self, "_on_select_unit", [unit])
+	unit.connect("unit_dead", self , "_on_unit_dead", [unit_selection])
+	unit.connect("unit_selected", self, "_on_unit_selected", [unit, unit_selection])
+	units.add_child(unit_selection)
+	units.move_child(unit_selection, 0)
+	
 func show_unit_detail(v :bool, unit :BaseUnit = null, data :UnitData = null):
 	unit_control.show_unit_detail(v, unit, data)
 	
@@ -63,6 +76,7 @@ func update_cam_position(camera :Camera):
 func set_on_player_turn(v :bool):
 	unit_control.visible = v
 	loading_turn.visible = not v
+	units.visible = v
 
 func _show_battle_result():
 	battle_result.visible = true
@@ -78,6 +92,18 @@ func show_lose():
 	_show_battle_result()
 	battle_result_text.text = "Lose"
 	
+func _on_unit_dead(_unit, _tile_id, unit_selection):
+	unit_selection.set_dead()
+
+func _on_select_unit(unit :BaseUnit):
+	if unit.is_dead():
+		return
+		
+	emit_signal("on_unit_select", unit)
+
+func _on_unit_selected(unit :BaseUnit, _selection):
+	_selection.select(unit.is_selected)
+
 func _on_exit_pressed():
 	get_tree().change_scene("res://menu/main/main.tscn")
 
@@ -88,3 +114,5 @@ func _on_unit_control_end_turn():
 func _on_unit_control_on_activate_ability():
 	emit_signal("on_activate_ability")
 	
+func _on_unit_control_on_unit_select(unit):
+	emit_signal("on_unit_select", unit)

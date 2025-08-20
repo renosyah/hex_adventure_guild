@@ -214,10 +214,10 @@ tracks/6/loop_wrap = true
 tracks/6/imported = false
 tracks/6/enabled = true
 tracks/6/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.39, 0.5, 0.6, 0.71, 0.8, 0.9, 1.01 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.39, 0.4, 0.5, 0.6, 0.7, 0.71, 0.8, 0.9, 1, 1.01 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( -0.0107409, -0.175699, 0.0763504 ), Vector3( 0.224774, -0.0450482, 0.0763504 ), Vector3( 0.295256, 0.147489, 0.0763504 ), Vector3( 0.449974, 0.274702, 0.0763504 ), Vector3( 0.322762, 0.226567, 0.0763504 ), Vector3( 0.322762, 0.226567, 0.0763504 ), Vector3( 0.449974, 0.274702, 0.0763504 ), Vector3( 0.295256, 0.147489, 0.0763504 ), Vector3( 0.224774, -0.0450482, 0.0763504 ), Vector3( -0.0107409, -0.175699, 0.0763504 ) ]
+"values": [ Vector3( -0.0176152, -0.124143, 0.0763504 ), Vector3( 0.224774, -0.0450482, 0.0763504 ), Vector3( 0.154335, 0.168112, 0.0763504 ), Vector3( 0.449974, 0.274702, 0.0763504 ), Vector3( 0.25968, 0.273763, 0.0763504 ), Vector3( 0.181841, 0.236878, 0.0763504 ), Vector3( 0.150907, 0.230004, 0.0763504 ), Vector3( 0.281865, 0.263764, 0.0763504 ), Vector3( 0.449974, 0.274702, 0.0763504 ), Vector3( 0.126838, 0.150926, 0.0763504 ), Vector3( 0.224774, -0.0450482, 0.0763504 ), Vector3( -0.00995322, -0.126014, 0.0763504 ), Vector3( -0.0107409, -0.175699, 0.0763504 ) ]
 }
 tracks/7/type = "value"
 tracks/7/path = NodePath("body/bow:rotation_degrees")
@@ -226,10 +226,10 @@ tracks/7/loop_wrap = true
 tracks/7/imported = false
 tracks/7/enabled = true
 tracks/7/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.4, 0.5, 0.6, 0.72, 0.8, 0.9, 1.01 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.4, 0.5, 0.6, 0.7, 0.72, 0.8, 0.9, 1, 1.01 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, -92.349 ), Vector3( 0, 0, -34.246 ), Vector3( 0, 0, 23.857 ), Vector3( 0, 0, 23.857 ), Vector3( 0, 0, 23.857 ), Vector3( 0, 0, 23.857 ), Vector3( 0, 0, 23.857 ), Vector3( 0, 0, 23.857 ), Vector3( 0, 0, -34.246 ), Vector3( 0, 0, -92.349 ) ]
+"values": [ Vector3( 0, 0, -92.349 ), Vector3( 0, 0, -34.246 ), Vector3( 0, 0, 23.857 ), Vector3( 0, 0, 23.857 ), Vector3( 0, 0, 23.857 ), Vector3( 0, 0, 23.857 ), Vector3( 0, 0, 23.857 ), Vector3( 0, 0, 23.857 ), Vector3( 0, 0, 1.76601 ), Vector3( 0, 0, -34.246 ), Vector3( 0, 0, -87.0669 ), Vector3( 0, 0, -92.349 ) ]
 }
 tracks/8/type = "value"
 tracks/8/path = NodePath("body/bow:texture")
@@ -772,7 +772,7 @@ script = ExtResource( 1 )
 transform = Transform( 1, 0, 0, 0, 0.819152, 0.573577, 0, -0.573577, 0.819152, 0, 0.8, 0 )
 
 [node name="arm_1" type="Spatial" parent="body"]
-transform = Transform( 0.00952929, 0.999954, 0, -0.999955, 0.00952927, 0, 0, 0, 1, -0.0393022, -0.0340899, 0.149888 )
+transform = Transform( 0.00952929, 0.999954, 0, -0.999955, 0.00952928, 0, 0, 0, 1, -0.0393022, -0.0340899, 0.149888 )
 
 [node name="arm_1" type="Sprite3D" parent="body/arm_1"]
 transform = Transform( 0.5, -7.33417e-09, 0, 6.98492e-09, 0.5, -2.32831e-10, 0, 9.31323e-10, 0.5, 0.165217, 0.0165981, -0.0418584 )

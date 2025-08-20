@@ -11,6 +11,9 @@ signal unit_take_damage(_unit, _damage, _from_unit)
 signal unit_dead(_unit, _tile_id)
 signal unit_reach(_unit, _tile_id)
 
+# for ui need
+signal unit_selected
+
 # owner
 export var player_id :int
 export var team :int
@@ -34,6 +37,9 @@ export var move_speed :float = 0.4
 export var is_hidden :bool
 export var weapon_model :Resource
 
+# for ui need
+export var is_selected :bool
+
 var _tween_move :Tween
 var _current_attack_damage :int
 var _current_facing :int = 1
@@ -54,6 +60,10 @@ func _prepare_attack_damage():
 	var min_dmg = clamp(attack_damage - partial, 1, attack_damage)
 	var max_dmg = attack_damage + partial
 	_current_attack_damage = int(rand_range(min_dmg, max_dmg))
+
+func unit_selected(v :bool):
+	is_selected = v
+	emit_signal("unit_selected")
 
 #  overidable func
 func has_action() -> bool:

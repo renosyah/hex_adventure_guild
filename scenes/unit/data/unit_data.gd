@@ -1,16 +1,25 @@
 extends Resource
 class_name UnitData
 
+const unit_class_peasant = 0
+const unit_class_vanguard = 1
+const unit_class_knight = 2
+const unit_class_hunter = 3
+const unit_class_gunner = 4
+const unit_class_priest = 5
+const unit_class_mage = 6
+
 # owner
 export var player_id :int
 export var team :int
 
 # info
 export var unit_name :String
-export var unit_potrait : Array # [int (column), int (row)]
+export var unit_potrait : Resource
 export var unit_scene :Resource
 export var pos :Vector3
 export var unit_icon :Resource
+export var unit_class :int
 
 # stats
 export var action :int = 1
