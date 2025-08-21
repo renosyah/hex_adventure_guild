@@ -6,6 +6,7 @@ signal end_turn
 const knight_ability =  preload("res://assets/icons/counter.png")
 const vanguard_ability = preload("res://assets/icons/spear_defence.png")
 const hunter_ability = preload("res://assets/icons/scout.png")
+const gunner_ability = preload("res://assets/icons/reload.png")
 
 onready var unit_detail = $HBoxContainer2/CenterContainer2/unit_info_panel/unit_detail
 onready var ability_holder = $HBoxContainer2/MarginContainer/ability_holder
@@ -16,7 +17,6 @@ func _ready():
 	ability_holder.visible = false
 	unit_info_panel.visible = false
 	
-
 func show_unit_detail(v :bool, unit :BaseUnit = null, data :UnitData = null):
 	unit_info_panel.visible = v
 	ability_holder.visible = v
@@ -28,7 +28,7 @@ func show_unit_detail(v :bool, unit :BaseUnit = null, data :UnitData = null):
 	if conditions.has(true):
 		return
 		
-	var no_action :bool = not unit.has_action()
+	var no_action :bool = not unit.can_use_ability()
 	var player_own :bool = unit.player_id == Global.current_player_id
 	
 	ability_button.disabled = no_action
@@ -42,6 +42,9 @@ func show_unit_detail(v :bool, unit :BaseUnit = null, data :UnitData = null):
 		
 	elif unit is Knight:
 		ability_button.icon = knight_ability
+		
+	elif unit is Gunner:
+		ability_button.icon = gunner_ability
 		
 	# other class
 	# set icon for ability button

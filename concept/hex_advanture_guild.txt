@@ -53,7 +53,7 @@ hex adventure guild
 			- pike
 			- halberd
 
-	- knight (tank) (3-8 dmg, 45 hp, 6 armor) (ok)
+	- knight (tank) (7-9 dmg, 45 hp, 6 armor) (ok)
 		- stats : 
 			- 1 action
 			- 1 move

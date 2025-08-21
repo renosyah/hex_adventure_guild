@@ -487,7 +487,7 @@ func _higlight_unit_attack(id :Vector2):
 		
 	_attack_tiles.clear()
 	
-	var tiles = map.get_adjacent_tile(id, _selected_unit.attack_range)
+	var tiles = map.get_adjacent_tile(id, _selected_unit.get_attack_range())
 	for tile in tiles:
 		var x :HexTile = tile
 		if not _unit_in_tile.has(tile.id):

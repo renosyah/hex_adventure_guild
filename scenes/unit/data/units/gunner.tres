@@ -1,0 +1,24 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://scenes/unit/data/unit_data.gd" type="Script" id=1]
+[ext_resource path="res://scenes/unit/gunner/gunner.tscn" type="PackedScene" id=2]
+
+[resource]
+script = ExtResource( 1 )
+player_id = 0
+team = 0
+unit_name = "gunner"
+unit_scene = ExtResource( 2 )
+pos = Vector3( 0, 0, 0 )
+unit_class = 4
+action = 1
+max_action = 1
+move = 3
+move_range = 3
+hp = 25
+max_hp = 25
+armor = 1
+attack_damages = [ 8, 11, 12 ]
+attack_range = 2
+view_range = 2
+move_speed = 0.4

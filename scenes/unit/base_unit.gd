@@ -79,6 +79,9 @@ func get_spotting_range() -> int:
 func get_attack_damage() -> int:
 	return _current_attack_damage
 	
+func get_attack_range() -> int:
+	return attack_range
+	
 func face_left():
 	_current_facing = -1
 	
@@ -120,6 +123,9 @@ func on_turn():
 	move = move_range
 	_prepare_attack_damage()
 	emit_signal("unit_on_turn", self)
+	
+func can_use_ability() -> bool:
+	return has_action()
 	
 func use_ability() -> void:
 	pass

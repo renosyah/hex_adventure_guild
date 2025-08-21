@@ -100,14 +100,18 @@ func _on_bot_decide_timeout_timeout():
 		return
 		
 	_selected_unit = _unit_to_command.front()
+	if _selected_unit is Gunner:
+		if _selected_unit.can_use_ability():
+			_selected_unit.use_ability()
+			
 	_add_unit_in_attack_range()
 	
 	emit_signal("bot_command_unit", _selected_unit)
 	
-	var is_attack :bool = yield(_attack_unit(), "completed")
-	if not is_attack:
-		var is_move :bool = yield(_move_unit(), "completed")
-		if is_move:
+	var decide_to_attack :bool = yield(_attack_unit(), "completed")
+	if not decide_to_attack:
+		var decide_to_move :bool = yield(_move_unit(), "completed")
+		if decide_to_move:
 			return
 		
 	if not _is_current_unit_can_stil_move():
@@ -142,9 +146,12 @@ func check_unit(unit :BaseUnit):
 	bot_decide_timeout.start()
 	
 func _add_unit_in_attack_range():
+	if not _selected_unit.has_action():
+		return
+		
 	_option_to_attack.clear()
 	
-	var tiles = map.get_adjacent_tile(_selected_unit.current_tile, _selected_unit.attack_range)
+	var tiles = map.get_adjacent_tile(_selected_unit.current_tile, _selected_unit.get_attack_range())
 	if tiles.empty():
 		return
 		
@@ -179,6 +186,9 @@ func _attack_unit() -> bool:
 func _move_unit() -> bool:
 	yield(get_tree(), "idle_frame")
 	
+	if not _selected_unit.can_move():
+		return false
+		
 	_reveal_tile_in_unit_view(_selected_unit.current_tile, _selected_unit.view_range)
 	var _paths :Array = []
 	

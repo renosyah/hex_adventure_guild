@@ -114,10 +114,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.3, 0.5, 0.6, 0.9 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.6, 0.7, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0.0588756, -0.0691149, 0.0912802 ), Vector3( -0.0177633, -0.0985913, 0.0912802 ), Vector3( -0.0619779, -0.119225, 0.0912802 ), Vector3( -0.0177633, -0.0985913, 0.0912802 ), Vector3( -0.0177633, -0.0985913, 0.0912802 ) ]
+"values": [ Vector3( 0.0588756, -0.0691149, 0.0912802 ), Vector3( 0.0651028, -0.115672, 0.0912802 ), Vector3( -0.0177633, -0.0985913, 0.0912802 ), Vector3( -0.0814006, -0.0604087, 0.0912802 ), Vector3( 0.0776928, -0.0476812, 0.0912802 ), Vector3( -0.0814006, -0.0604087, 0.0912802 ), Vector3( -0.0177633, -0.0985913, 0.0912802 ), Vector3( 0.0588756, -0.0691149, 0.0912802 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("body/arm_1:rotation_degrees")
@@ -126,10 +126,10 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.3, 0.5, 0.6, 0.9 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.6, 0.7, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, -35.517 ), Vector3( 0, 0, -61.653 ), Vector3( 0, 0, -35.517 ), Vector3( 0, 0, -61.653 ) ]
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, -20.143 ), Vector3( 0, 0, -40.286 ), Vector3( 0, 0, -51.781 ), Vector3( 0, 0, -20.654 ), Vector3( 0, 0, -51.781 ), Vector3( 0, 0, -40.286 ), Vector3( 0, 0, 0 ) ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("body/arm_2:translation")
@@ -138,10 +138,10 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.3, 0.5, 0.6, 0.9 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.2, 0.3, 0.4, 0.6, 0.7, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0.0588756, -0.0691149, -0.0951849 ), Vector3( 0.135514, -0.0160573, -0.0951849 ), Vector3( 0.126671, 0.0134191, -0.0951849 ), Vector3( 0.135514, -0.0160573, -0.0951849 ), Vector3( 0.135514, -0.0160573, -0.0951849 ) ]
+"values": [ Vector3( 0.0588756, -0.0691149, -0.0951849 ), Vector3( 0.135514, -0.0160573, -0.0951849 ), Vector3( 0.0909679, -0.0351484, -0.0951849 ), Vector3( -0.0935805, -0.0669672, -0.0951849 ), Vector3( 0.0909679, -0.0351484, -0.0951849 ), Vector3( 0.135514, -0.0160573, -0.0951849 ), Vector3( 0.0588756, -0.0691149, -0.0951849 ) ]
 }
 tracks/3/type = "value"
 tracks/3/path = NodePath("body/arm_2:rotation_degrees")
@@ -150,10 +150,10 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0, 0.3, 0.5, 0.6, 0.9 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.2, 0.3, 0.4, 0.6, 0.7, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 20.018 ), Vector3( 0, 0, -9.403 ), Vector3( 0, 0, 20.018 ), Vector3( 0, 0, 20.018 ) ]
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, -23.912 ), Vector3( 0, 0, -48.491 ), Vector3( 0, 0, -30.555 ), Vector3( 0, 0, -48.491 ), Vector3( 0, 0, -23.912 ), Vector3( 0, 0, 0 ) ]
 }
 tracks/4/type = "value"
 tracks/4/path = NodePath("body/weapon:translation")
@@ -162,10 +162,10 @@ tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0, 0.3, 0.5, 0.6, 0.9 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.2, 0.3, 0.4, 0.6, 0.7, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0.291818, -0.0691149, 0.0763504 ), Vector3( 0.291818, -0.0691149, 0.0763504 ), Vector3( 0.165069, -0.160492, 0.0763504 ), Vector3( 0.291818, -0.0691149, 0.0763504 ), Vector3( 0.291818, -0.0691149, 0.0763504 ) ]
+"values": [ Vector3( 0.291818, -0.0691149, 0.0763504 ), Vector3( 0.387274, -0.221845, 0.0763504 ), Vector3( 0.139088, -0.221845, 0.0763504 ), Vector3( 0.470003, -0.177299, 0.0763504 ), Vector3( 0.139088, -0.221845, 0.0763504 ), Vector3( 0.387274, -0.221845, 0.0763504 ), Vector3( 0.291818, -0.0691149, 0.0763504 ) ]
 }
 tracks/5/type = "value"
 tracks/5/path = NodePath("body/weapon:rotation_degrees")
@@ -174,10 +174,10 @@ tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0, 0.3, 0.5, 0.6, 0.9 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.2, 0.3, 0.4, 0.6, 0.7, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, -48.13 ), Vector3( 0, 0, -48.13 ), Vector3( 0, 0, -48.13 ), Vector3( 0, 0, -48.13 ) ]
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, -84.237 ), Vector3( 0, 0, -84.237 ), Vector3( 0, 0, -84.237 ), Vector3( 0, 0, -84.237 ), Vector3( 0, 0, -84.237 ), Vector3( 0, 0, 0 ) ]
 }
 
 [sub_resource type="Animation" id=7]
