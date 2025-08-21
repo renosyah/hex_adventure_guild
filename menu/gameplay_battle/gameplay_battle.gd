@@ -250,6 +250,7 @@ func _on_hunter_scouting(_unit :BaseUnit):
 	
 func _attack_target(target :BaseUnit, to :Vector2):
 	var conditions :Array = [
+		_selected_unit.player_id != Global.current_player_id,
 		not _attack_tiles.has(to),
 		not _selected_unit.has_action(),
 		not _unit_in_tile.has(to)

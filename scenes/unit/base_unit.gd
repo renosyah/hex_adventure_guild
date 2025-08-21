@@ -109,6 +109,7 @@ func take_damage(dmg :int, from :BaseUnit) -> void:
 	unit_taken_damage(damage_receive, from)
 	
 	if is_dead():
+		yield(get_tree(),"idle_frame")
 		emit_signal("unit_dead", self, current_tile)
 	
 func unit_taken_damage(dmg :int, from :BaseUnit):
