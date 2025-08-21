@@ -1,5 +1,7 @@
 extends Spatial
 
+signal finish
+
 const dead_icon = preload("res://assets/damage_indicator/dead.png")
 const dmg_icon =  preload("res://assets/damage_indicator/dmg.png")
 export var damage :int
@@ -27,3 +29,4 @@ func show_dead():
 	
 func _on_AnimationPlayer_animation_finished(anim_name):
 	visible = false
+	emit_signal("finish")

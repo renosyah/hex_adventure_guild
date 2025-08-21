@@ -43,7 +43,7 @@ func _on_battle_pressed():
 			unit.unit_name = UnitUtils.create_unit_name(unit.unit_class)
 			unit.unit_potrait = UnitUtils.create_unit_potrait(unit.unit_class)
 			unit.weapon_model = UnitUtils.set_unit_weapon(unit)
-			unit.attack_damage = UnitUtils.set_unit_attack_damage(unit)
+			unit.attack_damages = UnitUtils.set_unit_attack_damages(unit)
 			player_data.player_units.append(unit)
 			
 		Global.player_battle_data.append(player_data)

@@ -9,7 +9,7 @@ static func get_soldier_potrait(col: int, row: int) -> AtlasTexture:
 	var cell_size: Vector2 = Vector2(250, 250)
 	var atlas = AtlasTexture.new()
 	atlas.atlas = humans
-	var x = (clamp(col, 0, 3) * cell_size.x) + 2
+	var x = (clamp(col, 0, 3) * cell_size.x) - 1
 	var y = (clamp(row, 0, 5) * cell_size.y) + (2 * row)
 	atlas.region = Rect2(x, y, cell_size.x, cell_size.y)
 	return atlas

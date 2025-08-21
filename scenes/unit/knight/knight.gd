@@ -27,7 +27,8 @@ func take_damage(dmg :int, from :BaseUnit) -> void:
 	var _damage :int = dmg
 	
 	# have chance to receive no damage
-	if _is_counter_activated and randf() < _chance_to_avoid_damage:
+	var blocked :bool = randf() < _chance_to_avoid_damage
+	if _is_counter_activated and blocked:
 		_damage = 0
 	
 	.take_damage(_damage, from)
@@ -46,6 +47,7 @@ func unit_taken_damage(dmg :int, from :BaseUnit):
 		# you wait for sword but got arrow in knee instead
 		if _melee_tiles.has(from.current_tile):
 			yield(animation_player,"animation_finished")
+			_current_attack_damage = from.get_attack_damage()
 			attack_target(from)
 			
 		_is_counter_activated = false

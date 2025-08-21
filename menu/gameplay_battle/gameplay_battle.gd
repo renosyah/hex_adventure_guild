@@ -7,6 +7,7 @@ onready var map = $map
 onready var cam :Camera = get_viewport().get_camera()
 onready var damage_indicator = $damage_indicator
 onready var simple_delay = $simple_delay
+onready var queue_task = $queue_task
 
 #------------------------------------ GLOBAL VAR ---------------------------------------------------
 var _tile_highlights = []
@@ -303,9 +304,7 @@ func _move_unit(to :Vector2):
 	ui.unit_control.visible = true
 	
 func _on_unit_take_damage(_unit :BaseUnit, _damage :int, _from_unit :BaseUnit):
-	damage_indicator.translation = _unit.global_position
-	damage_indicator.damage = _damage
-	damage_indicator.show_damage()
+	queue_task.add_task(self, "_display_unit_damage", [_unit, _damage])
 	
 func _on_unit_enter_tile(_unit :BaseUnit, _tile_id :Vector2):
 	# unit will hidden
@@ -355,8 +354,9 @@ func _on_unit_reach(_unit :BaseUnit, _tile_id :Vector2):
 	
 	# picked loot
 	# on arrive at tile
-	if _loots.has(_tile_id):
+	if _loots.has(_tile_id) and _unit.player_id == Global.current_player_id:
 		_loots[_tile_id].pick()
+		_loots.erase(_tile_id)
 		
 	for i in _bots:
 		var bot :BattleBot = i
@@ -403,6 +403,15 @@ func _reveal_tile_in_unit_view(_unit :BaseUnit):
 			_unit_in_tile[tile.id].unit_spotted()
 			
 #------------------------------------ UTILS ---------------------------------------------------
+func _display_unit_damage(_unit :BaseUnit, _damage :int):
+	var indicator = damage_indicator.duplicate()
+	add_child(indicator)
+	indicator.translation = _unit.global_position
+	indicator.damage = _damage
+	indicator.show_damage()
+	yield(indicator,"finish")
+	indicator.queue_free()
+	
 func _move_cam(to :Vector3, use_tween :bool = false):
 	var y = movable_camera.translation.y
 	to = to + Vector3.BACK * 5

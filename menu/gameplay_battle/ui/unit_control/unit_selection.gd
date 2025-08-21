@@ -8,6 +8,7 @@ export var potrait :Resource
 onready var _icon = $potrait/icon
 onready var _dead = $potrait/dead
 onready var _texture_rect_4 = $potrait/TextureRect4
+onready var _no_action = $potrait/no_action
 
 
 func _ready():
@@ -17,6 +18,9 @@ func _ready():
 	
 func select(v :bool):
 	_texture_rect_4.modulate = color_select if v else color_unselect
+	
+func can_action(v :bool):
+	_no_action.visible = not v
 	
 func set_dead():
 	_dead.visible = true

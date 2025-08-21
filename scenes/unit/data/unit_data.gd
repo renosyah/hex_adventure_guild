@@ -32,7 +32,7 @@ export var hp :int = 25
 export var max_hp :int = 25
 export var armor :int = 2
 
-export var attack_damage :int = 14
+export var attack_damages :Array = [14]
 export var attack_range :int = 1
 
 export var view_range :int = 2
@@ -52,7 +52,7 @@ func spawn(parent :Node) -> BaseUnit:
 	unit.hp = hp
 	unit.max_hp = max_hp
 	unit.armor = armor
-	unit.attack_damage = attack_damage
+	unit.attack_damages = attack_damages
 	unit.attack_range = attack_range
 	unit.view_range = view_range
 	unit.move_speed = move_speed

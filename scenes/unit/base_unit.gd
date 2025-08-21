@@ -28,7 +28,7 @@ export var hp :int = 25
 export var max_hp :int = 25
 export var armor :int = 2
 
-export var attack_damage :int = 14
+export var attack_damages :Array = [1,4,6]
 export var attack_range :int = 1
 
 export var view_range :int = 2
@@ -54,12 +54,10 @@ func _ready():
 	_tween_move.connect("tween_completed", self, "_on_move_completed")
 	add_child(_tween_move)
 	_prepare_attack_damage()
+	_melee_tiles = HexMapUtil.get_adjacent_tile_common(current_tile)
 
 func _prepare_attack_damage():
-	var partial = int(attack_damage * 0.25)
-	var min_dmg = clamp(attack_damage - partial, 1, attack_damage)
-	var max_dmg = attack_damage + partial
-	_current_attack_damage = int(rand_range(min_dmg, max_dmg))
+	_current_attack_damage = attack_damages[rand_range(0, attack_damages.size())]
 
 func unit_selected(v :bool):
 	is_selected = v

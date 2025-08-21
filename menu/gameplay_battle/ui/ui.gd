@@ -25,10 +25,13 @@ func add_unit_to_selection(unit :BaseUnit, data :UnitData):
 	var unit_selection = unit_selection_scene.instance()
 	unit_selection.potrait = data.unit_potrait
 	unit_selection.connect("pressed", self, "_on_select_unit", [unit])
-	unit.connect("unit_dead", self , "_on_unit_dead", [unit_selection])
-	unit.connect("unit_selected", self, "_on_unit_selected", [unit, unit_selection])
 	units.add_child(unit_selection)
 	units.move_child(unit_selection, 0)
+	
+	unit.connect("unit_dead", self , "_on_unit_dead", [unit_selection])
+	unit.connect("unit_selected", self, "_on_unit_selected", [unit, unit_selection])
+	unit.connect("unit_on_turn", self, "_on_unit_update_action_status", [unit_selection])
+	unit.connect("unit_consume_action", self, "_on_unit_update_action_status", [unit_selection])
 	
 func show_unit_detail(v :bool, unit :BaseUnit = null, data :UnitData = null):
 	unit_control.show_unit_detail(v, unit, data)
@@ -91,6 +94,9 @@ func show_win():
 func show_lose():
 	_show_battle_result()
 	battle_result_text.text = "Lose"
+	
+func _on_unit_update_action_status(unit :BaseUnit, unit_selection):
+	unit_selection.can_action(unit.has_action())
 	
 func _on_unit_dead(_unit, _tile_id, unit_selection):
 	unit_selection.set_dead()

@@ -53,19 +53,17 @@ hex adventure guild
 			- pike
 			- halberd
 
-	- knight (tank) (3-8 dmg, 45 hp, 2 (+2) armor)
+	- knight (tank) (3-8 dmg, 45 hp, 6 armor) (ok)
 		- stats : 
 			- 1 action
 			- 1 move
 			- 1 attack range
 			- 1 move range
-			- +2 armor
 			- 1 view range
-			- ability (counter) (active) : have 15% chance to receive 0 damage & automaticaly attack enemy attacking you
+			- ability (counter) (active) : have 15% chance to receive 0 damage & automaticaly attack enemy attacking you using his damage
 
 		- weapons : 
 			- sword
-			- mace
 			- axe
 			- war hammer
 
@@ -85,25 +83,25 @@ hex adventure guild
 		- stats : 
 			- 1 action
 			- 1 move
-			- 2 attack range
+			- 3 attack range
 			- 1 move range
 			- 2 view range
+			- direct attack, can only attack at direct line of sign
 			- ability (reload) (active) : reload current weapon
 			- ability (pierce) (pasive) : range attack ignore armor (need reload)
 
 		- weapons : 
-			- crossbow
 			- hand cannon
 
-	- priest (heal support) (2-4 dmg, 25 hp, 1 armor)
+	- priest (heal support) (2-4 heal, 25 hp, 1 armor)
 		- stats : 
 			- 1 action
 			- 1 move
-			- 1 attack range
+			- 2 attack range
 			- 1 move range
 			- 2 view range
 			- pacifist and heal can only target ally unit
-			- ability (healing) (pasive) : (+8 to +15) hp heal
+			- ability (self healing) (pasive) : (+4 to +8) heal self
 
 		- weapons : 
 			- healing staff
@@ -117,7 +115,7 @@ hex adventure guild
 			- 1 move range
 			- 2 view range
 			- ability (chanting) (active) : prepare spell caster
-			- ability (spell caster) (pasive) : spell attack deal AOE damage (need chanting)
+			- ability (spell caster) (pasive) : spell attack deal AOE damage to adjacent tiles (need chanting)
 
 		- weapons : 
 			- fire staff
