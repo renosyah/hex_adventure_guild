@@ -9,6 +9,8 @@ onready var body = $body
 onready var animation_player = $AnimationPlayer
 onready var bow = $body/bow
 
+var _arrow_to :Vector3
+
 func use_ability() -> void:
 	.use_ability()
 	
@@ -31,9 +33,9 @@ func unit_taken_damage(dmg :int, from :BaseUnit):
 	
 	animation_player.play("damage")
 	
-func _fire_arrow(at :Vector3):
+func _fire_arrow():
 	var arrow = arrow_scene.instance()
-	arrow.target = at + Vector3.UP * 0.7
+	arrow.target = _arrow_to + Vector3.UP * 0.7
 	add_child(arrow)
 	arrow.translation = bow.global_position
 	arrow.fire()
@@ -51,8 +53,8 @@ func attack_target(target :BaseUnit):
 			animation_player.play("attack_melee")
 			
 		else:
+			_arrow_to = target.global_position
 			animation_player.play("attack")
-			_fire_arrow(target.global_position)
 			
 		yield(animation_player,"animation_finished")
 		animation_player.play("iddle")

@@ -305,7 +305,7 @@ func _move_unit(to :Vector2):
 	ui.unit_control.visible = true
 	
 func _on_unit_take_damage(_unit :BaseUnit, _damage :int, _from_unit :BaseUnit):
-	queue_task.add_task(self, "_display_unit_damage", [_unit, _damage])
+	queue_task.add_task(self, "_display_unit_damage", [_unit.global_position, _damage])
 	
 func _on_unit_enter_tile(_unit :BaseUnit, _tile_id :Vector2):
 	# unit will hidden
@@ -386,8 +386,7 @@ func _on_unit_dead(_unit :BaseUnit, _tile_id :Vector2, data :UnitData):
 		var bot :BattleBot = i
 		bot.check_unit(_unit)
 		
-	damage_indicator.translation = _unit.global_position
-	damage_indicator.show_dead()
+	queue_task.add_task(self, "_display_unit_dead", [_unit.global_position])
 	
 	_update_battle_result(_unit.team)
 	
@@ -404,12 +403,20 @@ func _reveal_tile_in_unit_view(_unit :BaseUnit):
 			_unit_in_tile[tile.id].unit_spotted()
 			
 #------------------------------------ UTILS ---------------------------------------------------
-func _display_unit_damage(_unit :BaseUnit, _damage :int):
+func _display_unit_damage(pos :Vector3, damage :int):
 	var indicator = damage_indicator.duplicate()
 	add_child(indicator)
-	indicator.translation = _unit.global_position
-	indicator.damage = _damage
+	indicator.translation = pos
+	indicator.damage = damage
 	indicator.show_damage()
+	yield(indicator,"finish")
+	indicator.queue_free()
+	
+func _display_unit_dead(pos :Vector3):
+	var indicator = damage_indicator.duplicate()
+	add_child(indicator)
+	indicator.translation = pos
+	indicator.show_dead()
 	yield(indicator,"finish")
 	indicator.queue_free()
 	

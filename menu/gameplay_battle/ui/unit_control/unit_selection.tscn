@@ -47,7 +47,7 @@ margin_top = -40.0
 margin_right = 40.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 80, 80 )
-color = Color( 0, 0, 0, 0.458824 )
+color = Color( 0, 0, 0, 0.588235 )
 
 [node name="Control" type="Control" parent="potrait/dead"]
 anchor_top = 1.0
@@ -75,7 +75,7 @@ margin_top = -40.0
 margin_right = 40.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 80, 80 )
-color = Color( 0, 0, 0, 0.458824 )
+color = Color( 0, 0, 0, 0.309804 )
 
 [node name="TextureRect4" type="TextureRect" parent="potrait"]
 anchor_right = 1.0

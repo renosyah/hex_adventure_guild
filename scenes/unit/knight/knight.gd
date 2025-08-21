@@ -40,14 +40,13 @@ func unit_taken_damage(dmg :int, from :BaseUnit):
 	
 	if _is_counter_activated and not is_dead():
 		
-		# retaliate counter
-		# only counter
 		# if enemy in melee range
-		# of not, well, ability is interupted
-		# you wait for sword but got arrow in knee instead
+		# retaliate with full counter
+		# if not will result ability is interupted
+		# : you wait for sword fight but got arrow in knee instead
 		if _melee_tiles.has(from.current_tile):
 			yield(animation_player,"animation_finished")
-			_current_attack_damage = from.get_attack_damage()
+			_current_attack_damage = _current_attack_damage + from.get_attack_damage()
 			attack_target(from)
 			
 		_is_counter_activated = false

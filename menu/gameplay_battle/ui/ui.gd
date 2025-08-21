@@ -46,7 +46,8 @@ func add_unit_floating_info(unit :BaseUnit):
 		is_for = 1
 		
 	elif is_team:
-		is_for = 3
+		#is_for = 3
+		return
 		
 	else:
 		 is_for = 2
