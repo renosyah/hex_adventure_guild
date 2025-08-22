@@ -73,7 +73,7 @@ static func create_unit_potrait(clas :int) -> AtlasTexture:
 		UnitData.unit_class_knight:
 			return PotraitGenerator.get_soldier_potrait(1, 2)
 			
-		UnitData.unit_class_hunter:
+		UnitData.unit_class_hunter,UnitData.unit_class_gunner:
 			var potraits = [
 				[0, 0],[0, 2],[1, 1],
 				[1, 1],[2, 1],[3, 1],

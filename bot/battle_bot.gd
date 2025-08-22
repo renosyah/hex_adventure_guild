@@ -95,14 +95,25 @@ func _get_all_units():
 func _on_bot_decide_timeout_timeout():
 	print("bot units : %s" % _unit_to_command.size())
 	
+	# 50 % chance to skip
+	# sometime bot kindda frooze
+#	if _rng.randf() < 0.5:
+#		emit_signal("bot_end_turn")
+#		return
+	
 	if _unit_to_command.empty():
 		emit_signal("bot_end_turn")
 		return
 		
 	_selected_unit = _unit_to_command.front()
+	
+	# make gunner use its reload ability
+	# then move to next unit
 	if _selected_unit is Gunner:
 		if _selected_unit.can_use_ability():
 			_selected_unit.use_ability()
+			_unit_to_command.pop_front()
+			return
 			
 	_add_unit_in_attack_range()
 	
