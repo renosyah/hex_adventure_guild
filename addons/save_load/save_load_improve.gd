@@ -15,6 +15,12 @@ func file_exists(path :String):
 	
 # ---- ASYNC SAVE ----
 func save_data_async(path: String, data):
+	if OS.has_feature("HTML5"):
+		SaveLoad.save(path, data)
+		yield(get_tree(),"idle_frame")
+		emit_signal("save_done", true)
+		return
+		
 	if _thread != null:
 		print("Save already in progress")
 		return
@@ -31,11 +37,18 @@ func _thread_save(args):
 	var success = file.open(path, File.WRITE) == OK
 	if success:
 		file.store_buffer(bytes)
+		file.flush()
 		file.close()
 	call_deferred("_thread_finished", "save_done", success)
 
 # ---- ASYNC LOAD ----
 func load_data_async(path: String):
+	if OS.has_feature("HTML5"):
+		var data = SaveLoad.load_save(path)
+		yield(get_tree(),"idle_frame")
+		emit_signal("load_done", data != null, data)
+		return
+		
 	if _thread != null:
 		print("Load already in progress")
 		return
