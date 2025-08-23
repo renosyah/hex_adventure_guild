@@ -485,6 +485,12 @@ func _higlight_unit_attack(id :Vector2):
 	if not is_instance_valid(_selected_unit):
 		return
 		
+	var is_range_unit = [
+		_selected_unit is Hunter,
+		_selected_unit is Gunner
+	]
+	var is_priest :bool = _selected_unit is Priest
+	
 	_attack_tiles.clear()
 	
 	var tiles = map.get_adjacent_tile(id, _selected_unit.get_attack_range())
@@ -494,12 +500,31 @@ func _higlight_unit_attack(id :Vector2):
 			continue
 			
 		var _unit :BaseUnit = _unit_in_tile[tile.id]
-		if _unit.team == Global.current_player_team:
-			continue
+		
+		if is_priest:
+			if _unit == _selected_unit:
+				continue
+				
+			if _unit.team != Global.current_player_team:
+				continue
+		else:
+			if _unit.team == Global.current_player_team:
+				continue
+			
+		var in_melee :bool = _selected_unit.is_in_melee_range(tile.id)
+		if  is_range_unit.has(true) and not in_melee:
+			var h = _add_tile_highlights(x.global_position, 4)
+			_tile_highlights.append(h)
+			
+		if is_priest:
+			var h = _add_tile_highlights(x.global_position, 5)
+			_tile_highlights.append(h)
+			
+		else: 
+			var h = _add_tile_highlights(x.global_position, 2)
+			_tile_highlights.append(h)
 			
 		_attack_tiles.append(x.id)
-		var h = _add_tile_highlights(x.global_position, 2)
-		_tile_highlights.append(h)
 	
 func _higlight_unit_movement(id :Vector2):
 	if not is_instance_valid(_selected_unit):
@@ -530,6 +555,10 @@ func _add_tile_highlights(pos :Vector3, type :int = 0) -> Spatial:
 			x.show_attack()
 		3:
 			x.show_move()
+		4:
+			x.show_attack_range()
+		5:
+			x.show_attack_heal()
 			
 	return x
 	

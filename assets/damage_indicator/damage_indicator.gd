@@ -4,6 +4,7 @@ signal finish
 
 const dead_icon = preload("res://assets/damage_indicator/dead.png")
 const dmg_icon =  preload("res://assets/damage_indicator/dmg.png")
+
 export var damage :int
 
 onready var sprite_3d = $Spatial/Sprite3D
@@ -17,8 +18,15 @@ func show_damage():
 	sprite_3d.texture = dmg_icon
 	visible = true
 	label.visible = true
-	label.text = "-%s" % damage
-	animation_player.play("boom")
+	
+	if damage > 0:
+		label.text = "-%s" % damage
+		animation_player.play("boom")
+		
+	else:
+		label.text = "+%s" % abs(damage)
+		animation_player.play("heal")
+	
 	
 func show_dead():
 	sprite_3d.texture = dead_icon

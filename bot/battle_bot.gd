@@ -112,8 +112,6 @@ func _on_bot_decide_timeout_timeout():
 	if _selected_unit is Gunner:
 		if _selected_unit.can_use_ability():
 			_selected_unit.use_ability()
-			_unit_to_command.pop_front()
-			return
 			
 	_add_unit_in_attack_range()
 	
@@ -157,11 +155,11 @@ func check_unit(unit :BaseUnit):
 	bot_decide_timeout.start()
 	
 func _add_unit_in_attack_range():
+	_option_to_attack.clear()
+	
 	if not _selected_unit.has_action():
 		return
 		
-	_option_to_attack.clear()
-	
 	var tiles = map.get_adjacent_tile(_selected_unit.current_tile, _selected_unit.get_attack_range())
 	if tiles.empty():
 		return
@@ -172,8 +170,12 @@ func _add_unit_in_attack_range():
 			continue
 			
 		var _target :BaseUnit = unit_in_tile[tile.id]
-		if _target.team == bot_team:
-			continue
+		if _selected_unit is Priest:
+			if _target.team != bot_team:
+				continue
+		else:
+			if _target.team == bot_team:
+				continue
 			
 		_option_to_attack.append(_target)
 		

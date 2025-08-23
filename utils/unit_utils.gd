@@ -21,8 +21,10 @@ static func create_unit_name(clas :int) -> String:
 			return "%s (Hunter)" % nam
 		UnitData.unit_class_gunner:
 			return "%s (Gunner)" % nam
-		UnitData.unit_class_mage, UnitData.unit_class_priest:
+		UnitData.unit_class_mage:
 			return "Master %s (Mage)" % nam
+		UnitData.unit_class_priest:
+			return "Master %s (Priest)" % nam
 			
 	return nam
 	

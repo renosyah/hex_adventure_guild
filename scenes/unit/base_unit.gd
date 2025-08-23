@@ -68,7 +68,10 @@ func has_action() -> bool:
 	return action > 0
 	
 func can_move() -> bool:
-	return action > 0 and move > 0
+	return has_action() and move > 0
+	
+func is_in_melee_range(id :Vector2):
+	return _melee_tiles.has(id)
 	
 func is_dead() -> bool:
 	return hp == 0
@@ -106,7 +109,10 @@ func take_damage(dmg :int, from :BaseUnit) -> void:
 	if is_dead():
 		return
 		
-	var damage_receive :int = clamp(dmg - armor, 1, dmg) if (dmg > 0) else 0
+	var damage_receive :int = dmg
+	if dmg > 0:
+		damage_receive = clamp(dmg - armor, 1, dmg) if (dmg > 0) else 0
+		
 	hp = clamp(hp - damage_receive, 0, max_hp)
 	
 	unit_taken_damage(damage_receive, from)

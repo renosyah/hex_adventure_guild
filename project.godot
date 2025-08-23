@@ -134,6 +134,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://assets/potrait/potrait_generator.gd"
 }, {
+"base": "BaseUnit",
+"class": "Priest",
+"language": "GDScript",
+"path": "res://scenes/unit/priest/priest.gd"
+}, {
 "base": "Spatial",
 "class": "Projectile",
 "language": "GDScript",
@@ -220,6 +225,7 @@ _global_script_class_icons={
 "Peasant": "",
 "PlayerBattleData": "",
 "PotraitGenerator": "",
+"Priest": "",
 "Projectile": "",
 "QueueTask": "",
 "RandomNameGenerator": "",

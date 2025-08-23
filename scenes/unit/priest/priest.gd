@@ -1,14 +1,8 @@
 extends BaseUnit
-class_name Vanguard
+class_name Priest
 
 onready var body = $body
 onready var animation_player = $AnimationPlayer
-onready var weapon = $body/weapon
-
-var _is_spear_defence_activated :bool = false
-
-func _ready():
-	weapon.texture = weapon_model
 	
 func use_ability() -> void:
 	.use_ability()
@@ -16,32 +10,14 @@ func use_ability() -> void:
 	if not .has_action():
 		return
 		
-	_is_spear_defence_activated = true
 	.consume_action()
-	
-	animation_player.play("spear_defence")
-	yield(animation_player,"animation_finished")
-	
-func is_enemy_enter_area(target :BaseUnit, id :Vector2) -> bool:
-	if not _is_spear_defence_activated:
-		return false
-	
-	if not is_in_melee_range(id):
-		return false
-		
-	if target.team == team:
-		return false
-		
-	attack_target(target)
-	
-	_is_spear_defence_activated = false
-	return true
+	take_damage(get_attack_damage(), self)
+	animation_player.play("heal")
 	
 func on_turn():
 	.on_turn()
 	
 	animation_player.play("iddle")
-	_is_spear_defence_activated = false
 	
 func unit_taken_damage(dmg :int, from :BaseUnit):
 	.unit_taken_damage(dmg, from)
@@ -64,7 +40,7 @@ func attack_target(target :BaseUnit):
 		animation_player.play("attack")
 		yield(animation_player,"animation_finished")
 		animation_player.play("iddle")
-	
+		
 	.attack_target(target)
 	
 func on_unit_move() -> void:

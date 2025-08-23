@@ -46,7 +46,7 @@ hex adventure guild
 			- 1 attack range
 			- 1 move range
 			- 2 view range
-			- ability (spear defence) (active) : enemy enter neaby tile, they get damaged
+			- ability (spear defence) (active) : enemy enter neaby tile, they get damaged (ok)
 
 		- weapons : 
 			- spear
@@ -60,7 +60,7 @@ hex adventure guild
 			- 1 attack range
 			- 1 move range
 			- 1 view range
-			- ability (counter) (active) : have 15% chance to receive 0 damage & automaticaly attack enemy attacking you using his damage
+			- ability (counter) (active) : have 15% chance to receive 0 damage & automaticaly attack enemy attacking you using his damage (ok)
 
 		- weapons : 
 			- sword
@@ -74,12 +74,12 @@ hex adventure guild
 			- 2 attack range
 			- 1 move range
 			- 2 view range
-			- ability (scouting) (active) : on next turn will reveal all suround tile in view range
+			- ability (scouting) (active) : on next turn will reveal all suround tile in view range (ok)
 
 		- weapons : 
 			- bow
 
-	- gunner (heavy range support) (8-12 dmg, 25 hp, 1 armor)
+	- gunner (heavy range support) (8-12 dmg, 25 hp, 1 armor) (ok)
 		- stats : 
 			- 1 action
 			- 1 move
@@ -87,8 +87,8 @@ hex adventure guild
 			- 1 move range
 			- 2 view range
 			- direct attack, can only attack at direct line of sign
-			- ability (reload) (active) : reload current weapon
-			- ability (pierce) (pasive) : range attack ignore armor (need reload)
+			- ability (reload) (active) : reload current weapon (ok)
+			- ability (pierce) (pasive) : range attack ignore armor (need reload) (ok)
 
 		- weapons : 
 			- hand cannon
