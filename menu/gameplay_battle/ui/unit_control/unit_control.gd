@@ -8,6 +8,7 @@ const vanguard_ability = preload("res://assets/icons/spear_defence.png")
 const hunter_ability = preload("res://assets/icons/scout.png")
 const gunner_ability = preload("res://assets/icons/reload.png")
 const priest_ability = preload("res://assets/icons/heal.png")
+const mage_ability = preload("res://assets/icons/chanting.png")
 
 onready var unit_detail = $HBoxContainer2/CenterContainer2/unit_info_panel/unit_detail
 onready var ability_holder = $HBoxContainer2/MarginContainer/ability_holder
@@ -50,6 +51,8 @@ func show_unit_detail(v :bool, unit :BaseUnit = null, data :UnitData = null):
 	elif unit is Priest:
 		ability_button.icon = priest_ability
 		
+	elif unit is Mage:
+		ability_button.icon = mage_ability
 	# other class
 	# set icon for ability button
 	

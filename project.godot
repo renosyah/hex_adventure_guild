@@ -104,6 +104,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/loot/loot.gd"
 }, {
+"base": "BaseUnit",
+"class": "Mage",
+"language": "GDScript",
+"path": "res://scenes/unit/mage/mage.gd"
+}, {
 "base": "HexMapData",
 "class": "NavigationData",
 "language": "GDScript",
@@ -219,6 +224,7 @@ _global_script_class_icons={
 "InputEventSingleScreenTouch": "",
 "Knight": "",
 "Loot": "",
+"Mage": "",
 "NavigationData": "",
 "ObjectMapData": "",
 "ObjectTile": "",

@@ -211,6 +211,9 @@ func _spawn_unit():
 			if unit is Hunter:
 				unit.connect("scouting", self , "_on_hunter_scouting", [unit])
 				
+			if unit is Mage:
+				unit.connect("unit_attack_target", self, "_on_mage_attack_target")
+				
 			if unit is Vanguard:
 				_vanguard_units.append(unit)
 				
@@ -237,6 +240,18 @@ func _spawn_unit():
 		
 	movable_camera.translation.y = 10
 	_move_cam(_last_cam_pos)
+	
+func _on_mage_attack_target(_unit :BaseUnit, _target :BaseUnit):
+	var current = _target.current_tile
+	if _unit.is_in_melee_range(current):
+		return
+		
+	var tiles :Array = map.get_adjacent(current, 1)
+	tiles.erase(current)
+	
+	for id in tiles:
+		if _unit_in_tile.has(id):
+			_unit_in_tile[id].take_damage(_unit.get_attack_damage(), _unit)
 	
 func _on_hunter_scouting(_unit :BaseUnit):
 	var view = _unit.view_range + 1

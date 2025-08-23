@@ -3,7 +3,8 @@ class_name Priest
 
 onready var body = $body
 onready var animation_player = $AnimationPlayer
-	
+
+
 func use_ability() -> void:
 	.use_ability()
 	

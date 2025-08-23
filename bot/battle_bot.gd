@@ -109,7 +109,7 @@ func _on_bot_decide_timeout_timeout():
 	
 	# make gunner use its reload ability
 	# then move to next unit
-	if _selected_unit is Gunner:
+	if _selected_unit is Gunner or _selected_unit is Mage:
 		if _selected_unit.can_use_ability():
 			_selected_unit.use_ability()
 			
