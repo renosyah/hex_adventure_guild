@@ -208,7 +208,7 @@ static func get_tile_spawn_point(tiles: Dictionary, from: Vector2, size: int = 1
 			
 	for key in resDir.keys():
 		var id :Vector2 = resDir[key] # Vector2
-		results.append(get_adjacent_tile(tiles, id, spawn_radius) + [id])
+		results.append([id] + get_adjacent_tile(tiles, id, spawn_radius))
 		
 	return results # [ [ Vector2 ],[ ... ] ]
 	

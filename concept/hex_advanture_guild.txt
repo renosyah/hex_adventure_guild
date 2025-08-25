@@ -2,6 +2,7 @@ hex adventure guild
 - cutout style, black and white color (ok)
 - hex turn base squad base rpg
 - grand map & battle map
+
 - single player adventure :
 	- create squad (party) start with 1 basic squad
 	- accept quest to battle enemy
@@ -29,14 +30,14 @@ hex adventure guild
 	- city, village & tavern (trade, rest & recruit)
 	- dungeon, bandit camp & fort (battle quest)
 
-- battle map (sp & mp) : 
-	- max 4 player with each have 6 unit
-	- spawn all unit
-	- battle turnbase
-	- all unit can only use melee attack at 1 tile adjacent
-	- on turn unit : +1 action, +1 move 
-	- activated active ability cost action point
-	- spoting mechanic, spotted unit can only disapear on enter undiscover tile
+- battle map (sp) : 
+	- max 4 player with each have 6 unit (ok)
+	- spawn all unit (ok)
+	- battle turnbase (ok)
+	- all unit can only use melee attack at 1 tile adjacent (ok)
+	- on turn unit : +1 action, +1 move  (ok)
+	- activated active ability cost action point (ok)
+	- spoting mechanic, spotted unit can only disapear on enter undiscover tile (ok)
 
 - units : 
 	- vanguard (frontline) (4-6 dmg, 30 hp, 1 armor) (ok)
@@ -150,6 +151,28 @@ hex adventure guild
 	- bag +25 inventory
 	- dagger, sword & knive (allow unit to retailiate 2 dmg when getting attacked by melee)
 
+
+
+- menus
+	- main menu
+		- campaign
+		- battle
+		- map editor
+
+	- map editor
+		- load list map
+		- edit or create new
+		- input map name, size (6, 8, 12)
+		- edit map
+		- save map
+
+	- pre battle
+		- select map
+		- team 1 & 4
+		- each team at leas have 1 player
+		- team can be empty & it will not count
+		- can add player to team
+		- each player can add unit max up to 6
 
 
 

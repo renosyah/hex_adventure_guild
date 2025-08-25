@@ -80,13 +80,14 @@ func update_cam_position(camera :Camera):
 func set_on_player_turn(v :bool):
 	unit_control.visible = v
 	loading_turn.visible = not v
-	units.visible = v
+	units.visible = v and game_ui.visible
 
 func _show_battle_result():
 	battle_result.visible = true
 	game_ui.visible = false
 	floating.visible = false
 	loading_turn.visible = false
+	units.visible = false
 	
 func show_win():
 	_show_battle_result()
