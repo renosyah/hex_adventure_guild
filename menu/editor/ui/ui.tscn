@@ -18,42 +18,49 @@ anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource( 4 )
 
-[node name="SafeArea" type="MarginContainer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="SafeArea" type="MarginContainer" parent="CanvasLayer/Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource( 2 )
 
-[node name="VBoxContainer" type="VBoxContainer" parent="SafeArea"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/SafeArea"]
 margin_right = 600.0
 margin_bottom = 1024.0
 mouse_filter = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="SafeArea/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/SafeArea/VBoxContainer"]
 margin_right = 600.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 0, 60 )
 alignment = 2
 
-[node name="MarginContainer3" type="MarginContainer" parent="SafeArea/VBoxContainer/HBoxContainer"]
+[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/SafeArea/VBoxContainer/HBoxContainer"]
 margin_right = 4.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 4, 0 )
 
-[node name="MarginContainer" type="MarginContainer" parent="SafeArea/VBoxContainer/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/SafeArea/VBoxContainer/HBoxContainer"]
 margin_left = 8.0
 margin_right = 408.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 400, 0 )
 
-[node name="TextureRect" type="TextureRect" parent="SafeArea/VBoxContainer/HBoxContainer/MarginContainer"]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control/SafeArea/VBoxContainer/HBoxContainer/MarginContainer"]
 margin_right = 400.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 200, 0 )
 texture = ExtResource( 15 )
 expand = true
 
-[node name="map_name" type="Label" parent="SafeArea/VBoxContainer/HBoxContainer/MarginContainer"]
+[node name="map_name" type="Label" parent="CanvasLayer/Control/SafeArea/VBoxContainer/HBoxContainer/MarginContainer"]
 margin_top = 29.0
 margin_right = 400.0
 margin_bottom = 50.0
@@ -63,13 +70,13 @@ text = "Map Editor"
 align = 1
 valign = 1
 
-[node name="MarginContainer2" type="MarginContainer" parent="SafeArea/VBoxContainer/HBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/SafeArea/VBoxContainer/HBoxContainer"]
 margin_left = 412.0
 margin_right = 496.0
 margin_bottom = 80.0
 size_flags_horizontal = 3
 
-[node name="save" type="Button" parent="SafeArea/VBoxContainer/HBoxContainer"]
+[node name="save" type="Button" parent="CanvasLayer/Control/SafeArea/VBoxContainer/HBoxContainer"]
 margin_left = 500.0
 margin_right = 600.0
 margin_bottom = 80.0
@@ -78,22 +85,22 @@ icon = ExtResource( 12 )
 flat = true
 expand_icon = true
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="SafeArea/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/Control/SafeArea/VBoxContainer"]
 margin_top = 84.0
 margin_right = 600.0
 margin_bottom = 164.0
 mouse_filter = 2
 
-[node name="MarginContainer3" type="MarginContainer" parent="SafeArea/VBoxContainer/HBoxContainer2"]
+[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/SafeArea/VBoxContainer/HBoxContainer2"]
 margin_right = 4.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 4, 0 )
 
-[node name="checkbox_tile_label" parent="SafeArea/VBoxContainer/HBoxContainer2" instance=ExtResource( 6 )]
+[node name="checkbox_tile_label" parent="CanvasLayer/Control/SafeArea/VBoxContainer/HBoxContainer2" instance=ExtResource( 6 )]
 margin_left = 8.0
 margin_right = 88.0
 
-[node name="TextureRect2" type="TextureRect" parent="SafeArea/VBoxContainer/HBoxContainer2"]
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/Control/SafeArea/VBoxContainer/HBoxContainer2"]
 margin_left = 92.0
 margin_top = 20.0
 margin_right = 212.0
@@ -103,7 +110,7 @@ size_flags_vertical = 4
 texture = ExtResource( 15 )
 expand = true
 
-[node name="Label" type="Label" parent="SafeArea/VBoxContainer/HBoxContainer2/TextureRect2"]
+[node name="Label" type="Label" parent="CanvasLayer/Control/SafeArea/VBoxContainer/HBoxContainer2/TextureRect2"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -112,7 +119,7 @@ text = "Show ID"
 align = 1
 valign = 1
 
-[node name="movable_camera_ui" parent="SafeArea/VBoxContainer" instance=ExtResource( 1 )]
+[node name="movable_camera_ui" parent="CanvasLayer/Control/SafeArea/VBoxContainer" instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 168.0
@@ -120,13 +127,13 @@ margin_right = 600.0
 margin_bottom = 751.0
 size_flags_vertical = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="SafeArea/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/SafeArea/VBoxContainer"]
 margin_top = 755.0
 margin_right = 600.0
 margin_bottom = 795.0
 rect_min_size = Vector2( 0, 40 )
 
-[node name="object_option" parent="SafeArea/VBoxContainer" instance=ExtResource( 7 )]
+[node name="object_option" parent="CanvasLayer/Control/SafeArea/VBoxContainer" instance=ExtResource( 7 )]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -136,12 +143,12 @@ margin_top = 799.0
 margin_right = 600.0
 margin_bottom = 1024.0
 
-[node name="tile_option" parent="SafeArea" instance=ExtResource( 5 )]
+[node name="tile_option" parent="CanvasLayer/Control/SafeArea" instance=ExtResource( 5 )]
 margin_top = 312.0
 margin_right = 92.0
 margin_bottom = 712.0
 
-[node name="nav_option" parent="SafeArea" instance=ExtResource( 3 )]
+[node name="nav_option" parent="CanvasLayer/Control/SafeArea" instance=ExtResource( 3 )]
 anchor_left = 0.0
 anchor_right = 0.0
 margin_left = 508.0
@@ -149,17 +156,17 @@ margin_top = 312.0
 margin_right = 600.0
 margin_bottom = 712.0
 
-[node name="loading" parent="." instance=ExtResource( 8 )]
+[node name="loading" parent="CanvasLayer/Control" instance=ExtResource( 8 )]
 visible = false
 
-[connection signal="pressed" from="SafeArea/VBoxContainer/HBoxContainer/save" to="." method="_on_save_pressed"]
-[connection signal="pressed" from="SafeArea/VBoxContainer/HBoxContainer2/checkbox_tile_label" to="." method="_on_checkbox_tile_label_pressed"]
-[connection signal="on_tile_card_cancel" from="SafeArea/VBoxContainer/object_option" to="." method="_on_object_option_on_tile_card_cancel"]
-[connection signal="on_tile_card_draging" from="SafeArea/VBoxContainer/object_option" to="." method="_on_object_option_on_tile_card_draging"]
-[connection signal="on_tile_card_grab" from="SafeArea/VBoxContainer/object_option" to="." method="_on_object_option_on_tile_card_grab"]
-[connection signal="on_tile_card_release" from="SafeArea/VBoxContainer/object_option" to="." method="_on_object_option_on_tile_card_release"]
-[connection signal="on_hill_tile" from="SafeArea/tile_option" to="." method="_on_tile_option_on_hill_tile"]
-[connection signal="on_land_tile" from="SafeArea/tile_option" to="." method="_on_tile_option_on_land_tile"]
-[connection signal="on_randomize" from="SafeArea/tile_option" to="." method="_on_tile_option_on_randomize"]
-[connection signal="on_water_tile" from="SafeArea/tile_option" to="." method="_on_tile_option_on_water_tile"]
-[connection signal="on_change_range" from="SafeArea/nav_option" to="." method="_on_nav_option_on_change_range"]
+[connection signal="pressed" from="CanvasLayer/Control/SafeArea/VBoxContainer/HBoxContainer/save" to="." method="_on_save_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/SafeArea/VBoxContainer/HBoxContainer2/checkbox_tile_label" to="." method="_on_checkbox_tile_label_pressed"]
+[connection signal="on_tile_card_cancel" from="CanvasLayer/Control/SafeArea/VBoxContainer/object_option" to="." method="_on_object_option_on_tile_card_cancel"]
+[connection signal="on_tile_card_draging" from="CanvasLayer/Control/SafeArea/VBoxContainer/object_option" to="." method="_on_object_option_on_tile_card_draging"]
+[connection signal="on_tile_card_grab" from="CanvasLayer/Control/SafeArea/VBoxContainer/object_option" to="." method="_on_object_option_on_tile_card_grab"]
+[connection signal="on_tile_card_release" from="CanvasLayer/Control/SafeArea/VBoxContainer/object_option" to="." method="_on_object_option_on_tile_card_release"]
+[connection signal="on_hill_tile" from="CanvasLayer/Control/SafeArea/tile_option" to="." method="_on_tile_option_on_hill_tile"]
+[connection signal="on_land_tile" from="CanvasLayer/Control/SafeArea/tile_option" to="." method="_on_tile_option_on_land_tile"]
+[connection signal="on_randomize" from="CanvasLayer/Control/SafeArea/tile_option" to="." method="_on_tile_option_on_randomize"]
+[connection signal="on_water_tile" from="CanvasLayer/Control/SafeArea/tile_option" to="." method="_on_tile_option_on_water_tile"]
+[connection signal="on_change_range" from="CanvasLayer/Control/SafeArea/nav_option" to="." method="_on_nav_option_on_change_range"]

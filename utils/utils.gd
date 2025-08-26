@@ -1,6 +1,17 @@
 extends Node
 class_name Utils
 
+static func load_maps() -> Array:
+	var resources :Array = []
+	var list :PoolStringArray = get_all_resources("user://%s/" % Global.map_dir, ["manifest"])
+	for i in list:
+		var m :HexMapFileManifest = HexMapFileManifest.new()
+		var data = SaveLoad.load_save(i,false)
+		m.from_dictionary(data)
+		resources.append(m)
+		
+	return resources
+	
 static func get_all_resources(path: String, extensions := ["tres", "res", "tscn", "scn", "obj"]) -> PoolStringArray:
 	var files := PoolStringArray()
 	var dir := Directory.new()
@@ -33,7 +44,10 @@ static func screen_to_world(cam :Camera, screen_pos: Vector2) -> Vector3:
 	return Vector3.ZERO
 	
 
-
+static func contains_substring(text: String, sub: String) -> bool:
+	if sub.empty():
+		return true
+	return sub.to_lower() in text.to_lower()
 
 
 

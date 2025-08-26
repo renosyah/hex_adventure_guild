@@ -18,12 +18,13 @@ const object_models = [
 	[ preload("res://scenes/object_tile/models/rock_1.png"), preload("res://scenes/object_tile/models/rock_2.png"), preload("res://scenes/object_tile/models/rock_3.png") ]
 ]
 
-onready var movable_camera_ui = $SafeArea/VBoxContainer/movable_camera_ui
-onready var object_option = $SafeArea/VBoxContainer/object_option
-onready var nav_option = $SafeArea/nav_option
-onready var checkbox_tile_label = $SafeArea/VBoxContainer/HBoxContainer2/checkbox_tile_label
-onready var loading = $loading
-onready var map_name = $SafeArea/VBoxContainer/HBoxContainer/MarginContainer/map_name
+onready var control = $CanvasLayer/Control
+onready var movable_camera_ui = $CanvasLayer/Control/SafeArea/VBoxContainer/movable_camera_ui
+onready var object_option = $CanvasLayer/Control/SafeArea/VBoxContainer/object_option
+onready var nav_option = $CanvasLayer/Control/SafeArea/nav_option
+onready var checkbox_tile_label = $CanvasLayer/Control/SafeArea/VBoxContainer/HBoxContainer2/checkbox_tile_label
+onready var loading = $CanvasLayer/Control/loading
+onready var map_name = $CanvasLayer/Control/SafeArea/VBoxContainer/HBoxContainer/MarginContainer/map_name
 
 var _checkbox :bool = false
 
@@ -33,6 +34,11 @@ func _ready():
 	checkbox_tile_label.button_icon = checkbox_on if _checkbox else checkbox_off
 	checkbox_tile_label.update_icon()
 	_on_tile_option_on_land_tile()
+	
+func set_visible(value):
+	.set_visible(value)
+	
+	control.visible = value
 	
 func get_nav_option_buttons():
 	return nav_option.btns

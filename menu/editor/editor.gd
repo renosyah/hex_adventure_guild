@@ -10,6 +10,7 @@ onready var spawn_point = $spawn_point
 var _tile_highlights = []
 var _ranges = 2
 var _spawn_point = []
+var _closed_tile_highlights = []
 
 func _ready():
 	ui.movable_camera_ui.target = movable_camera
@@ -33,6 +34,7 @@ func _on_map_on_map_ready():
 			close.translation.y += 0.14
 			
 			_spawn_point.append(id)
+			_closed_tile_highlights.append(close)
 		
 func _process(delta):
 	map.update_camera_position(movable_camera.global_position)
@@ -133,14 +135,61 @@ func _on_ui_on_randomize_map():
 func _on_ui_on_show_tile_label(v):
 	map.show_tile_label(v)
 	
+func _save_ss(data :HexMapFileData) -> String:
+	movable_camera.translation = Vector3(0, 12, 5)
+	ui.set_visible(false)
+	
+	_clear_tile_highlights()
+	tile_highlight.visible = false
+	for i in _closed_tile_highlights:
+		i.queue_free()
+		yield(get_tree(),"idle_frame")
+	
+	var img: Image = get_viewport().get_texture().get_data()
+	img.flip_y()
+	
+	var w = img.get_width()
+	var h = img.get_height()
+	var crop_rect = Rect2((w - 512)/2, (h - 512)/2, 512, 512)
+	var img_path = "user://%s/%s.png" % [Global.map_dir, data.map_name]
+	var cropped_img = Image.new()
+	cropped_img.create(512, 512, false, img.get_format())
+	cropped_img.blit_rect(img, crop_rect, Vector2(0,0))
+	cropped_img.save_png(img_path)
+	yield(get_tree(),"idle_frame")
+	
+	return img_path
+	
 func _on_ui_on_save_map():
+	var dir_path = "user://%s/" % Global.map_dir
+	var dir = Directory.new()
+	if not dir.dir_exists(dir_path):
+		dir.make_dir(dir_path)
+	
 	var data = map.export_data()
-	Global.save_map("%s.map" % data.map_name, data.to_dictionary())
+	var file_path = "user://%s/%s.map" % [Global.map_dir, data.map_name]
+	
+	var img_path = yield(_save_ss(data), "completed")
+	_save_manifest(data, file_path, img_path)
+	
+	ui.set_visible(true)
 	ui.loading.visible = true
+	Global.save_map(file_path, data.to_dictionary(), false)
+	
+func _save_manifest(data :HexMapFileData, file_path :String, img :String):
+	var path = "user://%s/%s.manifest" % [Global.map_dir, data.map_name]
+	var m :HexMapFileManifest = HexMapFileManifest.new()
+	m.map_name = data.map_name
+	m.map_size = data.map_size
+	m.map_image = img
+	m.map_file_path = file_path
+	SaveLoad.save(path, m.to_dictionary(), false)
 	
 func _on_save_map_done():
+	yield(get_tree().create_timer(1),"timeout")
 	ui.loading.visible = false
 	get_tree().change_scene("res://menu/main/main.tscn")
+	
 
 
 

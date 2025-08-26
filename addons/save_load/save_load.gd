@@ -3,17 +3,22 @@ class_name SaveLoad
 
 const prefix = "user://"
 
-static func save(_filename: String, _data):
+static func save(_filename: String, _data, use_prefix = true):
 	var file = File.new()
-	file.open(prefix + _filename, File.WRITE)
+	var path = prefix + _filename if use_prefix else _filename
+	if file.open(path, File.WRITE) != OK:
+		print("Failed to open file for writing")
+		return
+		
 	file.store_var(_data, true)
 	file.flush()
 	file.close()
 
-static func load_save(_filename : String):
+static func load_save(_filename : String, use_prefix = true):
 	var file = File.new()
-	if file.file_exists(prefix + _filename):
-		file.open(prefix + _filename, File.READ)
+	var path = prefix + _filename if use_prefix else _filename
+	if file.file_exists(path):
+		file.open(path, File.READ)
 		var _data = file.get_var(true)
 		file.close()
 		return _data

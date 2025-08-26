@@ -8,15 +8,15 @@ const PREFIX = "user://"
 
 var _thread : Thread = null
 
-func file_exists(path :String):
-	var p = "%s%s" % [PREFIX, path]
+func file_exists(path :String, use_prefix = true):
+	var p = "%s%s" % [PREFIX, path] if use_prefix else path
 	var file = File.new()
 	return file.file_exists(p)
 	
 # ---- ASYNC SAVE ----
-func save_data_async(path: String, data):
+func save_data_async(path: String, data, use_prefix = true):
 	if OS.has_feature("HTML5"):
-		SaveLoad.save(path, data)
+		SaveLoad.save(path, data, use_prefix)
 		yield(get_tree(),"idle_frame")
 		emit_signal("save_done", true)
 		return
@@ -24,11 +24,13 @@ func save_data_async(path: String, data):
 	if _thread != null:
 		print("Save already in progress")
 		return
+		
+	var p = "%s%s" % [PREFIX, path] if use_prefix else path
 	_thread = Thread.new()
-	_thread.start(self, "_thread_save", [path, data])
+	_thread.start(self, "_thread_save", [p, data])
 
 func _thread_save(args):
-	var path = "%s%s" % [PREFIX, args[0]]
+	var path = args[0]
 	var data = args[1]
 	var file = File.new()
 	var b64 = Marshalls.variant_to_base64(data)
@@ -42,9 +44,9 @@ func _thread_save(args):
 	call_deferred("_thread_finished", "save_done", success)
 
 # ---- ASYNC LOAD ----
-func load_data_async(path: String):
+func load_data_async(path: String, use_prefix = true):
 	if OS.has_feature("HTML5"):
-		var data = SaveLoad.load_save(path)
+		var data = SaveLoad.load_save(path, use_prefix)
 		yield(get_tree(),"idle_frame")
 		emit_signal("load_done", data != null, data)
 		return
@@ -52,11 +54,13 @@ func load_data_async(path: String):
 	if _thread != null:
 		print("Load already in progress")
 		return
+		
+	var p = "%s%s" % [PREFIX, path] if use_prefix else path
 	_thread = Thread.new()
-	_thread.start(self, "_thread_load", [path])
+	_thread.start(self, "_thread_load", [p])
 
 func _thread_load(args):
-	var path = "%s%s" % [PREFIX, args[0]]
+	var path = args[0]
 	var file = File.new()
 	if not file.file_exists(path):
 		call_deferred("_thread_finished", "load_done", false, null)
@@ -69,6 +73,7 @@ func _thread_load(args):
 		var b64 = Marshalls.raw_to_base64(bytes)
 		data = Marshalls.base64_to_variant(b64)
 		file.close()
+		
 	call_deferred("_thread_finished", "load_done", success, data)
 
 # ---- THREAD CLEANUP ----

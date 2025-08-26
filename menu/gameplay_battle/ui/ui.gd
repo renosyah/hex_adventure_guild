@@ -6,14 +6,14 @@ signal end_turn
 
 const unit_selection_scene = preload("res://menu/gameplay_battle/ui/unit_control/unit_selection.tscn")
 
-onready var game_ui = $SafeArea/VBoxContainer
-onready var unit_control = $SafeArea/VBoxContainer/unit_control
-onready var movable_camera_ui = $SafeArea/VBoxContainer/movable_camera_ui
-onready var floating = $floating
-onready var loading_turn = $loading
-onready var battle_result = $SafeArea/battle_result
-onready var battle_result_text = $SafeArea/battle_result/MarginContainer/VBoxContainer/battle_result_text
-onready var units = $SafeArea/units
+onready var game_ui = $CanvasLayer/Control/SafeArea/VBoxContainer
+onready var unit_control = $CanvasLayer/Control/SafeArea/VBoxContainer/unit_control
+onready var movable_camera_ui = $CanvasLayer/Control/SafeArea/VBoxContainer/movable_camera_ui
+onready var floating = $CanvasLayer/Control/floating
+onready var loading_turn = $CanvasLayer/Control/loading
+onready var battle_result = $CanvasLayer/Control/SafeArea/battle_result
+onready var battle_result_text = $CanvasLayer/Control/SafeArea/battle_result/MarginContainer/VBoxContainer/battle_result_text
+onready var units = $CanvasLayer/Control/SafeArea/units
 
 var floating_infos :Dictionary = {} # {unit :floating info}
 
