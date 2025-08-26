@@ -19,7 +19,7 @@ func show_damage():
 	visible = true
 	label.visible = true
 	
-	if damage > 0:
+	if damage >= 0:
 		label.text = "-%s" % damage
 		animation_player.play("boom")
 		

@@ -25,10 +25,12 @@ onready var nav_option = $CanvasLayer/Control/SafeArea/nav_option
 onready var checkbox_tile_label = $CanvasLayer/Control/SafeArea/VBoxContainer/HBoxContainer2/checkbox_tile_label
 onready var loading = $CanvasLayer/Control/loading
 onready var map_name = $CanvasLayer/Control/SafeArea/VBoxContainer/HBoxContainer/MarginContainer/map_name
+onready var dialog_menu = $CanvasLayer/Control/dialog_menu
 
 var _checkbox :bool = false
 
 func _ready():
+	dialog_menu.visible = false
 	map_name.text = "Name : %s\nSize : %s" % [Global.selected_map_data.map_name, Global.selected_map_data.map_size]
 	loading.visible = false
 	checkbox_tile_label.button_icon = checkbox_on if _checkbox else checkbox_off
@@ -44,7 +46,11 @@ func get_nav_option_buttons():
 	return nav_option.btns
 	
 func _on_save_pressed():
+	dialog_menu.visible = false
 	emit_signal("on_save_map")
+	
+func _on_load_pressed():
+	get_tree().change_scene("res://menu/editor_menu/editor_menu.tscn")
 	
 func _on_object_option_on_tile_card_cancel():
 	emit_signal("on_tile_card_cancel")
@@ -93,3 +99,18 @@ func _on_checkbox_tile_label_pressed():
 	checkbox_tile_label.button_icon = checkbox_on if _checkbox else checkbox_off
 	checkbox_tile_label.update_icon()
 	emit_signal("on_show_tile_label", _checkbox)
+
+func _on_menu_pressed():
+	dialog_menu.visible = true
+	
+func _on_exit_pressed():
+	get_tree().change_scene("res://menu/main/main.tscn")
+	
+func _on_close_pressed():
+	dialog_menu.visible = false
+
+
+
+
+
+

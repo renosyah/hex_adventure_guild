@@ -1,7 +1,7 @@
 extends Node
 class_name UnitUtils
 
-static func get_all_unit_resource() -> Array:
+static func get_unit_datas() -> Array:
 	var res = []
 	var units = Utils.get_all_resources("res://scenes/unit/data/units/")
 	for i in units:

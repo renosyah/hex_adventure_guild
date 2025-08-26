@@ -187,8 +187,8 @@ func _save_manifest(data :HexMapFileData, file_path :String, img :String):
 	
 func _on_save_map_done():
 	yield(get_tree().create_timer(1),"timeout")
+	ui.set_visible(true)
 	ui.loading.visible = false
-	get_tree().change_scene("res://menu/main/main.tscn")
 	
 
 

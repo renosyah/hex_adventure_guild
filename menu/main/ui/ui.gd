@@ -8,14 +8,14 @@ func to_battle():
 	loading.visible = false
 	get_tree().change_scene("res://menu/gameplay_battle/gameplay_battle.tscn")
 	
-func _on_editor_pressed():	
+func _on_editor_pressed():
 	get_tree().change_scene("res://menu/editor_menu/editor_menu.tscn")
 
 func _on_battle_pressed():
 	Global.player_battle_data.clear()
 	
-	var teams = {1:1,2:1,3:2,4:2}
-	var units = UnitUtils.get_all_unit_resource()
+	var teams = {1:1,2:2,3:2,4:2}
+	var units = UnitUtils.get_unit_datas()
 	randomize()
 	
 	for player_id in [1, 2, 3, 4]:
