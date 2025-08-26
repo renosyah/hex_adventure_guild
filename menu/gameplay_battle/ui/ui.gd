@@ -14,6 +14,7 @@ onready var loading_turn = $CanvasLayer/Control/loading
 onready var battle_result = $CanvasLayer/Control/SafeArea/battle_result
 onready var battle_result_text = $CanvasLayer/Control/SafeArea/battle_result/MarginContainer/VBoxContainer/battle_result_text
 onready var units = $CanvasLayer/Control/SafeArea/units
+onready var units_container = $CanvasLayer/Control/SafeArea/units/VBoxContainer
 
 var floating_infos :Dictionary = {} # {unit :floating info}
 
@@ -25,8 +26,8 @@ func add_unit_to_selection(unit :BaseUnit, data :UnitData):
 	var unit_selection = unit_selection_scene.instance()
 	unit_selection.potrait = data.unit_potrait
 	unit_selection.connect("pressed", self, "_on_select_unit", [unit])
-	units.add_child(unit_selection)
-	units.move_child(unit_selection, 0)
+	units_container.add_child(unit_selection)
+	units_container.move_child(unit_selection, 0)
 	
 	unit.connect("unit_dead", self , "_on_unit_dead", [unit_selection])
 	unit.connect("unit_selected", self, "_on_unit_selected", [unit, unit_selection])

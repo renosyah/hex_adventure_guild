@@ -1,7 +1,7 @@
 extends Node
 class_name HexMapUtil
 
-static func generate_randomize_map(_seed :int, radius: int = 6, spawn_point_radius :int = 2) -> HexMapFileData:
+static func generate_randomize_map(_seed :int, radius: int = 6, spawn_points :Array = []) -> HexMapFileData:
 	var blocked = []
 	var data = generate_empty_map(radius)
 	var noise = OpenSimplexNoise.new()
@@ -23,12 +23,6 @@ static func generate_randomize_map(_seed :int, radius: int = 6, spawn_point_radi
 		preload("res://scenes/object_tile/models/rock_3.png")
 	]
 	
-	var points = get_tile_spawn_point(data.tile_ids, Vector2.ZERO, data.map_size, spawn_point_radius)
-	var spawn_points = []
-	for i in points:
-		var ids :Array = i
-		spawn_points.append_array(ids)
-		
 	for i in data.tiles:
 		var x :TileMapData = i
 		x.model = preload("res://scenes/hex_tile/models/hex.png")

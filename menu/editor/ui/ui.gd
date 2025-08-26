@@ -26,11 +26,13 @@ onready var checkbox_tile_label = $CanvasLayer/Control/SafeArea/VBoxContainer/HB
 onready var loading = $CanvasLayer/Control/loading
 onready var map_name = $CanvasLayer/Control/SafeArea/VBoxContainer/HBoxContainer/MarginContainer/map_name
 onready var dialog_menu = $CanvasLayer/Control/dialog_menu
+onready var dialog_confirm = $CanvasLayer/Control/dialog_confirm
 
 var _checkbox :bool = false
 
 func _ready():
 	dialog_menu.visible = false
+	dialog_confirm.visible = false
 	map_name.text = "Name : %s\nSize : %s" % [Global.selected_map_data.map_name, Global.selected_map_data.map_size]
 	loading.visible = false
 	checkbox_tile_label.button_icon = checkbox_on if _checkbox else checkbox_off
@@ -44,13 +46,6 @@ func set_visible(value):
 	
 func get_nav_option_buttons():
 	return nav_option.btns
-	
-func _on_save_pressed():
-	dialog_menu.visible = false
-	emit_signal("on_save_map")
-	
-func _on_load_pressed():
-	get_tree().change_scene("res://menu/editor_menu/editor_menu.tscn")
 	
 func _on_object_option_on_tile_card_cancel():
 	emit_signal("on_tile_card_cancel")
@@ -89,7 +84,11 @@ func _on_tile_option_on_water_tile():
 	object_option.show_options()
 	
 func _on_tile_option_on_randomize():
-	emit_signal("on_randomize_map")
+	dialog_confirm.set_message("Randomize map, are you sure?")
+	dialog_confirm.visible = true
+	var ok = yield(dialog_confirm,"close")
+	if ok:
+		emit_signal("on_randomize_map")
 	
 func _on_nav_option_on_change_range(v):
 	emit_signal("on_change_range", v)
@@ -103,14 +102,14 @@ func _on_checkbox_tile_label_pressed():
 func _on_menu_pressed():
 	dialog_menu.visible = true
 	
-func _on_exit_pressed():
-	get_tree().change_scene("res://menu/main/main.tscn")
-	
 func _on_close_pressed():
 	dialog_menu.visible = false
 
+func _on_dialog_menu_on_save():
+	emit_signal("on_save_map")
 
+func _on_dialog_menu_on_load():
+	get_tree().change_scene("res://menu/editor_menu/editor_menu.tscn")
 
-
-
-
+func _on_dialog_menu_on_exit():
+	get_tree().change_scene("res://menu/main/main.tscn")

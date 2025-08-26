@@ -14,27 +14,32 @@ var _closed_tile_highlights = []
 
 func _ready():
 	ui.movable_camera_ui.target = movable_camera
-	map.generate_from_data(Global.selected_map_data, true)
 	tile_highlight.visible = false
 	Global.connect("map_saved", self, "_on_save_map_done")
+	_spawn_map()
 	
-func _on_map_on_map_ready():
+func _spawn_map():
 	var data = Global.selected_map_data
 	var spawn_points = HexMapUtil.get_tile_spawn_point(data.tile_ids, Vector2.ZERO, data.map_size)
 	for i in spawn_points:
 		var ids :Array = i
 		for id in ids:
-			var x :HexTile = map.get_tile(id)
-			x.set_discovered(true)
-			
-			var close = spawn_point.duplicate()
-			close.visible = true
-			add_child(close)
-			close.translation = x.global_position
-			close.translation.y += 0.14
-			
 			_spawn_point.append(id)
-			_closed_tile_highlights.append(close)
+			
+	map.generate_from_data(data, true)
+	
+func _on_map_on_map_ready():
+	for id in _spawn_point:
+		var x :HexTile = map.get_tile(id)
+		x.set_discovered(true)
+		
+		var close = spawn_point.duplicate()
+		close.visible = true
+		add_child(close)
+		close.translation = x.global_position
+		close.translation.y += 0.14
+		
+		_closed_tile_highlights.append(close)
 		
 func _process(delta):
 	map.update_camera_position(movable_camera.global_position)
@@ -104,6 +109,10 @@ func _on_ui_on_tile_card_draging(pos :Vector2):
 func _on_ui_on_tile_card_release(pos :Vector2, data:TileMapData):
 	var pos_v3 = Utils.screen_to_world(get_viewport().get_camera(), pos)
 	var tile = map.get_closes_tile(pos_v3)
+	
+	# dont put anything
+	# or change anything
+	# on spawn point tiles
 	if _spawn_point.has(tile.id):
 		return
 		
@@ -129,8 +138,12 @@ func _on_ui_on_change_range(v):
 	
 func _on_ui_on_randomize_map():
 	_on_Timer_timeout()
+	var map_name = Global.selected_map_data.map_name
+	var size =  Global.selected_map_data.map_size
 	var seeding = rand_range(-1000, 1000)
-	map.generate_from_data(HexMapUtil.generate_randomize_map(seeding), true)
+	Global.selected_map_data = HexMapUtil.generate_randomize_map(seeding, size, _spawn_point)
+	Global.selected_map_data.map_name = map_name
+	map.generate_from_data(Global.selected_map_data, true)
 
 func _on_ui_on_show_tile_label(v):
 	map.show_tile_label(v)

@@ -41,7 +41,7 @@ func load_map(filename :String):
 	get_tree().change_scene("res://menu/editor/editor.tscn")
 	
 func _on_new_map_pressed():
-	Global.selected_map_data = HexMapUtil.generate_randomize_map(rand_range(-1000, 1000))
+	Global.selected_map_data = HexMapUtil.generate_empty_map()
 	Global.selected_map_data.map_name = RandomNameGenerator.generate_name().to_lower()
 	get_tree().change_scene("res://menu/editor/editor.tscn")
 

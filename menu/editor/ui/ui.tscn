@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://camera/movable_camera_ui.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/SafeArea/SafeArea.gd" type="Script" id=2]
@@ -8,6 +8,8 @@
 [ext_resource path="res://assets/button/toggle_button.tscn" type="PackedScene" id=6]
 [ext_resource path="res://menu/editor/ui/object_option/object_option.tscn" type="PackedScene" id=7]
 [ext_resource path="res://assets/loading/loading_overlay_screen.tscn" type="PackedScene" id=8]
+[ext_resource path="res://menu/editor/ui/dialog_menu/dialog_menu.tscn" type="PackedScene" id=9]
+[ext_resource path="res://menu/editor/ui/dialog_confirm/dialog_confirm.tscn" type="PackedScene" id=10]
 [ext_resource path="res://assets/icons/menu_button.png" type="Texture" id=12]
 [ext_resource path="res://assets/fonts/montserrat_eb_14.tres" type="DynamicFont" id=13]
 [ext_resource path="res://menu/editor/ui/assets/board.png" type="Texture" id=15]
@@ -159,115 +161,10 @@ margin_bottom = 712.0
 [node name="loading" parent="CanvasLayer/Control" instance=ExtResource( 8 )]
 visible = false
 
-[node name="dialog_menu" type="Control" parent="CanvasLayer/Control"]
+[node name="dialog_menu" parent="CanvasLayer/Control" instance=ExtResource( 9 )]
 visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
 
-[node name="ColorRect2" type="ColorRect" parent="CanvasLayer/Control/dialog_menu"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-color = Color( 0, 0, 0, 0.584314 )
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/dialog_menu"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -200.0
-margin_top = -170.5
-margin_right = 200.0
-margin_bottom = 170.5
-rect_min_size = Vector2( 400, 300 )
-
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control/dialog_menu/MarginContainer"]
-margin_right = 400.0
-margin_bottom = 397.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/dialog_menu/MarginContainer"]
-margin_right = 400.0
-margin_bottom = 397.0
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/dialog_menu/MarginContainer/VBoxContainer"]
-margin_right = 400.0
-margin_bottom = 24.0
-rect_min_size = Vector2( 0, 24 )
-
-[node name="Label" type="Label" parent="CanvasLayer/Control/dialog_menu/MarginContainer/VBoxContainer"]
-margin_top = 28.0
-margin_right = 400.0
-margin_bottom = 49.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_fonts/font = ExtResource( 13 )
-text = "Map Editor"
-align = 1
-valign = 1
-
-[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/dialog_menu/MarginContainer/VBoxContainer"]
-margin_top = 53.0
-margin_right = 400.0
-margin_bottom = 65.0
-rect_min_size = Vector2( 0, 12 )
-
-[node name="save" type="Button" parent="CanvasLayer/Control/dialog_menu/MarginContainer/VBoxContainer"]
-margin_left = 100.0
-margin_top = 69.0
-margin_right = 300.0
-margin_bottom = 129.0
-rect_min_size = Vector2( 200, 60 )
-size_flags_horizontal = 4
-custom_fonts/font = ExtResource( 13 )
-text = "Save Map"
-
-[node name="load" type="Button" parent="CanvasLayer/Control/dialog_menu/MarginContainer/VBoxContainer"]
-margin_left = 100.0
-margin_top = 133.0
-margin_right = 300.0
-margin_bottom = 193.0
-rect_min_size = Vector2( 200, 60 )
-size_flags_horizontal = 4
-custom_fonts/font = ExtResource( 13 )
-text = "Load Map"
-
-[node name="MarginContainer4" type="MarginContainer" parent="CanvasLayer/Control/dialog_menu/MarginContainer/VBoxContainer"]
-margin_top = 197.0
-margin_right = 400.0
-margin_bottom = 221.0
-rect_min_size = Vector2( 0, 24 )
-size_flags_vertical = 3
-
-[node name="exit" type="Button" parent="CanvasLayer/Control/dialog_menu/MarginContainer/VBoxContainer"]
-margin_left = 100.0
-margin_top = 225.0
-margin_right = 300.0
-margin_bottom = 285.0
-rect_min_size = Vector2( 200, 60 )
-size_flags_horizontal = 4
-custom_fonts/font = ExtResource( 13 )
-text = "Main Menu"
-
-[node name="MarginContainer5" type="MarginContainer" parent="CanvasLayer/Control/dialog_menu/MarginContainer/VBoxContainer"]
-margin_top = 289.0
-margin_right = 400.0
-margin_bottom = 313.0
-rect_min_size = Vector2( 0, 24 )
-size_flags_vertical = 3
-
-[node name="close" type="Button" parent="CanvasLayer/Control/dialog_menu/MarginContainer/VBoxContainer"]
-margin_left = 110.0
-margin_top = 317.0
-margin_right = 290.0
-margin_bottom = 369.0
-rect_min_size = Vector2( 180, 52 )
-size_flags_horizontal = 4
-custom_fonts/font = ExtResource( 13 )
-text = "Back"
-
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/dialog_menu/MarginContainer/VBoxContainer"]
-margin_top = 373.0
-margin_right = 400.0
-margin_bottom = 397.0
-rect_min_size = Vector2( 0, 24 )
+[node name="dialog_confirm" parent="CanvasLayer/Control" instance=ExtResource( 10 )]
 
 [connection signal="pressed" from="CanvasLayer/Control/SafeArea/VBoxContainer/HBoxContainer/menu" to="." method="_on_menu_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/SafeArea/VBoxContainer/HBoxContainer2/checkbox_tile_label" to="." method="_on_checkbox_tile_label_pressed"]
@@ -280,7 +177,6 @@ rect_min_size = Vector2( 0, 24 )
 [connection signal="on_randomize" from="CanvasLayer/Control/SafeArea/tile_option" to="." method="_on_tile_option_on_randomize"]
 [connection signal="on_water_tile" from="CanvasLayer/Control/SafeArea/tile_option" to="." method="_on_tile_option_on_water_tile"]
 [connection signal="on_change_range" from="CanvasLayer/Control/SafeArea/nav_option" to="." method="_on_nav_option_on_change_range"]
-[connection signal="pressed" from="CanvasLayer/Control/dialog_menu/MarginContainer/VBoxContainer/save" to="." method="_on_save_pressed"]
-[connection signal="pressed" from="CanvasLayer/Control/dialog_menu/MarginContainer/VBoxContainer/load" to="." method="_on_load_pressed"]
-[connection signal="pressed" from="CanvasLayer/Control/dialog_menu/MarginContainer/VBoxContainer/exit" to="." method="_on_exit_pressed"]
-[connection signal="pressed" from="CanvasLayer/Control/dialog_menu/MarginContainer/VBoxContainer/close" to="." method="_on_close_pressed"]
+[connection signal="on_exit" from="CanvasLayer/Control/dialog_menu" to="." method="_on_dialog_menu_on_exit"]
+[connection signal="on_load" from="CanvasLayer/Control/dialog_menu" to="." method="_on_dialog_menu_on_load"]
+[connection signal="on_save" from="CanvasLayer/Control/dialog_menu" to="." method="_on_dialog_menu_on_save"]

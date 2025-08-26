@@ -34,14 +34,33 @@ mouse_filter = 2
 script = ExtResource( 2 )
 
 [node name="units" type="VBoxContainer" parent="CanvasLayer/Control/SafeArea"]
-margin_top = 362.0
 margin_right = 80.0
-margin_bottom = 662.0
+margin_bottom = 1024.0
 rect_min_size = Vector2( 80, 300 )
 mouse_filter = 2
 size_flags_horizontal = 0
-size_flags_vertical = 4
+size_flags_vertical = 5
 alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/SafeArea/units"]
+margin_right = 80.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 0, 200 )
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/SafeArea/units"]
+margin_top = 204.0
+margin_right = 80.0
+margin_bottom = 820.0
+mouse_filter = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/SafeArea/units"]
+margin_top = 824.0
+margin_right = 80.0
+margin_bottom = 1024.0
+rect_min_size = Vector2( 0, 200 )
+mouse_filter = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/SafeArea"]
 margin_right = 600.0
