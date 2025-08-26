@@ -1,6 +1,7 @@
 extends MarginContainer
 
 signal edit
+signal delete
 
 var data :HexMapFileManifest
 
@@ -23,3 +24,6 @@ func _ready():
 
 func _on_edit_pressed():
 	emit_signal("edit")
+
+func _on_delete_pressed():
+	emit_signal("delete")

@@ -24,6 +24,6 @@ static func load_save(_filename : String, use_prefix = true):
 		return _data
 	return null
 
-static func delete_save(_filename : String):
+static func delete_save(_filename : String, use_prefix = true):
 	var dir = Directory.new()
-	dir.remove(prefix + _filename)
+	dir.remove(prefix + _filename if use_prefix else _filename)
