@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://assets/fonts/montserrat_eb_14.tres" type="DynamicFont" id=1]
 [ext_resource path="res://menu/main/ui/ui.gd" type="Script" id=2]
 [ext_resource path="res://addons/SafeArea/SafeArea.gd" type="Script" id=3]
 [ext_resource path="res://assets/loading/loading_overlay_screen.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/icons/title.png" type="Texture" id=5]
 
 [node name="ui" type="Control"]
 anchor_right = 1.0
@@ -18,7 +19,34 @@ script = ExtResource( 3 )
 [node name="VBoxContainer" type="VBoxContainer" parent="SafeArea"]
 margin_right = 600.0
 margin_bottom = 1024.0
-alignment = 2
+alignment = 1
+
+[node name="MarginContainer3" type="MarginContainer" parent="SafeArea/VBoxContainer"]
+margin_right = 600.0
+margin_bottom = 140.0
+rect_min_size = Vector2( 0, 140 )
+
+[node name="TextureRect" type="TextureRect" parent="SafeArea/VBoxContainer"]
+margin_left = 50.0
+margin_top = 144.0
+margin_right = 550.0
+margin_bottom = 444.0
+rect_min_size = Vector2( 500, 300 )
+size_flags_horizontal = 4
+texture = ExtResource( 5 )
+expand = true
+
+[node name="ColorRect" type="ColorRect" parent="SafeArea/VBoxContainer/TextureRect"]
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.168627, 0.168627, 0.168627, 0.584314 )
+
+[node name="MarginContainer2" type="MarginContainer" parent="SafeArea/VBoxContainer"]
+margin_top = 448.0
+margin_right = 600.0
+margin_bottom = 760.0
+size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="SafeArea/VBoxContainer"]
 margin_left = 132.0

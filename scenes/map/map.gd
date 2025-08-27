@@ -338,19 +338,22 @@ func _on_Area_input_event(camera, event, position, normal, shape_idx):
 	_input_detection.check_input(event)
 
 func _on_chunk_management_update_map(_chunks_to_remove :Array, _chunks_to_add:Array):
-	for i in _chunks_to_remove:
-		var data :ChunkManagement.ChunkData = i
-		if _chunks.has(data.position):
-			for c in _chunks[data.position]:
-				var x :HexTile = c
-				x.visible = false
-		
 	for i in _chunks_to_add:
 		var data :ChunkManagement.ChunkData = i
 		if _chunks.has(data.position):
 			for c in _chunks[data.position]:
 				var x :HexTile = c
 				x.visible = true
+				
+	for i in _chunks_to_remove:
+		var data :ChunkManagement.ChunkData = i
+		if _chunks.has(data.position):
+			for c in _chunks[data.position]:
+				var x :HexTile = c
+				x.visible = false
+				
+		
+
 
 
 

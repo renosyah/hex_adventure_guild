@@ -504,7 +504,8 @@ func _higlight_unit_attack(id :Vector2):
 		
 	var _is_range_unit = [
 		_selected_unit is Hunter,
-		_selected_unit is Gunner
+		_selected_unit is Gunner,
+		_selected_unit is Mage
 	]
 	var is_priest :bool = _selected_unit is Priest
 	

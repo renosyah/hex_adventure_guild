@@ -25,10 +25,10 @@ var cam_move = [
 ]
 
 func _ready():
-	map.generate_from_data(HexMapUtil.generate_randomize_map(rand_range(-1000, 1000), 4), true)
 	move_cam()
 	
 func move_cam():
+	map.generate_from_data(HexMapUtil.generate_randomize_map(rand_range(-1000, 1000), 4), true)
 	tween.interpolate_property(movable_camera, "translation", cam_move[move_pos]["from"], cam_move[move_pos]["to"], 16)
 	tween.start()
 	

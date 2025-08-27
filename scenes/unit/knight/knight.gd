@@ -38,6 +38,9 @@ func unit_taken_damage(dmg :int, from :BaseUnit):
 	
 	animation_player.play("damage")
 	
+	if from.team == team:
+		return
+		
 	if _is_counter_activated and not is_dead():
 		
 		# if enemy in melee range

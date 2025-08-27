@@ -2,7 +2,7 @@ extends Control
 
 signal create(name, size)
 
-onready var map_name = $MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/map_name
+onready var map_name = $MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/map_name
 onready var size_buttons = {
 	6:$"MarginContainer/VBoxContainer/HBoxContainer3/VBoxContainer/HBoxContainer/6",
 	8:$"MarginContainer/VBoxContainer/HBoxContainer3/VBoxContainer/HBoxContainer/8",
@@ -32,3 +32,7 @@ func _on_create_new_pressed():
 
 func _on_cancel_pressed():
 	visible = false
+
+
+func _on_random_name_pressed():
+	map_name.text = RandomNameGenerator.generate_name().to_lower()
