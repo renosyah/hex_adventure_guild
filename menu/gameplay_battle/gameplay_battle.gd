@@ -483,12 +483,14 @@ func _reveal_scout_tile():
 	
 func _spawn_grave(id :Vector2, pos :Vector3):
 	var grave = preload("res://scenes/loot/grave/grave.tscn").instance()
-	grave.loot_type = grave.loot_type_money
+	grave.loot_type = grave.loot_type_none
 	grave.value = int(rand_range(25,100))
 	grave.loot_name = "Coin"
 	add_child(grave)
 	grave.translation = pos
-	_loots[id] = grave
+	
+	if grave.loot_type != grave.loot_type_none:
+		_loots[id] = grave
 	
 func _on_bot_command_unit(_unit :BaseUnit):
 	if _unit.is_hidden:
@@ -500,7 +502,7 @@ func _higlight_unit_attack(id :Vector2):
 	if not is_instance_valid(_selected_unit):
 		return
 		
-	var is_range_unit = [
+	var _is_range_unit = [
 		_selected_unit is Hunter,
 		_selected_unit is Gunner
 	]
@@ -516,6 +518,8 @@ func _higlight_unit_attack(id :Vector2):
 			
 		var _unit :BaseUnit = _unit_in_tile[tile.id]
 		
+		# priest can only target friendly
+		# and canot target it seft
 		if is_priest:
 			if _unit == _selected_unit:
 				continue
@@ -526,18 +530,29 @@ func _higlight_unit_attack(id :Vector2):
 			if _unit.team == Global.current_player_team:
 				continue
 			
+		# for targeting higlight
 		var in_melee :bool = _selected_unit.is_in_melee_range(tile.id)
-		if  is_range_unit.has(true) and not in_melee:
-			var h = _add_tile_highlights(x.global_position, 4)
-			_tile_highlights.append(h)
-			
-		if is_priest:
+		var is_range_unit :bool = _is_range_unit.has(true) and not is_priest
+		
+		if (is_priest):
 			var h = _add_tile_highlights(x.global_position, 5)
 			_tile_highlights.append(h)
 			
-		else: 
+		elif (is_range_unit):
+			if in_melee:
+				var h = _add_tile_highlights(x.global_position, 2)
+				_tile_highlights.append(h)
+				
+			else:
+				var h = _add_tile_highlights(x.global_position, 4)
+				_tile_highlights.append(h)
+			
+		elif (not is_range_unit):
 			var h = _add_tile_highlights(x.global_position, 2)
 			_tile_highlights.append(h)
+			
+		else: 
+			pass
 			
 		_attack_tiles.append(x.id)
 	

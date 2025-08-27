@@ -1,7 +1,9 @@
 extends Spatial
 class_name Loot
 
+const loot_type_none = 0
 const loot_type_money = 1
+const loot_type_consumable = 2
 
 export var loot_type :int
 export var loot_name :String

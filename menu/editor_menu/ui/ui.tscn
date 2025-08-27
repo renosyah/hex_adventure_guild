@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://menu/editor_menu/ui/ui.gd" type="Script" id=1]
 [ext_resource path="res://addons/SafeArea/SafeArea.gd" type="Script" id=2]
 [ext_resource path="res://assets/fonts/montserrat_eb_14.tres" type="DynamicFont" id=3]
+[ext_resource path="res://assets/icons/back.png" type="Texture" id=4]
 
 [node name="ui" type="Control"]
 anchor_right = 1.0
@@ -37,16 +38,35 @@ rect_min_size = Vector2( 4, 0 )
 
 [node name="back" type="Button" parent="CanvasLayer/Control/SafeArea/VBoxContainer/HBoxContainer3"]
 margin_left = 8.0
-margin_right = 88.0
+margin_right = 108.0
 margin_bottom = 80.0
-rect_min_size = Vector2( 80, 80 )
+rect_min_size = Vector2( 100, 80 )
 size_flags_horizontal = 0
 custom_fonts/font = ExtResource( 3 )
-text = "Back"
+icon = ExtResource( 4 )
+flat = true
+expand_icon = true
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/SafeArea/VBoxContainer/HBoxContainer3"]
+margin_left = 112.0
+margin_top = 29.0
+margin_right = 484.0
+margin_bottom = 50.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 3 )
+text = "Map Editor"
+align = 1
+valign = 1
+
+[node name="MarginContainer7" type="MarginContainer" parent="CanvasLayer/Control/SafeArea/VBoxContainer/HBoxContainer3"]
+margin_left = 488.0
+margin_right = 588.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 100, 0 )
 
 [node name="MarginContainer6" type="MarginContainer" parent="CanvasLayer/Control/SafeArea/VBoxContainer/HBoxContainer3"]
-margin_left = 92.0
-margin_right = 100.0
+margin_left = 592.0
+margin_right = 600.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 8, 0 )
 

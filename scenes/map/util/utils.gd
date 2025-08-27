@@ -73,6 +73,8 @@ static func generate_empty_map(radius: int = 6) -> HexMapFileData:
 		
 		var data :TileMapData = TileMapData.new()
 		data.id = id
+		data.model = preload("res://scenes/hex_tile/models/hex.png")
+		data.type = HexMapData.TileMapDataTypeLand
 		data.pos = Vector3(id.x + x_offset, 0, id.y * 0.85) * 2
 		data.rotation = ROTATION_DIRECTIONS[0]
 		

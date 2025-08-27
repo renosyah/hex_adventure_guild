@@ -3,6 +3,7 @@ extends Control
 signal on_unit_select(unit)
 signal on_activate_ability
 signal end_turn
+signal surender
 
 const unit_selection_scene = preload("res://menu/gameplay_battle/ui/unit_control/unit_selection.tscn")
 
@@ -15,12 +16,14 @@ onready var battle_result = $CanvasLayer/Control/SafeArea/battle_result
 onready var battle_result_text = $CanvasLayer/Control/SafeArea/battle_result/MarginContainer/VBoxContainer/battle_result_text
 onready var units = $CanvasLayer/Control/SafeArea/units
 onready var units_container = $CanvasLayer/Control/SafeArea/units/VBoxContainer
+onready var dialog_menu = $CanvasLayer/Control/dialog_menu
 
 var floating_infos :Dictionary = {} # {unit :floating info}
 
 func _ready():
 	loading_turn.visible = false
 	battle_result.visible = false
+	dialog_menu.visible = false
 	
 func add_unit_to_selection(unit :BaseUnit, data :UnitData):
 	var unit_selection = unit_selection_scene.instance()
@@ -113,9 +116,6 @@ func _on_select_unit(unit :BaseUnit):
 func _on_unit_selected(unit :BaseUnit, _selection):
 	_selection.select(unit.is_selected)
 
-func _on_exit_pressed():
-	get_tree().change_scene("res://menu/main/main.tscn")
-
 func _on_unit_control_end_turn():
 	set_on_player_turn(false)
 	emit_signal("end_turn")
@@ -125,3 +125,21 @@ func _on_unit_control_on_activate_ability():
 	
 func _on_unit_control_on_unit_select(unit):
 	emit_signal("on_unit_select", unit)
+	
+func _on_menu_pressed():
+	dialog_menu.visible = true
+	
+func _on_dialog_menu_exit():
+	get_tree().change_scene("res://menu/main/main.tscn")
+
+func _on_dialog_menu_surrender():
+	dialog_menu.visible = false
+	show_lose()
+
+func _on_exit_pressed():
+	_on_dialog_menu_exit()
+
+
+
+
+
