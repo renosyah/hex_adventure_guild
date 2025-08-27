@@ -77,7 +77,7 @@ func update_cam_position(camera :Camera):
 			continue
 			
 		var info = (floating_infos[key] as Control)
-		info.visible = unit.visible
+		info.visible = unit.visible and not unit.is_hidden
 		var v2 = camera.unproject_position(pos)
 		info.rect_position = v2 - info.rect_pivot_offset
 

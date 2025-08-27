@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://menu/editor_menu/ui/ui.gd" type="Script" id=1]
 [ext_resource path="res://addons/SafeArea/SafeArea.gd" type="Script" id=2]
 [ext_resource path="res://assets/fonts/montserrat_eb_14.tres" type="DynamicFont" id=3]
 [ext_resource path="res://assets/icons/back.png" type="Texture" id=4]
+[ext_resource path="res://menu/editor_menu/ui/new_map_dialog/new_map_dialog.tscn" type="PackedScene" id=5]
 
 [node name="ui" type="Control"]
 anchor_right = 1.0
@@ -151,6 +152,9 @@ margin_right = 600.0
 margin_bottom = 832.0
 rect_min_size = Vector2( 8, 0 )
 
+[node name="new_map_dialog" parent="CanvasLayer/Control" instance=ExtResource( 5 )]
+
 [connection signal="pressed" from="CanvasLayer/Control/SafeArea/VBoxContainer/HBoxContainer3/back" to="." method="_on_back_pressed"]
 [connection signal="text_changed" from="CanvasLayer/Control/SafeArea/VBoxContainer/HBoxContainer2/search_map" to="." method="_on_search_map_text_changed"]
 [connection signal="pressed" from="CanvasLayer/Control/SafeArea/VBoxContainer/HBoxContainer2/new_map" to="." method="_on_new_map_pressed"]
+[connection signal="create" from="CanvasLayer/Control/new_map_dialog" to="." method="_on_new_map_dialog_create"]

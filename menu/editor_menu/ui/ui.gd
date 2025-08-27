@@ -3,8 +3,10 @@ extends Control
 onready var _maps :Array = Utils.load_maps() # [ HexMapFileManifest ]
 
 onready var map_list = $CanvasLayer/Control/SafeArea/VBoxContainer/HBoxContainer/ScrollContainer/map_list
+onready var new_map_dialog = $CanvasLayer/Control/new_map_dialog
 
 func _ready():
+	new_map_dialog.visible = false
 	show_maps()
 	
 func show_maps(find :String = ""):
@@ -15,7 +17,7 @@ func show_maps(find :String = ""):
 	for i in _maps:
 		var data :HexMapFileManifest = i
 		if Utils.contains_substring(data.map_name, find):
-			var item = preload("res://menu/editor_menu/item/item.tscn").instance()
+			var item = preload("res://menu/editor_menu/ui/item/item.tscn").instance()
 			item.data = data
 			item.connect("edit", self, "_on_edit_map", [i])
 			item.connect("delete", self, "_on_delete_map", [i])
@@ -41,12 +43,17 @@ func load_map(filename :String):
 	get_tree().change_scene("res://menu/editor/editor.tscn")
 	
 func _on_new_map_pressed():
-	Global.selected_map_data = HexMapUtil.generate_empty_map()
-	Global.selected_map_data.map_name = RandomNameGenerator.generate_name().to_lower()
-	get_tree().change_scene("res://menu/editor/editor.tscn")
+	new_map_dialog.visible = true
+	
 
 func _on_search_map_text_changed(new_text):
 	show_maps(new_text)
 
 func _on_back_pressed():
 	get_tree().change_scene("res://menu/main/main.tscn")
+
+func _on_new_map_dialog_create(map_name, size):
+	Global.selected_map_data = HexMapUtil.generate_empty_map(size)
+	Global.selected_map_data.map_name = map_name
+	get_tree().change_scene("res://menu/editor/editor.tscn")
+
