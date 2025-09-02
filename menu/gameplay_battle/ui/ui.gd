@@ -30,7 +30,7 @@ func add_unit_to_selection(unit :BaseUnit, data :UnitData):
 	unit_selection.potrait = data.unit_potrait
 	unit_selection.connect("pressed", self, "_on_select_unit", [unit])
 	units_container.add_child(unit_selection)
-	units_container.move_child(unit_selection, 0)
+	#units_container.move_child(unit_selection, 0)
 	
 	unit.connect("unit_dead", self , "_on_unit_dead", [unit_selection])
 	unit.connect("unit_selected", self, "_on_unit_selected", [unit, unit_selection])

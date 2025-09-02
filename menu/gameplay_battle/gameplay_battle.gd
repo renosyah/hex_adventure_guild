@@ -224,12 +224,12 @@ func _spawn_unit():
 			ui.add_unit_floating_info(unit)
 			
 			if is_player_unit:
+				_total_player_unit += 1
 				_last_cam_pos = hextile.global_position
 				ui.add_unit_to_selection(unit, unit_data)
 				
-			if unit_data.team == Global.current_player_id:
+			if unit_data.team == Global.current_player_team:
 				_reveal_tile_in_unit_view(unit)
-				_total_player_unit += 1
 				
 			if unit_data.team != Global.current_player_team:
 				_total_enemy_unit += 1
