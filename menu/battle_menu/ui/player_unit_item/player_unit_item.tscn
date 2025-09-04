@@ -30,9 +30,9 @@ margin_bottom = 109.0
 size_flags_vertical = 3
 
 [node name="change_team" type="Button" parent="VBoxContainer/HBoxContainer"]
-margin_right = 80.0
+margin_right = 100.0
 margin_bottom = 103.0
-rect_min_size = Vector2( 80, 0 )
+rect_min_size = Vector2( 100, 0 )
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/change_team"]
 anchor_right = 1.0
@@ -44,13 +44,13 @@ align = 1
 valign = 1
 
 [node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
-margin_left = 84.0
-margin_right = 88.0
+margin_left = 104.0
+margin_right = 108.0
 margin_bottom = 103.0
 rect_min_size = Vector2( 4, 0 )
 
 [node name="units" type="Control" parent="VBoxContainer/HBoxContainer"]
-margin_left = 92.0
+margin_left = 112.0
 margin_right = 484.0
 margin_bottom = 103.0
 rect_min_size = Vector2( 100, 0 )
