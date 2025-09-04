@@ -1,0 +1,77 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/fonts/montserrat_eb_14.tres" type="DynamicFont" id=1]
+[ext_resource path="res://menu/battle_menu/ui/edit_units_option/item/item.gd" type="Script" id=2]
+
+[node name="item" type="MarginContainer"]
+margin_right = 594.0
+margin_bottom = 125.0
+rect_min_size = Vector2( 0, 125 )
+script = ExtResource( 2 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 594.0
+margin_bottom = 125.0
+color = Color( 0.278431, 0.278431, 0.278431, 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_right = 594.0
+margin_bottom = 125.0
+
+[node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer"]
+margin_right = 594.0
+margin_bottom = 8.0
+rect_min_size = Vector2( 0, 8 )
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 12.0
+margin_right = 594.0
+margin_bottom = 33.0
+
+[node name="MarginContainer4" type="MarginContainer" parent="VBoxContainer/HBoxContainer2"]
+margin_right = 4.0
+margin_bottom = 21.0
+rect_min_size = Vector2( 4, 0 )
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
+margin_left = 8.0
+margin_right = 94.0
+margin_bottom = 21.0
+custom_fonts/font = ExtResource( 1 )
+text = "Unit Class"
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
+margin_top = 37.0
+margin_right = 594.0
+margin_bottom = 45.0
+rect_min_size = Vector2( 0, 8 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 49.0
+margin_right = 594.0
+margin_bottom = 119.0
+size_flags_vertical = 3
+
+[node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
+margin_right = 4.0
+margin_bottom = 70.0
+rect_min_size = Vector2( 4, 0 )
+
+[node name="units" type="HBoxContainer" parent="VBoxContainer/HBoxContainer"]
+margin_left = 8.0
+margin_right = 582.0
+margin_bottom = 70.0
+rect_min_size = Vector2( 100, 0 )
+size_flags_horizontal = 3
+
+[node name="MarginContainer6" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
+margin_left = 586.0
+margin_right = 594.0
+margin_bottom = 70.0
+rect_min_size = Vector2( 8, 0 )
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+margin_top = 123.0
+margin_right = 594.0
+margin_bottom = 125.0
+rect_min_size = Vector2( 0, 2 )

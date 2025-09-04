@@ -1,0 +1,160 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/fonts/montserrat_eb_14.tres" type="DynamicFont" id=1]
+[ext_resource path="res://addons/SafeArea/SafeArea.gd" type="Script" id=2]
+[ext_resource path="res://assets/icons/back.png" type="Texture" id=3]
+[ext_resource path="res://menu/battle_menu/ui/edit_units_option/edit_units_option.gd" type="Script" id=4]
+
+[node name="edit_units_option" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 4 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.207843, 0.207843, 0.207843, 1 )
+
+[node name="Control" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="SafeArea" type="MarginContainer" parent="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/SafeArea"]
+margin_right = 600.0
+margin_bottom = 1024.0
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Control/SafeArea/VBoxContainer"]
+margin_right = 600.0
+margin_bottom = 80.0
+
+[node name="MarginContainer3" type="MarginContainer" parent="Control/SafeArea/VBoxContainer/HBoxContainer3"]
+margin_right = 4.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 4, 0 )
+
+[node name="back" type="Button" parent="Control/SafeArea/VBoxContainer/HBoxContainer3"]
+margin_left = 8.0
+margin_right = 108.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 100, 80 )
+size_flags_horizontal = 0
+custom_fonts/font = ExtResource( 1 )
+icon = ExtResource( 3 )
+flat = true
+expand_icon = true
+
+[node name="Label" type="Label" parent="Control/SafeArea/VBoxContainer/HBoxContainer3"]
+margin_left = 112.0
+margin_top = 29.0
+margin_right = 484.0
+margin_bottom = 50.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 1 )
+text = "Edit Units"
+align = 1
+valign = 1
+
+[node name="MarginContainer7" type="MarginContainer" parent="Control/SafeArea/VBoxContainer/HBoxContainer3"]
+margin_left = 488.0
+margin_right = 588.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 100, 0 )
+
+[node name="MarginContainer6" type="MarginContainer" parent="Control/SafeArea/VBoxContainer/HBoxContainer3"]
+margin_left = 592.0
+margin_right = 600.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 8, 0 )
+
+[node name="MarginContainer2" type="MarginContainer" parent="Control/SafeArea/VBoxContainer"]
+margin_top = 84.0
+margin_right = 600.0
+margin_bottom = 92.0
+rect_min_size = Vector2( 0, 8 )
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Control/SafeArea/VBoxContainer"]
+margin_top = 96.0
+margin_right = 600.0
+margin_bottom = 221.0
+rect_min_size = Vector2( 0, 125 )
+
+[node name="MarginContainer3" type="MarginContainer" parent="Control/SafeArea/VBoxContainer/HBoxContainer2"]
+margin_right = 24.0
+margin_bottom = 125.0
+rect_min_size = Vector2( 24, 0 )
+
+[node name="selected_units" type="HBoxContainer" parent="Control/SafeArea/VBoxContainer/HBoxContainer2"]
+margin_left = 28.0
+margin_right = 572.0
+margin_bottom = 125.0
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="MarginContainer6" type="MarginContainer" parent="Control/SafeArea/VBoxContainer/HBoxContainer2"]
+margin_left = 576.0
+margin_right = 600.0
+margin_bottom = 125.0
+rect_min_size = Vector2( 24, 0 )
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/SafeArea/VBoxContainer"]
+margin_top = 225.0
+margin_right = 600.0
+margin_bottom = 237.0
+rect_min_size = Vector2( 0, 12 )
+
+[node name="Label2" type="Label" parent="Control/SafeArea/VBoxContainer"]
+margin_top = 241.0
+margin_right = 600.0
+margin_bottom = 262.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 1 )
+text = "Recruits"
+align = 1
+valign = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/SafeArea/VBoxContainer"]
+margin_top = 266.0
+margin_right = 600.0
+margin_bottom = 1024.0
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/SafeArea/VBoxContainer/HBoxContainer"]
+margin_right = 8.0
+margin_bottom = 758.0
+rect_min_size = Vector2( 8, 0 )
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/SafeArea/VBoxContainer/HBoxContainer"]
+margin_left = 12.0
+margin_right = 588.0
+margin_bottom = 758.0
+size_flags_horizontal = 3
+scroll_horizontal_enabled = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/SafeArea/VBoxContainer/HBoxContainer/ScrollContainer"]
+margin_right = 576.0
+margin_bottom = 154.0
+size_flags_horizontal = 3
+
+[node name="unit_pools" type="VBoxContainer" parent="Control/SafeArea/VBoxContainer/HBoxContainer/ScrollContainer/VBoxContainer"]
+margin_right = 576.0
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/SafeArea/VBoxContainer/HBoxContainer/ScrollContainer/VBoxContainer"]
+margin_top = 4.0
+margin_right = 576.0
+margin_bottom = 154.0
+rect_min_size = Vector2( 0, 150 )
+
+[node name="MarginContainer2" type="MarginContainer" parent="Control/SafeArea/VBoxContainer/HBoxContainer"]
+margin_left = 592.0
+margin_right = 600.0
+margin_bottom = 758.0
+rect_min_size = Vector2( 8, 0 )
+
+[connection signal="pressed" from="Control/SafeArea/VBoxContainer/HBoxContainer3/back" to="." method="_on_back_pressed"]

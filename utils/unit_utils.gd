@@ -8,25 +8,30 @@ static func get_unit_datas() -> Array:
 		res.append(load(i))
 	return res
 	
-static func create_unit_name(clas :int) -> String:
-	var nam = RandomNameGenerator.generate_name()
+static func get_unit_class_name(clas :int) -> String:
 	match clas:
 		UnitData.unit_class_peasant:
-			return "%s (Peasant)" % nam
+			return "Peasant"
 		UnitData.unit_class_vanguard:
-			return "%s (Vanguard)" % nam
+			return "Vanguard"
 		UnitData.unit_class_knight:
-			return "Sir %s (Knight)" % nam
+			return "Knight"
 		UnitData.unit_class_hunter:
-			return "%s (Hunter)" % nam
+			return "Hunter"
 		UnitData.unit_class_gunner:
-			return "%s (Gunner)" % nam
+			return "Gunner"
 		UnitData.unit_class_mage:
-			return "Master %s (Mage)" % nam
+			return "Mage"
 		UnitData.unit_class_priest:
-			return "Master %s (Priest)" % nam
+			return "Priest"
 			
-	return nam
+	return "?"
+	
+	
+static func create_unit_name(clas :int) -> String:
+	var nam = RandomNameGenerator.generate_name()
+	var clas_name = get_unit_class_name(clas)
+	return "%s (%s)" % [nam, clas_name]
 	
 const vanguard_weapons = {
 	preload("res://scenes/unit/vanguard/glaive.png") : [6,8,12],

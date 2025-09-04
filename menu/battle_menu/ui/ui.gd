@@ -10,19 +10,61 @@ onready var team_list = $CanvasLayer/Control/SafeArea/VBoxContainer/MarginContai
 onready var battle_button = $CanvasLayer/Control/SafeArea/VBoxContainer/battle
 onready var add_player = $CanvasLayer/Control/SafeArea/VBoxContainer/MarginContainer3/ScrollContainer/VBoxContainer/add_player
 onready var select_map_option = $CanvasLayer/Control/select_map_option
+onready var edit_units_option = $CanvasLayer/Control/edit_units_option
 
 onready var units = UnitUtils.get_unit_datas()
+
+var unit_pool :Dictionary = {} # {player_id : [ UnitData ]}
 var selected_map :HexMapFileManifest
 
 func  _ready():
+	edit_units_option.visible = false
+	select_map_option.visible = false
+	
 	var _maps :Array = Utils.load_maps()
 	if not _maps.empty():
 		selected_map = _maps[0]
 		
-	select_map_option.visible = false
 	add_player(1, 1)
 	refresh()
 	
+func generate_unit_pool(player_id :int, team :int):
+	var pool :Array = []
+	var unit_class_size = {
+		UnitData.unit_class_peasant : int(rand_range(3,6)),
+		UnitData.unit_class_vanguard : int(rand_range(2,4)),
+		UnitData.unit_class_knight : int(rand_range(2,3)),
+		UnitData.unit_class_hunter : int(rand_range(2,3)),
+		UnitData.unit_class_gunner : int(rand_range(2,3)),
+		UnitData.unit_class_priest : int(rand_range(1,4)),
+		UnitData.unit_class_mage : int(rand_range(1,4)),
+	}
+	for c in unit_class_size.keys():
+		var u :UnitData = get_unit_by_class(c)
+		if u == null:
+			continue
+			
+		# make variant
+		for _i in unit_class_size[c]:
+			var unit = u.duplicate()
+			unit.player_id = player_id
+			unit.team = team
+			unit.unit_name = UnitUtils.create_unit_name(unit.unit_class)
+			unit.unit_potrait = UnitUtils.create_unit_potrait(unit.unit_class)
+			unit.weapon_model = UnitUtils.set_unit_weapon(unit)
+			unit.attack_damages = UnitUtils.set_unit_attack_damages(unit)
+			pool.append(unit)
+		
+	unit_pool[player_id] = pool
+	
+func get_unit_by_class(class_id :int) -> UnitData:
+	for i in units:
+		var unit :UnitData = i
+		if unit.unit_class == class_id:
+			return unit
+			
+	return null
+		
 func refresh():
 	display_map()
 	display_teams()
@@ -47,14 +89,11 @@ func add_player(player_id :int, team :int):
 	player_data.team = team
 	player_data.player_units = []
 	
+	generate_unit_pool(player_id, team)
+	
 	for i in 6:
-		var unit :UnitData = units[rand_range(0, units.size())].duplicate()
-		unit.player_id = player_data.player_id
-		unit.team = player_data.team
-		unit.unit_name = UnitUtils.create_unit_name(unit.unit_class)
-		unit.unit_potrait = UnitUtils.create_unit_potrait(unit.unit_class)
-		unit.weapon_model = UnitUtils.set_unit_weapon(unit)
-		unit.attack_damages = UnitUtils.set_unit_attack_damages(unit)
+		var unit_pools :Array = unit_pool[player_id]
+		var unit :UnitData = unit_pools[rand_range(0, unit_pools.size())]
 		player_data.player_units.append(unit)
 		
 	Global.player_battle_data.append(player_data)
@@ -69,8 +108,8 @@ func display_teams():
 		var data :PlayerBattleData = i
 		var player_unit = player_unit_item_scene.instance()
 		player_unit.data = data
-		player_unit.connect("change_team", self ,"_on_change_team_player_unit", [player_unit, data])
-		player_unit.connect("edit", self, "_on_edit_player_unit", [player_unit, data])
+		player_unit.connect("change_team", self ,"_on_change_team_player_unit", [data])
+		player_unit.connect("edit", self, "_on_edit_player_unit", [data])
 		team_list.add_child(player_unit)
 		
 func display_map():
@@ -96,7 +135,7 @@ func load_map(filename :String):
 func _on_back_pressed():
 	get_tree().change_scene("res://menu/main/main.tscn")
 	
-func _on_change_team_player_unit(player_unit, data :PlayerBattleData):
+func _on_change_team_player_unit(data :PlayerBattleData):
 	data.team = (data.team + 1) if data.team < Global.player_battle_data.size() else 1
 	
 	for i in data.player_units:
@@ -113,8 +152,13 @@ func _on_add_player_pressed():
 	add_player(index, index)
 	refresh()
 	
-func _on_edit_player_unit(player_unit, data :PlayerBattleData):
-	pass # Replace with function body.
+func _on_edit_player_unit(data :PlayerBattleData):
+	edit_units_option.player_data = data
+	edit_units_option.unit_pools = unit_pool[data.player_id]
+	edit_units_option.display()
+	edit_units_option.visible = true
+	yield(edit_units_option,"close")
+	refresh()
 	
 func _on_change_map_pressed():
 	select_map_option.visible = true
@@ -125,10 +169,6 @@ func _on_select_map_option_on_select_map(data :HexMapFileManifest):
 	
 func _on_battle_pressed():
 	load_map(selected_map.map_file_path)
-
-
-
-
 
 
 

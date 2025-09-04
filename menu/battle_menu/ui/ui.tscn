@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://addons/SafeArea/SafeArea.gd" type="Script" id=1]
 [ext_resource path="res://assets/fonts/montserrat_eb_14.tres" type="DynamicFont" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://menu/battle_menu/ui/ui.gd" type="Script" id=4]
 [ext_resource path="res://assets/icons/checkbox_off.png" type="Texture" id=5]
 [ext_resource path="res://menu/battle_menu/ui/select_map_option/select_map_option.tscn" type="PackedScene" id=6]
+[ext_resource path="res://menu/battle_menu/ui/edit_units_option/edit_units_option.tscn" type="PackedScene" id=7]
 
 [node name="ui" type="Control"]
 anchor_right = 1.0
@@ -249,6 +250,8 @@ margin_top = 1012.0
 margin_right = 600.0
 margin_bottom = 1024.0
 rect_min_size = Vector2( 0, 12 )
+
+[node name="edit_units_option" parent="CanvasLayer/Control" instance=ExtResource( 7 )]
 
 [node name="select_map_option" parent="CanvasLayer/Control" instance=ExtResource( 6 )]
 
