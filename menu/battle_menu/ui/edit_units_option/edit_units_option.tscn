@@ -83,22 +83,23 @@ margin_top = 96.0
 margin_right = 600.0
 margin_bottom = 221.0
 rect_min_size = Vector2( 0, 125 )
+alignment = 1
 
 [node name="MarginContainer3" type="MarginContainer" parent="Control/SafeArea/VBoxContainer/HBoxContainer2"]
-margin_right = 24.0
+margin_left = 272.0
+margin_right = 296.0
 margin_bottom = 125.0
 rect_min_size = Vector2( 24, 0 )
 
-[node name="selected_units" type="HBoxContainer" parent="Control/SafeArea/VBoxContainer/HBoxContainer2"]
-margin_left = 28.0
-margin_right = 572.0
+[node name="selected_units" type="GridContainer" parent="Control/SafeArea/VBoxContainer/HBoxContainer2"]
+margin_left = 300.0
+margin_right = 300.0
 margin_bottom = 125.0
-size_flags_horizontal = 3
-alignment = 1
+columns = 3
 
 [node name="MarginContainer6" type="MarginContainer" parent="Control/SafeArea/VBoxContainer/HBoxContainer2"]
-margin_left = 576.0
-margin_right = 600.0
+margin_left = 304.0
+margin_right = 328.0
 margin_bottom = 125.0
 rect_min_size = Vector2( 24, 0 )
 
